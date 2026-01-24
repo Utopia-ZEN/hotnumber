@@ -2,8 +2,9 @@ name: Update Lotto Data
 
 on:
   schedule:
-    # Run every Sunday at 00:00 UTC (approx 9 AM KST, after the draw on Saturday)
-    - cron: '0 0 * * 0'
+    # Run every Sunday at 00:00 KST (Saturday 15:00 UTC)
+    # Lotto draw is at Saturday 20:35 KST, so this runs about 3.5 hours later.
+    - cron: '0 15 * * 6'
   workflow_dispatch:
 
 jobs:
