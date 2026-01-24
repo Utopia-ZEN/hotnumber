@@ -2,9 +2,9 @@ name: Update Lotto Data
 
 on:
   schedule:
-    # Run every Sunday at 00:00 KST (Saturday 15:00 UTC)
-    # Lotto draw is at Saturday 20:35 KST, so this runs about 3.5 hours later.
-    - cron: '0 15 * * 6'
+    # Run every Saturday at 22:00 KST (Saturday 13:00 UTC)
+    # Lotto draw is at Saturday 20:35 KST, so this runs about 1.5 hours later.
+    - cron: '0 13 * * 6'
   workflow_dispatch:
 
 # Grant write permission to the GITHUB_TOKEN so it can push changes
