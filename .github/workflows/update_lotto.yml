@@ -7,6 +7,10 @@ on:
     - cron: '0 15 * * 6'
   workflow_dispatch:
 
+# Grant write permission to the GITHUB_TOKEN so it can push changes
+permissions:
+  contents: write
+
 jobs:
   update-data:
     runs-on: ubuntu-latest
