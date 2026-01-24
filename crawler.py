@@ -2,6 +2,7 @@ import os
 import json
 import time
 import re
+import shutil
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -21,9 +22,55 @@ def ensure_data_dir():
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
 
+def get_round_folder(round_num):
+    """
+    Returns the folder path for a given round number based on 1000-round grouping.
+    e.g., 1 -> "1-1000", 1207 -> "1001-2000"
+    """
+    start = ((round_num - 1) // 1000) * 1000 + 1
+    end = start + 999
+    folder_name = f"{start}-{end}"
+    return os.path.join(DATA_DIR, folder_name)
+
+def migrate_existing_files():
+    """
+    Moves existing .lotto files from the root DATA_DIR to their respective subfolders.
+    """
+    print("Checking for files to migrate...")
+    if not os.path.exists(DATA_DIR):
+        return
+
+    count = 0
+    for filename in os.listdir(DATA_DIR):
+        # Skip special files and directories
+        if filename == LATEST_FILE or filename == FREQUENCY_FILE:
+            continue
+        
+        file_path = os.path.join(DATA_DIR, filename)
+        
+        # Process only .lotto files in the root directory
+        if os.path.isfile(file_path) and filename.endswith('.lotto'):
+            try:
+                round_num = int(filename.split('.')[0])
+                target_folder = get_round_folder(round_num)
+                
+                if not os.path.exists(target_folder):
+                    os.makedirs(target_folder)
+                
+                target_path = os.path.join(target_folder, filename)
+                shutil.move(file_path, target_path)
+                count += 1
+            except ValueError:
+                pass
+            except Exception as e:
+                print(f"Error migrating {filename}: {e}")
+    
+    if count > 0:
+        print(f"Migrated {count} files to subdirectories.")
+
 def get_latest_round_and_setup_driver():
     options = Options()
-    options.add_argument('--headless')  # Run in background
+    options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
@@ -33,7 +80,6 @@ def get_latest_round_and_setup_driver():
     
     try:
         driver.get(TARGET_URL)
-        # Wait for the select element to be present
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "srchStrLtEpsd"))
         )
@@ -47,7 +93,7 @@ def get_latest_round_and_setup_driver():
                 val = option.get('value')
                 if val and val.isdigit():
                     latest_round = int(val)
-                    break # Assuming first one is latest
+                    break 
                     
         return latest_round, driver
     except Exception as e:
@@ -60,13 +106,16 @@ def get_saved_rounds():
     saved = []
     if not os.path.exists(DATA_DIR):
         return saved
-    for filename in os.listdir(DATA_DIR):
-        if filename.endswith('.lotto') and filename != LATEST_FILE:
-            try:
-                round_num = int(filename.split('.')[0])
-                saved.append(round_num)
-            except ValueError:
-                pass
+    
+    # Walk through all subdirectories to find .lotto files
+    for root, dirs, files in os.walk(DATA_DIR):
+        for filename in files:
+            if filename.endswith('.lotto') and filename != LATEST_FILE and filename != FREQUENCY_FILE:
+                try:
+                    round_num = int(filename.split('.')[0])
+                    saved.append(round_num)
+                except ValueError:
+                    pass
     return sorted(saved)
 
 def parse_money(money_str):
@@ -78,22 +127,12 @@ def parse_winners(winner_str):
     return int(clean) if clean else 0
 
 def calculate_analysis_data(numbers, bonus):
-    """
-    Calculate advanced analysis metrics:
-    - odd_even_ratio: Ratio of odd to even numbers (e.g., "4:2")
-    - sum_value: Sum of the 6 main numbers
-    - ac_value: Arithmetic Complexity value
-    - high_low_ratio: Ratio of high (23-45) to low (1-22) numbers
-    """
-    # Odd/Even
     odds = sum(1 for n in numbers if n % 2 != 0)
     evens = 6 - odds
     odd_even_ratio = f"{odds}:{evens}"
     
-    # Sum
     sum_value = sum(numbers)
     
-    # AC Value (Arithmetic Complexity)
     diffs = set()
     sorted_nums = sorted(numbers)
     for i in range(len(sorted_nums)):
@@ -101,7 +140,6 @@ def calculate_analysis_data(numbers, bonus):
             diffs.add(sorted_nums[j] - sorted_nums[i])
     ac_value = len(diffs) - 5
     
-    # High/Low (Low: 1-22, High: 23-45)
     highs = sum(1 for n in numbers if n >= 23)
     lows = 6 - highs
     high_low_ratio = f"{highs}:{lows}"
@@ -159,7 +197,6 @@ def fetch_range_with_selenium(driver, start_round, end_round):
                 price_span = item.find('span', class_='txt-price')
                 amount = parse_money(price_span.text)
                 
-                # Calculate analysis data
                 analysis = calculate_analysis_data(numbers, bonus)
                 
                 results.append({
@@ -181,7 +218,13 @@ def fetch_range_with_selenium(driver, start_round, end_round):
         return []
 
 def save_result(result):
-    filename = os.path.join(DATA_DIR, f"{result['round']}.lotto")
+    round_num = result['round']
+    folder_path = get_round_folder(round_num)
+    
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        
+    filename = os.path.join(folder_path, f"{round_num}.lotto")
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(result, f, ensure_ascii=False, indent=4)
     print(f"Saved {filename}")
@@ -198,26 +241,27 @@ def update_existing_files_with_analysis():
         return
 
     updated_count = 0
-    for filename in os.listdir(DATA_DIR):
-        if filename.endswith('.lotto') and filename != LATEST_FILE:
-            filepath = os.path.join(DATA_DIR, filename)
-            try:
-                with open(filepath, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                
-                # Check if analysis data is missing
-                if 'analysis' not in data:
-                    numbers = data.get('numbers', [])
-                    bonus = data.get('bonus', 0)
+    # Walk through all subdirectories
+    for root, dirs, files in os.walk(DATA_DIR):
+        for filename in files:
+            if filename.endswith('.lotto') and filename != LATEST_FILE and filename != FREQUENCY_FILE:
+                filepath = os.path.join(root, filename)
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
                     
-                    if numbers:
-                        data['analysis'] = calculate_analysis_data(numbers, bonus)
+                    if 'analysis' not in data:
+                        numbers = data.get('numbers', [])
+                        bonus = data.get('bonus', 0)
                         
-                        with open(filepath, 'w', encoding='utf-8') as f:
-                            json.dump(data, f, ensure_ascii=False, indent=4)
-                        updated_count += 1
-            except Exception as e:
-                print(f"Error updating {filename}: {e}")
+                        if numbers:
+                            data['analysis'] = calculate_analysis_data(numbers, bonus)
+                            
+                            with open(filepath, 'w', encoding='utf-8') as f:
+                                json.dump(data, f, ensure_ascii=False, indent=4)
+                            updated_count += 1
+                except Exception as e:
+                    print(f"Error updating {filename}: {e}")
     
     if updated_count > 0:
         print(f"Updated {updated_count} files with analysis data.")
@@ -226,34 +270,34 @@ def update_existing_files_with_analysis():
 
 def update_frequency_data():
     print("Updating frequency data...")
-    # Initialize frequency map for numbers 1 to 45
     frequency = {str(i): {'main': 0, 'bonus': 0, 'total': 0} for i in range(1, 46)}
     
     if not os.path.exists(DATA_DIR):
         return
 
     count = 0
-    for filename in os.listdir(DATA_DIR):
-        if filename.endswith('.lotto') and filename != LATEST_FILE:
-            try:
-                with open(os.path.join(DATA_DIR, filename), 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                    numbers = data.get('numbers', [])
-                    bonus = data.get('bonus', 0)
-                    
-                    for num in numbers:
-                        if 1 <= num <= 45:
-                            frequency[str(num)]['main'] += 1
-                            frequency[str(num)]['total'] += 1
-                    
-                    if 1 <= bonus <= 45:
-                        frequency[str(bonus)]['bonus'] += 1
-                        frequency[str(bonus)]['total'] += 1
-                    count += 1
-            except Exception as e:
-                print(f"Error reading {filename}: {e}")
+    # Walk through all subdirectories
+    for root, dirs, files in os.walk(DATA_DIR):
+        for filename in files:
+            if filename.endswith('.lotto') and filename != LATEST_FILE and filename != FREQUENCY_FILE:
+                try:
+                    with open(os.path.join(root, filename), 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        numbers = data.get('numbers', [])
+                        bonus = data.get('bonus', 0)
+                        
+                        for num in numbers:
+                            if 1 <= num <= 45:
+                                frequency[str(num)]['main'] += 1
+                                frequency[str(num)]['total'] += 1
+                        
+                        if 1 <= bonus <= 45:
+                            frequency[str(bonus)]['bonus'] += 1
+                            frequency[str(bonus)]['total'] += 1
+                        count += 1
+                except Exception as e:
+                    print(f"Error reading {filename}: {e}")
 
-    # Sort by total frequency descending for convenience
     sorted_by_total = sorted(frequency.items(), key=lambda x: x[1]['total'], reverse=True)
     
     output_data = {
@@ -271,7 +315,10 @@ def update_frequency_data():
 def main():
     ensure_data_dir()
     
-    # First, update any existing files that might be missing analysis data
+    # Migrate existing files to subfolders if necessary
+    migrate_existing_files()
+    
+    # Update analysis data for existing files
     update_existing_files_with_analysis()
     
     print("Initializing Selenium...")
@@ -305,7 +352,6 @@ def main():
         else:
             print("Already up to date.")
             
-        # Always update frequency data at the end
         update_frequency_data()
             
     finally:
