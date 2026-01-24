@@ -1,0 +1,20 @@
+{
+    "round": 215,
+    "numbers": [
+        2,
+        3,
+        7,
+        15,
+        43,
+        44
+    ],
+    "bonus": 4,
+    "winners": 7,
+    "amount_per_winner": 1587689615,
+    "analysis": {
+        "odd_even_ratio": "4:2",
+        "sum_value": 114,
+        "ac_value": 8,
+        "high_low_ratio": "2:4"
+    }
+}

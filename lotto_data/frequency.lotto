@@ -1,0 +1,592 @@
+{
+    "stats": {
+        "1": {
+            "main": 166,
+            "bonus": 32,
+            "total": 198
+        },
+        "2": {
+            "main": 151,
+            "bonus": 35,
+            "total": 186
+        },
+        "3": {
+            "main": 169,
+            "bonus": 31,
+            "total": 200
+        },
+        "4": {
+            "main": 159,
+            "bonus": 35,
+            "total": 194
+        },
+        "5": {
+            "main": 151,
+            "bonus": 25,
+            "total": 176
+        },
+        "6": {
+            "main": 162,
+            "bonus": 34,
+            "total": 196
+        },
+        "7": {
+            "main": 167,
+            "bonus": 32,
+            "total": 199
+        },
+        "8": {
+            "main": 154,
+            "bonus": 24,
+            "total": 178
+        },
+        "9": {
+            "main": 132,
+            "bonus": 25,
+            "total": 157
+        },
+        "10": {
+            "main": 158,
+            "bonus": 27,
+            "total": 185
+        },
+        "11": {
+            "main": 163,
+            "bonus": 26,
+            "total": 189
+        },
+        "12": {
+            "main": 177,
+            "bonus": 27,
+            "total": 204
+        },
+        "13": {
+            "main": 174,
+            "bonus": 27,
+            "total": 201
+        },
+        "14": {
+            "main": 169,
+            "bonus": 22,
+            "total": 191
+        },
+        "15": {
+            "main": 162,
+            "bonus": 25,
+            "total": 187
+        },
+        "16": {
+            "main": 166,
+            "bonus": 28,
+            "total": 194
+        },
+        "17": {
+            "main": 167,
+            "bonus": 33,
+            "total": 200
+        },
+        "18": {
+            "main": 172,
+            "bonus": 19,
+            "total": 191
+        },
+        "19": {
+            "main": 165,
+            "bonus": 22,
+            "total": 187
+        },
+        "20": {
+            "main": 166,
+            "bonus": 29,
+            "total": 195
+        },
+        "21": {
+            "main": 164,
+            "bonus": 25,
+            "total": 189
+        },
+        "22": {
+            "main": 141,
+            "bonus": 20,
+            "total": 161
+        },
+        "23": {
+            "main": 145,
+            "bonus": 21,
+            "total": 166
+        },
+        "24": {
+            "main": 163,
+            "bonus": 32,
+            "total": 195
+        },
+        "25": {
+            "main": 148,
+            "bonus": 20,
+            "total": 168
+        },
+        "26": {
+            "main": 163,
+            "bonus": 31,
+            "total": 194
+        },
+        "27": {
+            "main": 175,
+            "bonus": 31,
+            "total": 206
+        },
+        "28": {
+            "main": 151,
+            "bonus": 25,
+            "total": 176
+        },
+        "29": {
+            "main": 152,
+            "bonus": 17,
+            "total": 169
+        },
+        "30": {
+            "main": 154,
+            "bonus": 32,
+            "total": 186
+        },
+        "31": {
+            "main": 163,
+            "bonus": 30,
+            "total": 193
+        },
+        "32": {
+            "main": 141,
+            "bonus": 34,
+            "total": 175
+        },
+        "33": {
+            "main": 172,
+            "bonus": 31,
+            "total": 203
+        },
+        "34": {
+            "main": 181,
+            "bonus": 23,
+            "total": 204
+        },
+        "35": {
+            "main": 159,
+            "bonus": 30,
+            "total": 189
+        },
+        "36": {
+            "main": 160,
+            "bonus": 24,
+            "total": 184
+        },
+        "37": {
+            "main": 170,
+            "bonus": 26,
+            "total": 196
+        },
+        "38": {
+            "main": 165,
+            "bonus": 30,
+            "total": 195
+        },
+        "39": {
+            "main": 164,
+            "bonus": 24,
+            "total": 188
+        },
+        "40": {
+            "main": 171,
+            "bonus": 22,
+            "total": 193
+        },
+        "41": {
+            "main": 146,
+            "bonus": 17,
+            "total": 163
+        },
+        "42": {
+            "main": 152,
+            "bonus": 25,
+            "total": 177
+        },
+        "43": {
+            "main": 162,
+            "bonus": 35,
+            "total": 197
+        },
+        "44": {
+            "main": 159,
+            "bonus": 24,
+            "total": 183
+        },
+        "45": {
+            "main": 171,
+            "bonus": 20,
+            "total": 191
+        }
+    },
+    "ranking": [
+        {
+            "number": 27,
+            "counts": {
+                "main": 175,
+                "bonus": 31,
+                "total": 206
+            }
+        },
+        {
+            "number": 12,
+            "counts": {
+                "main": 177,
+                "bonus": 27,
+                "total": 204
+            }
+        },
+        {
+            "number": 34,
+            "counts": {
+                "main": 181,
+                "bonus": 23,
+                "total": 204
+            }
+        },
+        {
+            "number": 33,
+            "counts": {
+                "main": 172,
+                "bonus": 31,
+                "total": 203
+            }
+        },
+        {
+            "number": 13,
+            "counts": {
+                "main": 174,
+                "bonus": 27,
+                "total": 201
+            }
+        },
+        {
+            "number": 3,
+            "counts": {
+                "main": 169,
+                "bonus": 31,
+                "total": 200
+            }
+        },
+        {
+            "number": 17,
+            "counts": {
+                "main": 167,
+                "bonus": 33,
+                "total": 200
+            }
+        },
+        {
+            "number": 7,
+            "counts": {
+                "main": 167,
+                "bonus": 32,
+                "total": 199
+            }
+        },
+        {
+            "number": 1,
+            "counts": {
+                "main": 166,
+                "bonus": 32,
+                "total": 198
+            }
+        },
+        {
+            "number": 43,
+            "counts": {
+                "main": 162,
+                "bonus": 35,
+                "total": 197
+            }
+        },
+        {
+            "number": 6,
+            "counts": {
+                "main": 162,
+                "bonus": 34,
+                "total": 196
+            }
+        },
+        {
+            "number": 37,
+            "counts": {
+                "main": 170,
+                "bonus": 26,
+                "total": 196
+            }
+        },
+        {
+            "number": 20,
+            "counts": {
+                "main": 166,
+                "bonus": 29,
+                "total": 195
+            }
+        },
+        {
+            "number": 24,
+            "counts": {
+                "main": 163,
+                "bonus": 32,
+                "total": 195
+            }
+        },
+        {
+            "number": 38,
+            "counts": {
+                "main": 165,
+                "bonus": 30,
+                "total": 195
+            }
+        },
+        {
+            "number": 4,
+            "counts": {
+                "main": 159,
+                "bonus": 35,
+                "total": 194
+            }
+        },
+        {
+            "number": 16,
+            "counts": {
+                "main": 166,
+                "bonus": 28,
+                "total": 194
+            }
+        },
+        {
+            "number": 26,
+            "counts": {
+                "main": 163,
+                "bonus": 31,
+                "total": 194
+            }
+        },
+        {
+            "number": 31,
+            "counts": {
+                "main": 163,
+                "bonus": 30,
+                "total": 193
+            }
+        },
+        {
+            "number": 40,
+            "counts": {
+                "main": 171,
+                "bonus": 22,
+                "total": 193
+            }
+        },
+        {
+            "number": 14,
+            "counts": {
+                "main": 169,
+                "bonus": 22,
+                "total": 191
+            }
+        },
+        {
+            "number": 18,
+            "counts": {
+                "main": 172,
+                "bonus": 19,
+                "total": 191
+            }
+        },
+        {
+            "number": 45,
+            "counts": {
+                "main": 171,
+                "bonus": 20,
+                "total": 191
+            }
+        },
+        {
+            "number": 11,
+            "counts": {
+                "main": 163,
+                "bonus": 26,
+                "total": 189
+            }
+        },
+        {
+            "number": 21,
+            "counts": {
+                "main": 164,
+                "bonus": 25,
+                "total": 189
+            }
+        },
+        {
+            "number": 35,
+            "counts": {
+                "main": 159,
+                "bonus": 30,
+                "total": 189
+            }
+        },
+        {
+            "number": 39,
+            "counts": {
+                "main": 164,
+                "bonus": 24,
+                "total": 188
+            }
+        },
+        {
+            "number": 15,
+            "counts": {
+                "main": 162,
+                "bonus": 25,
+                "total": 187
+            }
+        },
+        {
+            "number": 19,
+            "counts": {
+                "main": 165,
+                "bonus": 22,
+                "total": 187
+            }
+        },
+        {
+            "number": 2,
+            "counts": {
+                "main": 151,
+                "bonus": 35,
+                "total": 186
+            }
+        },
+        {
+            "number": 30,
+            "counts": {
+                "main": 154,
+                "bonus": 32,
+                "total": 186
+            }
+        },
+        {
+            "number": 10,
+            "counts": {
+                "main": 158,
+                "bonus": 27,
+                "total": 185
+            }
+        },
+        {
+            "number": 36,
+            "counts": {
+                "main": 160,
+                "bonus": 24,
+                "total": 184
+            }
+        },
+        {
+            "number": 44,
+            "counts": {
+                "main": 159,
+                "bonus": 24,
+                "total": 183
+            }
+        },
+        {
+            "number": 8,
+            "counts": {
+                "main": 154,
+                "bonus": 24,
+                "total": 178
+            }
+        },
+        {
+            "number": 42,
+            "counts": {
+                "main": 152,
+                "bonus": 25,
+                "total": 177
+            }
+        },
+        {
+            "number": 5,
+            "counts": {
+                "main": 151,
+                "bonus": 25,
+                "total": 176
+            }
+        },
+        {
+            "number": 28,
+            "counts": {
+                "main": 151,
+                "bonus": 25,
+                "total": 176
+            }
+        },
+        {
+            "number": 32,
+            "counts": {
+                "main": 141,
+                "bonus": 34,
+                "total": 175
+            }
+        },
+        {
+            "number": 29,
+            "counts": {
+                "main": 152,
+                "bonus": 17,
+                "total": 169
+            }
+        },
+        {
+            "number": 25,
+            "counts": {
+                "main": 148,
+                "bonus": 20,
+                "total": 168
+            }
+        },
+        {
+            "number": 23,
+            "counts": {
+                "main": 145,
+                "bonus": 21,
+                "total": 166
+            }
+        },
+        {
+            "number": 41,
+            "counts": {
+                "main": 146,
+                "bonus": 17,
+                "total": 163
+            }
+        },
+        {
+            "number": 22,
+            "counts": {
+                "main": 141,
+                "bonus": 20,
+                "total": 161
+            }
+        },
+        {
+            "number": 9,
+            "counts": {
+                "main": 132,
+                "bonus": 25,
+                "total": 157
+            }
+        }
+    ],
+    "total_rounds": 1207
+}

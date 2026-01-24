@@ -1,0 +1,20 @@
+{
+    "round": 583,
+    "numbers": [
+        8,
+        17,
+        27,
+        33,
+        40,
+        44
+    ],
+    "bonus": 24,
+    "winners": 11,
+    "amount_per_winner": 1341848353,
+    "analysis": {
+        "odd_even_ratio": "3:3",
+        "sum_value": 169,
+        "ac_value": 10,
+        "high_low_ratio": "4:2"
+    }
+}

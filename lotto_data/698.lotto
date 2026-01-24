@@ -1,0 +1,20 @@
+{
+    "round": 698,
+    "numbers": [
+        3,
+        11,
+        13,
+        21,
+        33,
+        37
+    ],
+    "bonus": 18,
+    "winners": 8,
+    "amount_per_winner": 1921084125,
+    "analysis": {
+        "odd_even_ratio": "6:0",
+        "sum_value": 118,
+        "ac_value": 8,
+        "high_low_ratio": "2:4"
+    }
+}

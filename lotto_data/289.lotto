@@ -1,0 +1,20 @@
+{
+    "round": 289,
+    "numbers": [
+        3,
+        14,
+        33,
+        37,
+        38,
+        42
+    ],
+    "bonus": 10,
+    "winners": 0,
+    "amount_per_winner": 0,
+    "analysis": {
+        "odd_even_ratio": "3:3",
+        "sum_value": 167,
+        "ac_value": 8,
+        "high_low_ratio": "4:2"
+    }
+}
