@@ -162,6 +162,11 @@
             padding: 10px;
             border-radius: 8px;
             text-align: center;
+            cursor: help;
+            transition: background 0.2s;
+        }
+        .freq-item:hover {
+            background: #f8f9fa;
         }
         .freq-item .ball {
             margin: 0 auto 5px;
@@ -379,6 +384,8 @@
                 const stat = data.stats[i];
                 const item = document.createElement('div');
                 item.className = 'freq-item';
+                // 마우스 호버 시 상세 횟수 표시 (title 속성 사용)
+                item.title = `당첨: ${stat.main}회 / 보너스: ${stat.bonus}회`;
                 item.innerHTML = `
                     <div class="ball ${getBallColor(i)}">${i}</div>
                     <div class="freq-count"><strong>${stat.total}</strong>회</div>
