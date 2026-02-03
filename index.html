@@ -119,12 +119,11 @@
 
 <header>
     <h1>2026로또머신</h1>
-    <p>당신의 행운을 시뮬레이션 하세요</p>
+    <p>재밌고 즐거운 행운숫자 뽑기</p>
 </header>
 
 <div class="container">
     <div class="app-image">
-        <!-- 실제 앱 스크린샷 이미지 경로로 수정 필요 -->
         <img src="images/2026lottomachine.png" alt="2026로또머신">
     </div>
     <div class="app-info">
@@ -135,7 +134,7 @@
             <li>AI가 추첨해 확률을 끌어올린 <strong>AI추천모드</strong></li>
             <li>다른 사람은 선택하지 않을것 같은 나만의 <strong>희귀모드</strong></li>
             <li>토요일 10시 30분. 당첨 확인까지 <strong>자동알림모드</strong></li>
-            <li>추첨한 번호를 지인들과 공유하세요.분</li>
+            <li>추첨한 번호를 지인들과 공유하세요.</li>
             <li>구입한 용지를 <strong>QR 코드</strong> 저장하고 당첨 확인까지</li>
         </ul>
 
@@ -155,46 +154,101 @@
 
 <div class="stats-container">
     <h2 style="text-align: center;">📊 최신 로또 당첨 정보</h2>
-    <h3 style="text-align: center; color: #666;">제 1209회 당첨 결과</h3>
+    <h3 id="latest-round-title" style="text-align: center; color: #666;">로딩 중...</h3>
 
-    <div class="lotto-balls">
-        <div class="ball yellow">2</div>
-        <div class="ball blue">17</div>
-        <div class="ball blue">20</div>
-        <div class="ball red">35</div>
-        <div class="ball red">37</div>
-        <div class="ball red">39</div>
-        <div style="font-size: 24px; align-self: center;">+</div>
-        <div class="ball blue">24</div>
+    <div id="lotto-balls-container" class="lotto-balls">
+        <!-- JavaScript에서 동적으로 생성됨 -->
     </div>
 
     <div class="analysis-grid">
         <div class="analysis-item">
             <span>홀짝 비율</span>
-            <strong>4:2</strong>
+            <strong id="odd-even-ratio">-</strong>
         </div>
         <div class="analysis-item">
             <span>총합</span>
-            <strong>150</strong>
+            <strong id="sum-value">-</strong>
         </div>
         <div class="analysis-item">
             <span>AC값</span>
-            <strong>7</strong>
+            <strong id="ac-value">-</strong>
         </div>
         <div class="analysis-item">
             <span>고저 비율</span>
-            <strong>3:3</strong>
+            <strong id="high-low-ratio">-</strong>
         </div>
     </div>
 
     <div style="margin-top: 20px; text-align: center; padding: 15px; background: #e7f5ff; border-radius: 10px;">
-        1등 당첨자 수: <strong>22명</strong> | 1인당 당첨금: <strong>약 13.7억원</strong>
+        1등 당첨자 수: <strong id="winners-count">-</strong> | 1인당 당첨금: <strong id="amount-per-winner">-</strong>
     </div>
 </div>
 
 <footer>
-    <p>&copy; 2024 Hotnumber Project. All rights reserved.</p>
+    <p>&copy; 2026 로또머신 프로젝트. All rights reserved.</p>
 </footer>
+
+<script>
+    async function updateLottoInfo() {
+        try {
+            // 1. 최신 회차 번호 가져오기
+            const latestRes = await fetch('lotto_data/latest.lotto');
+            if (!latestRes.ok) throw new Error('latest.lotto fetch failed');
+            const latestRound = (await latestRes.text()).trim();
+
+            // 2. 해당 회차의 JSON 데이터 경로 계산
+            const start = Math.floor((parseInt(latestRound) - 1) / 1000) * 1000 + 1;
+            const folder = `${start}-${start + 999}`;
+            const dataRes = await fetch(`lotto_data/${folder}/${latestRound}.lotto`);
+            if (!dataRes.ok) throw new Error('lotto data fetch failed');
+            const data = await dataRes.json();
+
+            // 3. UI 업데이트
+            document.getElementById('latest-round-title').textContent = `제 ${data.round}회 당첨 결과`;
+
+            const getBallColor = (n) => {
+                if (n <= 10) return 'yellow';
+                if (n <= 20) return 'blue';
+                if (n <= 30) return 'red';
+                if (n <= 40) return 'gray';
+                return 'green';
+            };
+
+            const ballsContainer = document.getElementById('lotto-balls-container');
+            ballsContainer.innerHTML = '';
+            data.numbers.forEach(num => {
+                const ball = document.createElement('div');
+                ball.className = `ball ${getBallColor(num)}`;
+                ball.textContent = num;
+                ballsContainer.appendChild(ball);
+            });
+
+            const plus = document.createElement('div');
+            plus.style.cssText = 'font-size: 24px; align-self: center;';
+            plus.textContent = '+';
+            ballsContainer.appendChild(plus);
+
+            const bonusBall = document.createElement('div');
+            bonusBall.className = `ball ${getBallColor(data.bonus)}`;
+            bonusBall.textContent = data.bonus;
+            ballsContainer.appendChild(bonusBall);
+
+            document.getElementById('odd-even-ratio').textContent = data.analysis.odd_even_ratio;
+            document.getElementById('sum-value').textContent = data.analysis.sum_value;
+            document.getElementById('ac-value').textContent = data.analysis.ac_value;
+            document.getElementById('high-low-ratio').textContent = data.analysis.high_low_ratio;
+            document.getElementById('winners-count').textContent = `${data.winners}명`;
+
+            const amountEok = (data.amount_per_winner / 100000000).toFixed(1);
+            document.getElementById('amount-per-winner').textContent = `약 ${amountEok}억원`;
+
+        } catch (e) {
+            console.error('데이터 로드 실패:', e);
+            document.getElementById('latest-round-title').textContent = '데이터를 불러올 수 없습니다.';
+        }
+    }
+    updateLottoInfo();
+</script>
 
 </body>
 </html>
