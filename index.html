@@ -420,6 +420,17 @@
         <div style="margin-top: 16px; text-align: center; padding: 12px; background: #e7f5ff; border-radius: 10px;">
             1등 당첨자 수: <strong id="winners-count">-</strong> | 1인당 당첨금: <strong id="amount-per-winner">-</strong>
         </div>
+
+        <!-- 상세 분석 컨테이너 추가 -->
+        <div id="round-detail-analysis" style="margin-top: 16px; padding: 16px; background: #f8f9fa; border-radius: 12px; border: 1px solid #eee;">
+            <h4 style="margin: 0 0 12px 0; color: #495057; font-size: 1.1rem; border-bottom: 2px solid #e9ecef; padding-bottom: 8px;">📋 당첨 번호 상세 분석</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; display: grid; gap: 8px;">
+                <li id="detail-consecutive"></li>
+                <li id="detail-ending"></li>
+                <li id="detail-color"></li>
+                <li id="detail-carryover"></li>
+            </ul>
+        </div>
     </div>
 
     <!-- 번호별 빈도 탭 -->
@@ -473,6 +484,11 @@
                 <h4>🔗 연번 출현 (연속된 숫자)</h4>
                 <div id="consecutive-stats"></div>
             </div>
+
+            <div class="analysis-result-section">
+                <h4>💑 베스트 궁합수 (동반 출현)</h4>
+                <ul class="result-list" id="pair-list"></ul>
+            </div>
         </div>
         <div id="analysis-loading" style="display: none; text-align: center; padding: 20px;">
             분석 중입니다...
@@ -510,17 +526,21 @@
     async function loadSpecificRound(round) {
         if (!round) return;
         try {
-            const start = Math.floor((parseInt(round) - 1) / 1000) * 1000 + 1;
-            const folder = `${start}-${start + 999}`;
-            const dataRes = await fetch(`lotto_data/${folder}/${round}.lotto`);
-            const data = await dataRes.json();
-            updateUI(data);
+            const data = await getRoundData(round);
+            if (!data) throw new Error("Data not found");
+
+            let prevData = null;
+            if (round > 1) {
+                prevData = await getRoundData(round - 1);
+            }
+
+            updateUI(data, prevData);
         } catch (e) {
             console.error('회차 데이터 로드 실패:', e);
         }
     }
 
-    function updateUI(data) {
+    function updateUI(data, prevData) {
         document.getElementById('latest-round-title').textContent = `제 ${data.round}회 당첨 결과`;
 
         const ballsContainer = document.getElementById('lotto-balls-container');
@@ -550,6 +570,58 @@
 
         const amountEok = (data.amount_per_winner / 100000000).toFixed(1);
         document.getElementById('amount-per-winner').textContent = `약 ${amountEok}억원`;
+
+        // =========================================
+        // 상세 분석 로직 (당첨 결과 하단)
+        // =========================================
+        const nums = data.numbers;
+
+        // 1. 연번
+        let consecStr = "연번 없음";
+        const consecs = [];
+        const sorted = [...nums].sort((a,b)=>a-b);
+        for(let i=0; i<sorted.length-1; i++) {
+            if(sorted[i+1] === sorted[i]+1) consecs.push(`${sorted[i]},${sorted[i+1]}`);
+        }
+        if(consecs.length > 0) consecStr = `<span style="color:#e64980; font-weight:bold;">출현</span> (${consecs.join(' / ')})`;
+
+        // 2. 동일 끝수
+        const endings = {};
+        nums.forEach(n => {
+            const e = n % 10;
+            endings[e] = (endings[e] || []).concat(n);
+        });
+        const sameEndings = Object.entries(endings).filter(([k,v]) => v.length >= 2);
+        let endingStr = "없음";
+        if(sameEndings.length > 0) {
+            endingStr = sameEndings.map(([e, ns]) => `<strong>${e}끝</strong>(${ns.join(',')})`).join(', ');
+        }
+
+        // 3. 색상 분포
+        const colors = { yellow:0, blue:0, red:0, gray:0, green:0 };
+        const colorNames = { yellow:'노랑', blue:'파랑', red:'빨강', gray:'회색', green:'초록' };
+        nums.forEach(n => colors[getBallColor(n)]++);
+        const colorStr = [];
+        ['yellow','blue','red','gray','green'].forEach(c => {
+            if(colors[c] > 0) colorStr.push(`${colorNames[c]} ${colors[c]}개`);
+        });
+
+        // 4. 이월수
+        let carryStr = "직전 회차 데이터 없음";
+        if(prevData) {
+            const prevSet = new Set(prevData.numbers);
+            const carried = nums.filter(n => prevSet.has(n));
+            if(carried.length > 0) {
+                carryStr = `<span style="color:#e64980; font-weight:bold;">${carried.length}개</span> (${carried.join(', ')})`;
+            } else {
+                carryStr = "0개 (이월 없음)";
+            }
+        }
+
+        document.getElementById('detail-consecutive').innerHTML = `<strong>🔗 연번:</strong> ${consecStr}`;
+        document.getElementById('detail-ending').innerHTML = `<strong>🔢 동일 끝수:</strong> ${endingStr}`;
+        document.getElementById('detail-color').innerHTML = `<strong>🎨 색상 분포:</strong> ${colorStr.join(', ')}`;
+        document.getElementById('detail-carryover').innerHTML = `<strong>🔄 이월수:</strong> ${carryStr}`;
     }
 
     async function init() {
@@ -705,9 +777,9 @@
         }
         document.getElementById('missing-nums-list').textContent = missing.length > 0 ? missing.join(', ') : "없음 (모든 번호 출현)";
 
-        // 3. 이월수 분석 (수정됨)
+        // 3. 이월수 분석
         const carryoverCounts = {};
-        const carryoverNumbers = {}; // 번호별 이월 횟수
+        const carryoverNumbers = {};
 
         for(let i=1; i<dataset.length; i++) {
             const prev = new Set(dataset[i-1].numbers);
@@ -715,11 +787,9 @@
 
             const intersection = [...prev].filter(x => curr.has(x));
 
-            // 개수 통계
             const count = intersection.length;
             carryoverCounts[count] = (carryoverCounts[count] || 0) + 1;
 
-            // 번호 통계
             intersection.forEach(num => {
                 carryoverNumbers[num] = (carryoverNumbers[num] || 0) + 1;
             });
@@ -735,7 +805,6 @@
                 carryList.innerHTML += `<li><strong>${cnt}개</strong> 이월: ${freq}회 (${ratio}%)</li>`;
             });
 
-            // 자주 이월된 번호 표시
             const sortedCarryNums = Object.entries(carryoverNumbers).sort((a, b) => b[1] - a[1]);
             if (sortedCarryNums.length > 0) {
                 let numsHtml = '<div style="margin-top:10px; padding-top:8px; border-top:1px dashed #eee; font-size:0.9rem;"><strong>🔥 자주 이월된 번호 (Top 5):</strong><br>';
@@ -806,6 +875,37 @@
             <span style="font-size:0.85em; color:#888;">(연속된 숫자가 하나라도 포함된 회차 비율)</span>
             ${pairsHtml}
         `;
+
+        // 6. 베스트 궁합수 (동반 출현)
+        const pairCounts = {};
+        dataset.forEach(d => {
+            const nums = [...d.numbers].sort((a,b) => a-b);
+            // 6개 번호 중 2개씩 조합 (6C2 = 15개 쌍)
+            for(let i=0; i<nums.length; i++) {
+                for(let j=i+1; j<nums.length; j++) {
+                    const key = `${nums[i]},${nums[j]}`;
+                    pairCounts[key] = (pairCounts[key] || 0) + 1;
+                }
+            }
+        });
+
+        const sortedCoPairs = Object.entries(pairCounts).sort((a, b) => b[1] - a[1]);
+        const pairList = document.getElementById('pair-list');
+        pairList.innerHTML = '';
+
+        sortedCoPairs.slice(0, 5).forEach(([pair, count]) => {
+            const [n1, n2] = pair.split(',');
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span style="display:inline-flex; align-items:center;">
+                    <span class="ball ${getBallColor(n1)}" style="width:24px;height:24px;font-size:12px;margin-right:4px;">${n1}</span>
+                    <span style="margin:0 4px; color:#888;">&</span>
+                    <span class="ball ${getBallColor(n2)}" style="width:24px;height:24px;font-size:12px;margin-right:8px;">${n2}</span>
+                </span>
+                <strong>${count}회</strong> 함께 출현
+            `;
+            pairList.appendChild(li);
+        });
     }
 
     init();
