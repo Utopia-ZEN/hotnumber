@@ -705,14 +705,26 @@
         }
         document.getElementById('missing-nums-list').textContent = missing.length > 0 ? missing.join(', ') : "없음 (모든 번호 출현)";
 
-        // 3. 이월수 분석
+        // 3. 이월수 분석 (수정됨)
         const carryoverCounts = {};
+        const carryoverNumbers = {}; // 번호별 이월 횟수
+
         for(let i=1; i<dataset.length; i++) {
             const prev = new Set(dataset[i-1].numbers);
             const curr = new Set(dataset[i].numbers);
-            const intersection = [...prev].filter(x => curr.has(x)).length;
-            carryoverCounts[intersection] = (carryoverCounts[intersection] || 0) + 1;
+
+            const intersection = [...prev].filter(x => curr.has(x));
+
+            // 개수 통계
+            const count = intersection.length;
+            carryoverCounts[count] = (carryoverCounts[count] || 0) + 1;
+
+            // 번호 통계
+            intersection.forEach(num => {
+                carryoverNumbers[num] = (carryoverNumbers[num] || 0) + 1;
+            });
         }
+
         const carryList = document.getElementById('carryover-list');
         carryList.innerHTML = '';
         if (Object.keys(carryoverCounts).length === 0) {
@@ -722,6 +734,25 @@
                 const ratio = (freq / (dataset.length - 1) * 100).toFixed(1);
                 carryList.innerHTML += `<li><strong>${cnt}개</strong> 이월: ${freq}회 (${ratio}%)</li>`;
             });
+
+            // 자주 이월된 번호 표시
+            const sortedCarryNums = Object.entries(carryoverNumbers).sort((a, b) => b[1] - a[1]);
+            if (sortedCarryNums.length > 0) {
+                let numsHtml = '<div style="margin-top:10px; padding-top:8px; border-top:1px dashed #eee; font-size:0.9rem;"><strong>🔥 자주 이월된 번호 (Top 5):</strong><br>';
+                numsHtml += sortedCarryNums.slice(0, 5).map(([num, cnt]) => {
+                    return `<span style="display:inline-flex; align-items:center; margin-right:8px; margin-top:4px; background:#f8f9fa; padding:2px 6px; border-radius:12px;">
+                        <span class="ball ${getBallColor(num)}" style="width:20px;height:20px;font-size:11px;margin-right:4px;">${num}</span>
+                        <strong>${cnt}회</strong>
+                    </span>`;
+                }).join('');
+                numsHtml += '</div>';
+
+                const li = document.createElement('li');
+                li.style.border = 'none';
+                li.style.padding = '0';
+                li.innerHTML = numsHtml;
+                carryList.appendChild(li);
+            }
         }
 
         // 4. 끝수 분석
@@ -741,21 +772,39 @@
 
         // 5. 연번 분석
         let consecutiveCount = 0;
+        const consecutivePairs = {};
+
         dataset.forEach(d => {
             const nums = [...d.numbers].sort((a,b) => a-b);
             let has = false;
             for(let i=0; i<nums.length-1; i++) {
                 if(nums[i+1] === nums[i] + 1) {
                     has = true;
-                    break;
+                    const key = `${nums[i]},${nums[i+1]}`;
+                    consecutivePairs[key] = (consecutivePairs[key] || 0) + 1;
                 }
             }
             if(has) consecutiveCount++;
         });
+
         const consecRatio = (consecutiveCount / dataset.length * 100).toFixed(1);
+
+        const sortedPairs = Object.entries(consecutivePairs).sort((a, b) => b[1] - a[1]);
+        let pairsHtml = '';
+
+        if (sortedPairs.length > 0) {
+            pairsHtml = '<div style="margin-top:8px; font-size:0.9rem; color:#333; line-height:1.8;"><strong>🔥 주요 연번:</strong> ';
+            pairsHtml += sortedPairs.slice(0, 5).map(([pair, cnt]) => {
+                const [n1, n2] = pair.split(',');
+                return `<span style="background:#f1f3f5; padding:2px 6px; border-radius:4px; margin-right:4px; font-weight:bold;">${n1},${n2} <span style="color:#e64980; font-weight:normal;">(${cnt}회)</span></span>`;
+            }).join('');
+            pairsHtml += '</div>';
+        }
+
         document.getElementById('consecutive-stats').innerHTML = `
             총 <strong>${consecutiveCount}회</strong> 발생 (${consecRatio}%)<br>
             <span style="font-size:0.85em; color:#888;">(연속된 숫자가 하나라도 포함된 회차 비율)</span>
+            ${pairsHtml}
         `;
     }
 
