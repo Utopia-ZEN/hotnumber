@@ -113,7 +113,7 @@ python crawler.py
 
 이 저장소는 `.github/workflows/update_lotto.yml` 설정에 의해 자동화되어 있습니다.
 
-*   **일정**: 매주 토요일 21:45 KST (토요일 12:45 UTC)
+*   **일정**: 매주 토요일 21:13 KST (토요일 12:13 UTC)
 *   **동작**:
     1.  환경 설정 및 의존성 설치
     2.  `crawler.py` 실행 (신규 회차 크롤링)
