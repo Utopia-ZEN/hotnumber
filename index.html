@@ -225,6 +225,59 @@
         }
         .freq-count strong { color: #e64980; }
 
+        /* Analysis Tab Style */
+        .analysis-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .analysis-controls select, .analysis-controls button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 0.95rem;
+        }
+        .analysis-controls button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .analysis-controls button:hover {
+            opacity: 0.9;
+        }
+        .analysis-result-section {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
+        }
+        .analysis-result-section h4 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid #f1f3f5;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .result-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .result-list li {
+            padding: 6px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 0.95rem;
+        }
+        .result-list li:last-child { border-bottom: none; }
+
         footer {
             text-align: center;
             margin-top: 36px;
@@ -273,6 +326,8 @@
             .ball { width: 34px; height: 34px; font-size: 15px; }
             .freq-grid { grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px; }
             .analysis-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+            .analysis-controls { flex-direction: column; }
+            .analysis-controls select, .analysis-controls button { width: 100%; }
         }
 
         /* 아주 작은 화면(좁은 폰) */
@@ -327,6 +382,7 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="openTab('result-tab', event)">당첨 결과</button>
         <button class="tab-btn" onclick="openTab('freq-tab', event)">번호별 빈도</button>
+        <button class="tab-btn" onclick="openTab('analysis-tab', event)">패턴 분석</button>
     </div>
 
     <!-- 당첨 결과 탭 -->
@@ -373,6 +429,55 @@
             <!-- JavaScript에서 동적으로 생성됨 -->
         </div>
     </div>
+
+    <!-- 패턴 분석 탭 -->
+    <div id="analysis-tab" class="tab-content">
+        <div class="analysis-controls">
+            <select id="start-round-select">
+                <option value="">시작 회차</option>
+            </select>
+            <span>~</span>
+            <select id="end-round-select">
+                <option value="">종료 회차</option>
+            </select>
+            <button onclick="runAnalysis()">분석 실행</button>
+        </div>
+
+        <div id="analysis-results" style="display: none;">
+            <div class="analysis-result-section">
+                <h4>📊 기본 통계</h4>
+                <ul class="result-list" id="basic-stats-list"></ul>
+            </div>
+
+            <div class="analysis-result-section">
+                <h4>🔥 최다 출현 번호 (Top 5)</h4>
+                <ul class="result-list" id="top-nums-list"></ul>
+            </div>
+
+            <div class="analysis-result-section">
+                <h4>❄️ 미출현 번호</h4>
+                <div id="missing-nums-list" style="word-break: break-all; color: #888;"></div>
+            </div>
+
+            <div class="analysis-result-section">
+                <h4>🔄 이월수 (전회차 번호 재출현)</h4>
+                <ul class="result-list" id="carryover-list"></ul>
+            </div>
+
+            <div class="analysis-result-section">
+                <h4>🔢 끝수 분석 (1의 자리)</h4>
+                <ul class="result-list" id="ending-digit-list"></ul>
+            </div>
+
+            <div class="analysis-result-section">
+                <h4>🔗 연번 출현 (연속된 숫자)</h4>
+                <div id="consecutive-stats"></div>
+            </div>
+        </div>
+        <div id="analysis-loading" style="display: none; text-align: center; padding: 20px;">
+            분석 중입니다...
+        </div>
+    </div>
 </div>
 
 <footer>
@@ -381,6 +486,7 @@
 
 <script>
     let currentLatestRound = 0;
+    let allLottoData = {}; // 캐싱용
 
     function openTab(tabId, ev) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -452,14 +558,32 @@
             const latestRound = (await latestRes.text()).trim();
             currentLatestRound = parseInt(latestRound);
 
-            // 셀렉트 박스 채우기
+            // 셀렉트 박스 채우기 (결과 탭)
             const select = document.getElementById('round-select');
+            // 분석 탭 셀렉트 박스
+            const startSelect = document.getElementById('start-round-select');
+            const endSelect = document.getElementById('end-round-select');
+
             for (let i = currentLatestRound; i >= 1; i--) {
                 const opt = document.createElement('option');
                 opt.value = i;
                 opt.textContent = `${i}회`;
                 select.appendChild(opt);
+
+                const optStart = document.createElement('option');
+                optStart.value = i;
+                optStart.textContent = `${i}회`;
+                startSelect.appendChild(optStart);
+
+                const optEnd = document.createElement('option');
+                optEnd.value = i;
+                optEnd.textContent = `${i}회`;
+                endSelect.appendChild(optEnd);
             }
+
+            // 분석 탭 기본값 설정 (최근 10회)
+            startSelect.value = Math.max(1, currentLatestRound - 9);
+            endSelect.value = currentLatestRound;
 
             loadSpecificRound(latestRound);
         } catch (e) {
@@ -491,6 +615,148 @@
         } catch (e) {
             console.error('빈도 데이터 로드 실패:', e);
         }
+    }
+
+    // ==========================================
+    // 분석 로직 (클라이언트 사이드 구현)
+    // ==========================================
+    async function getRoundData(round) {
+        if (allLottoData[round]) return allLottoData[round];
+
+        const start = Math.floor((parseInt(round) - 1) / 1000) * 1000 + 1;
+        const folder = `${start}-${start + 999}`;
+        try {
+            const res = await fetch(`lotto_data/${folder}/${round}.lotto`);
+            if (!res.ok) return null;
+            const data = await res.json();
+            allLottoData[round] = data;
+            return data;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    async function runAnalysis() {
+        const startRound = parseInt(document.getElementById('start-round-select').value);
+        const endRound = parseInt(document.getElementById('end-round-select').value);
+
+        if (startRound > endRound) {
+            alert("시작 회차가 종료 회차보다 클 수 없습니다.");
+            return;
+        }
+
+        document.getElementById('analysis-results').style.display = 'none';
+        document.getElementById('analysis-loading').style.display = 'block';
+
+        const dataset = [];
+        // 데이터 수집
+        for (let r = startRound; r <= endRound; r++) {
+            const d = await getRoundData(r);
+            if (d) dataset.push(d);
+        }
+
+        if (dataset.length === 0) {
+            alert("데이터를 불러올 수 없습니다.");
+            document.getElementById('analysis-loading').style.display = 'none';
+            return;
+        }
+
+        // 분석 수행
+        analyzeDataset(dataset);
+
+        document.getElementById('analysis-loading').style.display = 'none';
+        document.getElementById('analysis-results').style.display = 'block';
+    }
+
+    function analyzeDataset(dataset) {
+        // 1. 기본 통계 (총합 평균 등)
+        const sums = dataset.map(d => d.analysis.sum_value);
+        const avgSum = sums.reduce((a, b) => a + b, 0) / sums.length;
+
+        const basicList = document.getElementById('basic-stats-list');
+        basicList.innerHTML = `
+            <li>분석 구간: ${dataset[0].round}회 ~ ${dataset[dataset.length-1].round}회 (총 ${dataset.length}회)</li>
+            <li>평균 총합: <strong>${avgSum.toFixed(1)}</strong> (최소: ${Math.min(...sums)}, 최대: ${Math.max(...sums)})</li>
+        `;
+
+        // 2. 번호 빈도
+        const numCounts = {};
+        dataset.forEach(d => {
+            d.numbers.forEach(n => {
+                numCounts[n] = (numCounts[n] || 0) + 1;
+            });
+        });
+
+        // Top 5
+        const sortedNums = Object.entries(numCounts).sort((a, b) => b[1] - a[1]);
+        const topList = document.getElementById('top-nums-list');
+        topList.innerHTML = '';
+        sortedNums.slice(0, 5).forEach(([num, count]) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="ball ${getBallColor(num)}" style="width:24px;height:24px;font-size:12px;display:inline-flex;margin-right:6px;">${num}</span> <strong>${count}회</strong> 출현`;
+            topList.appendChild(li);
+        });
+
+        // 미출현 번호
+        const appeared = new Set(Object.keys(numCounts).map(Number));
+        const missing = [];
+        for(let i=1; i<=45; i++) {
+            if(!appeared.has(i)) missing.push(i);
+        }
+        document.getElementById('missing-nums-list').textContent = missing.length > 0 ? missing.join(', ') : "없음 (모든 번호 출현)";
+
+        // 3. 이월수 분석
+        const carryoverCounts = {};
+        for(let i=1; i<dataset.length; i++) {
+            const prev = new Set(dataset[i-1].numbers);
+            const curr = new Set(dataset[i].numbers);
+            const intersection = [...prev].filter(x => curr.has(x)).length;
+            carryoverCounts[intersection] = (carryoverCounts[intersection] || 0) + 1;
+        }
+        const carryList = document.getElementById('carryover-list');
+        carryList.innerHTML = '';
+        if (Object.keys(carryoverCounts).length === 0) {
+             carryList.innerHTML = '<li>데이터 부족 (2회차 이상 필요)</li>';
+        } else {
+            Object.entries(carryoverCounts).sort((a,b) => a[0] - b[0]).forEach(([cnt, freq]) => {
+                const ratio = (freq / (dataset.length - 1) * 100).toFixed(1);
+                carryList.innerHTML += `<li><strong>${cnt}개</strong> 이월: ${freq}회 (${ratio}%)</li>`;
+            });
+        }
+
+        // 4. 끝수 분석
+        const endingCounts = {};
+        dataset.forEach(d => {
+            d.numbers.forEach(n => {
+                const digit = n % 10;
+                endingCounts[digit] = (endingCounts[digit] || 0) + 1;
+            });
+        });
+        const sortedEndings = Object.entries(endingCounts).sort((a, b) => b[1] - a[1]);
+        const endList = document.getElementById('ending-digit-list');
+        endList.innerHTML = '';
+        sortedEndings.slice(0, 3).forEach(([digit, count]) => {
+            endList.innerHTML += `<li><strong>${digit}끝</strong> (예: ${digit}, ${parseInt(digit)+10}...): 총 ${count}회</li>`;
+        });
+
+        // 5. 연번 분석
+        let consecutiveCount = 0;
+        dataset.forEach(d => {
+            const nums = [...d.numbers].sort((a,b) => a-b);
+            let has = false;
+            for(let i=0; i<nums.length-1; i++) {
+                if(nums[i+1] === nums[i] + 1) {
+                    has = true;
+                    break;
+                }
+            }
+            if(has) consecutiveCount++;
+        });
+        const consecRatio = (consecutiveCount / dataset.length * 100).toFixed(1);
+        document.getElementById('consecutive-stats').innerHTML = `
+            총 <strong>${consecutiveCount}회</strong> 발생 (${consecRatio}%)<br>
+            <span style="font-size:0.85em; color:#888;">(연속된 숫자가 하나라도 포함된 회차 비율)</span>
+        `;
     }
 
     init();
