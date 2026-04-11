@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2026로또머신 & 로또 분석 데이터</title>
     <style>
         /* 기본 리셋 / 박스 사이징 */
@@ -11,76 +11,75 @@
         :root{
             --primary:#6e8efb;
             --accent:#a777e3;
-            --bg:#f8f9fa;
+            --bg:#f4f6f8;
             --card:#ffffff;
-            --muted:#666;
+            --muted:#888;
         }
 
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 1000px;
+            max-width: 500px; /* 모바일 앱 뷰 고정 */
             width: 100%;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 0 20px 0;
             background-color: var(--bg);
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            min-height: 100vh;
         }
 
         header {
             text-align: center;
-            padding: 28px 16px;
+            padding: 30px 16px 24px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
-            border-radius: 12px;
+            border-radius: 0 0 24px 24px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(110, 142, 251, 0.2);
         }
+
+        header h1 { margin: 0 0 4px 0; font-size: 1.5rem; font-weight: 800;}
+        header p { margin: 0; font-size: 0.95rem; opacity: 0.9; }
 
         .container {
             display: flex;
-            gap: 30px;
+            flex-direction: column;
             background: var(--card);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-            align-items: flex-start;
+            padding: 24px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            margin: 0 16px 20px 16px;
         }
 
         .app-image {
-            flex: 0 0 300px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 20px;
         }
         .app-image img {
             width: 100%;
-            max-width: 300px;
+            max-width: 180px;
             border-radius: 16px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-            height: auto;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
             object-fit: contain;
         }
 
-        .app-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        h1 { margin: 0 0 8px 0; font-size: 1.6rem; }
-        h2 { margin-top: 0; }
-        p { margin: 0 0 8px 0; }
+        .app-info h2 { margin: 0 0 12px 0; font-size: 1.25rem; color: #222; }
 
         .feature-list {
             list-style: none;
             padding: 0;
-            margin: 12px 0 18px 0;
+            margin: 0 0 20px 0;
+            font-size: 0.95rem;
         }
         .feature-list li {
             margin-bottom: 10px;
-            padding-left: 26px;
+            padding-left: 24px;
             position: relative;
             word-break: keep-all;
+            color: #444;
         }
         .feature-list li::before {
             content: '✨';
@@ -89,31 +88,104 @@
             top: 0;
         }
 
+        /* Update History Style */
+        .update-history {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #eee;
+        }
+        .update-history h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+            color: var(--primary);
+        }
+        .update-history details {
+            margin-bottom: 8px;
+            background: var(--card);
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            overflow: hidden;
+        }
+        .update-history details:last-child {
+            margin-bottom: 0;
+        }
+        .update-history summary {
+            cursor: pointer;
+            padding: 12px 14px;
+            font-weight: 700;
+            background: #fff;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .update-history summary::-webkit-details-marker {
+            display: none;
+        }
+        .update-history summary::after {
+            content: '▼';
+            font-size: 0.8rem;
+            color: #aaa;
+            transition: transform 0.3s;
+        }
+        .update-history details[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .update-history ul {
+            padding: 12px 14px 12px 32px;
+            margin: 0;
+            font-size: 0.85rem;
+            color: #555;
+            background: #fdfdfd;
+            border-top: 1px solid #eee;
+        }
+        .update-history ul li {
+            margin-bottom: 6px;
+        }
+        .update-history ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .dev-comment {
+            background: #fff9db;
+            padding: 14px;
+            border-radius: 12px;
+            border-left: 4px solid #fab005;
+            font-size: 0.9rem;
+            color: #495057;
+            margin-top: 20px;
+        }
+
         .stats-container {
             background: var(--card);
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            margin: 0 16px;
         }
 
         /* Tabs Style */
         .tabs {
             display: flex;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 16px;
-            gap: 8px;
-            flex-wrap: wrap;
+            border-bottom: 2px solid #f1f3f5;
+            margin-bottom: 20px;
+            gap: 0;
         }
         .tab-btn {
-            padding: 8px 14px;
+            flex: 1;
+            padding: 12px 4px;
             cursor: pointer;
             border: none;
             background: none;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            color: #888;
-            transition: 0.2s;
-            border-radius: 8px 8px 0 0;
+            color: var(--muted);
+            transition: color 0.2s, border-bottom 0.2s;
+            white-space: nowrap;
         }
         .tab-btn.active {
             color: var(--primary);
@@ -124,147 +196,209 @@
         }
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .stats-header {
-            position: relative;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-bottom: 12px;
-            min-height: 40px;
+            margin-bottom: 16px;
+            gap: 12px;
         }
-        .search-area {
-            position: absolute;
-            right: 0;
+        .stats-header h3 {
+            margin: 0;
+            color: #495057;
+            font-size: 1.15rem;
         }
         .search-area select {
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
             border: 1px solid #ddd;
             font-size: 0.95rem;
-            background: #fff;
+            background: #f8f9fa;
+            color: #333;
+            outline: none;
+            font-weight: 600;
         }
 
         .lotto-balls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             align-items: center;
-            margin: 18px 0;
+            margin: 16px 0 24px;
             flex-wrap: wrap;
         }
         .ball {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
-            font-size: 18px;
+            font-weight: 800;
+            font-size: 15px;
             flex: 0 0 auto;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.1);
         }
         .ball.yellow { background: #fbc400; color: #222; }
-        .ball.blue { background: #69c8f2; }
-        .ball.red { background: #ff7272; }
-        .ball.gray { background: #aaaaaa; }
+        .ball.blue { background: #69c8f2; text-shadow: 1px 1px 1px rgba(0,0,0,0.1);}
+        .ball.red { background: #ff7272; text-shadow: 1px 1px 1px rgba(0,0,0,0.1);}
+        .ball.gray { background: #aaaaaa; text-shadow: 1px 1px 1px rgba(0,0,0,0.1);}
         .ball.green { background: #b0d840; color: #222; }
 
         .analysis-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-top: 12px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
         }
         .analysis-item {
-            background: #f1f3f5;
+            background: #f8f9fa;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-align: center;
+            border: 1px solid #f1f3f5;
         }
         .analysis-item span {
             display: block;
-            font-size: 0.85em;
+            font-size: 0.8rem;
             color: var(--muted);
+            margin-bottom: 4px;
         }
         .analysis-item strong {
-            font-size: 1.05em;
+            font-size: 1.1rem;
             color: #333;
+            font-weight: 800;
+        }
+
+        .winner-info {
+            margin-top: 16px;
+            text-align: center;
+            padding: 14px;
+            background: #e7f5ff;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: #1971c2;
+        }
+
+        /* 상세 분석 컨테이너 */
+        .detail-analysis-container {
+            margin-top: 20px;
+            padding: 18px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 1px solid #eee;
+        }
+        .detail-analysis-container h4 {
+            margin: 0 0 14px 0;
+            color: #495057;
+            font-size: 1.05rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+        }
+        .detail-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+            display: grid;
+            gap: 10px;
+            color: #555;
+        }
+        .detail-list strong {
+            color: #333;
+            display: inline-block;
+            width: 80px;
         }
 
         /* Frequency Table Style */
         .freq-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 10px;
-            margin-top: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 8px;
+            margin-top: 16px;
         }
         .freq-item {
             background: #fff;
-            border: 1px solid #eee;
-            padding: 10px;
-            border-radius: 8px;
+            border: 1px solid #f1f3f5;
+            padding: 10px 4px;
+            border-radius: 12px;
             text-align: center;
-            cursor: help;
-            transition: background 0.15s;
-        }
-        .freq-item:hover {
-            background: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
         .freq-item .ball {
             margin: 0 auto 6px;
-            width: 30px;
-            height: 30px;
-            font-size: 14px;
+            width: 28px;
+            height: 28px;
+            font-size: 13px;
         }
         .freq-count {
-            font-size: 0.85em;
+            font-size: 0.75rem;
             color: var(--muted);
         }
-        .freq-count strong { color: #e64980; }
+        .freq-count strong { color: #e64980; font-size: 0.85rem; }
 
         /* Analysis Tab Style */
         .analysis-controls {
             display: flex;
-            gap: 10px;
-            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 16px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            background: #f1f3f5;
-            padding: 15px;
-            border-radius: 10px;
         }
-        .analysis-controls select, .analysis-controls button {
-            padding: 8px 12px;
-            border-radius: 6px;
+        .analysis-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .analysis-controls select {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
             border: 1px solid #ddd;
             font-size: 0.95rem;
+            background: #fff;
         }
         .analysis-controls button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
             background: var(--primary);
             color: white;
             border: none;
+            font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 4px 6px rgba(110, 142, 251, 0.3);
         }
-        .analysis-controls button:hover {
-            opacity: 0.9;
-        }
+
         .analysis-result-section {
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             padding: 16px;
             background: #fff;
-            border: 1px solid #eee;
-            border-radius: 10px;
+            border: 1px solid #f1f3f5;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .analysis-result-section h4 {
             margin-top: 0;
             color: var(--primary);
-            border-bottom: 2px solid #f1f3f5;
+            border-bottom: 2px solid #f8f9fa;
             padding-bottom: 8px;
             margin-bottom: 12px;
+            font-size: 1rem;
         }
         .result-list {
             list-style: none;
@@ -272,73 +406,20 @@
             margin: 0;
         }
         .result-list li {
-            padding: 6px 0;
-            border-bottom: 1px dashed #eee;
-            font-size: 0.95rem;
+            padding: 8px 0;
+            border-bottom: 1px dashed #f1f3f5;
+            font-size: 0.9rem;
+            color: #444;
         }
-        .result-list li:last-child { border-bottom: none; }
+        .result-list li:last-child { border-bottom: none; padding-bottom: 0; }
 
         footer {
             text-align: center;
-            margin-top: 36px;
-            color: #888;
-            font-size: 0.9em;
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.85rem;
+            padding-bottom: 20px;
         }
-
-        /* 반응형: 태블릿 이하 */
-        @media (max-width: 900px) {
-            .container {
-                gap: 18px;
-                padding: 22px;
-            }
-            .app-image { flex: 0 0 220px; }
-            .app-image img { max-width: 220px; }
-            .tab-btn { padding: 7px 12px; font-size: 0.95rem; }
-            .ball { width: 36px; height: 36px; font-size: 16px; }
-        }
-
-        /* 반응형: 모바일 */
-        @media (max-width: 600px) {
-            body { padding: 12px; }
-            header { padding: 20px 12px; border-radius: 10px; }
-            .container {
-                flex-direction: column;
-                padding: 16px;
-                gap: 14px;
-            }
-            .app-image {
-                flex: 0 0 auto;
-            }
-            .app-image img {
-                max-width: 100%;
-                width: 180px;
-                height: auto;
-            }
-            .stats-container { padding: 16px; }
-            .search-area {
-                position: static;
-                display: flex;
-                justify-content: flex-end;
-                margin-top: 8px;
-            }
-            .stats-header { align-items: flex-start; text-align: center; flex-direction: column; gap: 6px; }
-            .lotto-balls { gap: 8px; margin: 12px 0; }
-            .ball { width: 34px; height: 34px; font-size: 15px; }
-            .freq-grid { grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px; }
-            .analysis-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-            .analysis-controls { flex-direction: column; }
-            .analysis-controls select, .analysis-controls button { width: 100%; }
-        }
-
-        /* 아주 작은 화면(좁은 폰) */
-        @media (max-width: 380px) {
-            h1 { font-size: 1.2rem; }
-            .app-image img { width: 150px; }
-            .ball { width: 30px; height: 30px; font-size: 14px; }
-            .freq-item .ball { width: 26px; height: 26px; font-size: 13px; margin-bottom: 4px; }
-            .tab-btn { font-size: 0.9rem; padding: 6px 8px; }
-        }
-
     </style>
 </head>
 <body>
@@ -365,16 +446,38 @@
 			<li>매주 원하는 요일/시간에 <strong>행운 예약</strong>으로 받는 행운번호 조합</li>
         </ul>
 
-        <h3>🚀 v1.1.3 업데이트 상세 내역</h3>
-        <ul>
-            <li>[신규]행운예약, 다양한 언어를 지원합니다.(러시아, 베트남, 영어, 일본, 중국, 태국)</li>
-            <li>[개선]뮤니티 UI 개선</li>
-            <li>[최적화] 앱 안정성 및 성능 개선</li>
-            <li>[디자인] 다크 모드 및 테마 최적화</li>
-        </ul>
+        <div class="update-history">
+            <h3>🚀 업데이트 상세 내역</h3>
 
-        <div style="background: #fff9db; padding: 12px; border-radius: 10px; border-left: 5px solid #fab005;">
-            <strong>개발자 한마디:</strong> "여러분의 당첨 확률 1%라도 더 올리기 위해 추첨 엔진을 갈아 넣었습니다. 이번 주 주인공은 바로 당신입니다[...]
+            <details open>
+                <summary>v1.1.4 업데이트</summary>
+                <ul>
+                    <li>[신규] 메뉴내 심층분석, 업데이트 기능 추가</li>
+                    <li>[개선] 메뉴 UI 아이콘화</li>
+                    <li>[수정] 한줄이야기 URL 포함 시 프리뷰 생성</li>
+                </ul>
+            </details>
+            <details>
+                <summary>v1.1.3 업데이트</summary>
+                <ul>
+                    <li>[신규] 행운예약, 다양한 언어를 지원합니다.(러시아, 베트남, 영어, 일본, 중국, 태국)</li>
+                    <li>[개선] 커뮤니티 UI 개선</li>
+                    <li>[최적화] 앱 안정성 및 성능 개선</li>
+                    <li>[디자인] 다크 모드 및 테마 최적화</li>
+                </ul>
+            </details>
+            <details>
+                <summary>v1.0.0 출시</summary>
+                <ul>
+                    <li>[안내] 2026 로또머신 정식 출시</li>
+                    <li>[모드] 회오리, 통돌이, AI 추천, 희귀조합, 커스텁 등 다양한 모드</li>
+                    <li>[특징] 실시간 로또 데이터 분석 및 AC값, 홀짝 비율 표시 기능</li>
+                </ul>
+            </details>
+        </div>
+
+        <div class="dev-comment">
+            <strong>개발자 한마디:</strong> "여러분의 당첨 확률 1%라도 더 올리기 위해 추첨 엔진을 갈아 넣었습니다. 이번 주 주인공은 바로 당신입니다!"
         </div>
     </div>
 </div>
@@ -389,9 +492,9 @@
     <!-- 당첨 결과 탭 -->
     <div id="result-tab" class="tab-content active">
         <div class="stats-header">
-            <h3 id="latest-round-title" style="margin: 0; color: #666; text-align: center;">로딩 중...</h3>
+            <h3 id="latest-round-title">로딩 중...</h3>
             <div class="search-area">
-                <select id="round-select" onchange="loadSpecificRound(this.value)">
+                <select id="round-select" aria-label="회차 선택" onchange="loadSpecificRound(this.value)">
                     <option value="">회차 선택</option>
                 </select>
             </div>
@@ -418,14 +521,14 @@
             </div>
         </div>
 
-        <div style="margin-top: 16px; text-align: center; padding: 12px; background: #e7f5ff; border-radius: 10px;">
-            1등 당첨자 수: <strong id="winners-count">-</strong> | 1인당 당첨금: <strong id="amount-per-winner">-</strong>
+        <div class="winner-info">
+            1등 당첨자: <strong id="winners-count">-</strong> | 1인당: <strong id="amount-per-winner">-</strong>
         </div>
 
         <!-- 상세 분석 컨테이너 추가 -->
-        <div id="round-detail-analysis" style="margin-top: 16px; padding: 16px; background: #f8f9fa; border-radius: 12px; border: 1px solid #eee;">
-            <h4 style="margin: 0 0 12px 0; color: #495057; font-size: 1.1rem; border-bottom: 2px solid #e9ecef; padding-bottom: 8px;">📋 당첨 번호 상세 분석</h4>
-            <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; display: grid; gap: 8px;">
+        <div class="detail-analysis-container">
+            <h4>📋 당첨 번호 상세 분석</h4>
+            <ul class="detail-list">
                 <li id="detail-consecutive"></li>
                 <li id="detail-ending"></li>
                 <li id="detail-color"></li>
@@ -436,7 +539,8 @@
 
     <!-- 번호별 빈도 탭 -->
     <div id="freq-tab" class="tab-content">
-        <h3 style="text-align: center; color: #666;">번호별 누적 출현 빈도 (보너스 포함)</h3>
+        <h3 style="text-align: center; color: #495057; font-size: 1.1rem; margin-bottom: 0;">번호별 누적 출현 빈도</h3>
+        <p style="text-align: center; color: #888; font-size: 0.85rem; margin-top: 4px;">(보너스 포함)</p>
         <div id="freq-container" class="freq-grid">
             <!-- JavaScript에서 동적으로 생성됨 -->
         </div>
@@ -445,13 +549,15 @@
     <!-- 패턴 분석 탭 -->
     <div id="analysis-tab" class="tab-content">
         <div class="analysis-controls">
-            <select id="start-round-select">
-                <option value="">시작 회차</option>
-            </select>
-            <span>~</span>
-            <select id="end-round-select">
-                <option value="">종료 회차</option>
-            </select>
+            <div class="analysis-controls-row">
+                <select id="start-round-select" aria-label="시작 회차">
+                    <option value="">시작 회차</option>
+                </select>
+                <span style="color:#888;">~</span>
+                <select id="end-round-select" aria-label="종료 회차">
+                    <option value="">종료 회차</option>
+                </select>
+            </div>
             <button onclick="runAnalysis()">분석 실행</button>
         </div>
 
@@ -468,7 +574,7 @@
 
             <div class="analysis-result-section">
                 <h4>❄️ 미출현 번호</h4>
-                <div id="missing-nums-list" style="word-break: break-all; color: #888;"></div>
+                <div id="missing-nums-list" style="word-break: break-all; color: #888; line-height: 1.5; font-size: 0.95rem;"></div>
             </div>
 
             <div class="analysis-result-section">
@@ -483,7 +589,7 @@
 
             <div class="analysis-result-section">
                 <h4>🔗 연번 출현 (연속된 숫자)</h4>
-                <div id="consecutive-stats"></div>
+                <div id="consecutive-stats" style="font-size: 0.9rem; color: #555;"></div>
             </div>
 
             <div class="analysis-result-section">
@@ -491,7 +597,7 @@
                 <ul class="result-list" id="pair-list"></ul>
             </div>
         </div>
-        <div id="analysis-loading" style="display: none; text-align: center; padding: 20px;">
+        <div id="analysis-loading" style="display: none; text-align: center; padding: 20px; color: var(--primary); font-weight: bold;">
             분석 중입니다...
         </div>
     </div>
@@ -554,7 +660,7 @@
         });
 
         const plus = document.createElement('div');
-        plus.style.cssText = 'font-size: 20px; align-self: center;';
+        plus.style.cssText = 'font-size: 20px; align-self: center; color:#aaa;';
         plus.textContent = '+';
         ballsContainer.appendChild(plus);
 
@@ -619,10 +725,10 @@
             }
         }
 
-        document.getElementById('detail-consecutive').innerHTML = `<strong>🔗 연번:</strong> ${consecStr}`;
-        document.getElementById('detail-ending').innerHTML = `<strong>🔢 동일 끝수:</strong> ${endingStr}`;
-        document.getElementById('detail-color').innerHTML = `<strong>🎨 색상 분포:</strong> ${colorStr.join(', ')}`;
-        document.getElementById('detail-carryover').innerHTML = `<strong>🔄 이월수:</strong> ${carryStr}`;
+        document.getElementById('detail-consecutive').innerHTML = `<strong>🔗 연번</strong> <span>${consecStr}</span>`;
+        document.getElementById('detail-ending').innerHTML = `<strong>🔢 끝수</strong> <span>${endingStr}</span>`;
+        document.getElementById('detail-color').innerHTML = `<strong>🎨 분포</strong> <span>${colorStr.join(', ')}</span>`;
+        document.getElementById('detail-carryover').innerHTML = `<strong>🔄 이월수</strong> <span>${carryStr}</span>`;
     }
 
     async function init() {
@@ -766,7 +872,7 @@
         topList.innerHTML = '';
         sortedNums.slice(0, 5).forEach(([num, count]) => {
             const li = document.createElement('li');
-            li.innerHTML = `<span class="ball ${getBallColor(num)}" style="width:24px;height:24px;font-size:12px;display:inline-flex;margin-right:6px;">${num}</span> <strong>${count}회</strong> 출현`;
+            li.innerHTML = `<span class="ball ${getBallColor(num)}" style="width:24px;height:24px;font-size:12px;display:inline-flex;margin-right:6px;box-shadow:none;">${num}</span> <strong>${count}회</strong> 출현`;
             topList.appendChild(li);
         });
 
@@ -811,7 +917,7 @@
                 let numsHtml = '<div style="margin-top:10px; padding-top:8px; border-top:1px dashed #eee; font-size:0.9rem;"><strong>🔥 자주 이월된 번호 (Top 5):</strong><br>';
                 numsHtml += sortedCarryNums.slice(0, 5).map(([num, cnt]) => {
                     return `<span style="display:inline-flex; align-items:center; margin-right:8px; margin-top:4px; background:#f8f9fa; padding:2px 6px; border-radius:12px;">
-                        <span class="ball ${getBallColor(num)}" style="width:20px;height:20px;font-size:11px;margin-right:4px;">${num}</span>
+                        <span class="ball ${getBallColor(num)}" style="width:20px;height:20px;font-size:11px;margin-right:4px;box-shadow:none;">${num}</span>
                         <strong>${cnt}회</strong>
                     </span>`;
                 }).join('');
@@ -863,17 +969,17 @@
         let pairsHtml = '';
 
         if (sortedPairs.length > 0) {
-            pairsHtml = '<div style="margin-top:8px; font-size:0.9rem; color:#333; line-height:1.8;"><strong>🔥 주요 연번:</strong> ';
+            pairsHtml = '<div style="margin-top:12px; line-height:1.8;"><strong>🔥 주요 연번:</strong><br>';
             pairsHtml += sortedPairs.slice(0, 5).map(([pair, cnt]) => {
                 const [n1, n2] = pair.split(',');
-                return `<span style="background:#f1f3f5; padding:2px 6px; border-radius:4px; margin-right:4px; font-weight:bold;">${n1},${n2} <span style="color:#e64980; font-weight:normal;">(${cnt}회)</span></span>`;
+                return `<span style="background:#f1f3f5; padding:4px 8px; border-radius:6px; margin-right:6px; margin-bottom:6px; display:inline-block; font-weight:bold; font-size:0.85rem;">${n1},${n2} <span style="color:#e64980; font-weight:normal;">(${cnt}회)</span></span>`;
             }).join('');
             pairsHtml += '</div>';
         }
 
         document.getElementById('consecutive-stats').innerHTML = `
             총 <strong>${consecutiveCount}회</strong> 발생 (${consecRatio}%)<br>
-            <span style="font-size:0.85em; color:#888;">(연속된 숫자가 하나라도 포함된 회차 비율)</span>
+            <span style="font-size:0.8rem; color:#888;">(연속된 숫자가 하나라도 포함된 회차 비율)</span>
             ${pairsHtml}
         `;
 
@@ -899,9 +1005,9 @@
             const li = document.createElement('li');
             li.innerHTML = `
                 <span style="display:inline-flex; align-items:center;">
-                    <span class="ball ${getBallColor(n1)}" style="width:24px;height:24px;font-size:12px;margin-right:4px;">${n1}</span>
+                    <span class="ball ${getBallColor(n1)}" style="width:24px;height:24px;font-size:12px;margin-right:4px;box-shadow:none;">${n1}</span>
                     <span style="margin:0 4px; color:#888;">&</span>
-                    <span class="ball ${getBallColor(n2)}" style="width:24px;height:24px;font-size:12px;margin-right:8px;">${n2}</span>
+                    <span class="ball ${getBallColor(n2)}" style="width:24px;height:24px;font-size:12px;margin-right:8px;box-shadow:none;">${n2}</span>
                 </span>
                 <strong>${count}회</strong> 함께 출현
             `;
