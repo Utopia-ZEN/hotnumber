@@ -359,6 +359,9 @@
             border-radius: 12px;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .freq-item .ball {
             margin: 0 auto 6px;
@@ -369,8 +372,13 @@
         .freq-count {
             font-size: 0.75rem;
             color: var(--muted);
+            line-height: 1.2;
         }
-        .freq-count strong { color: #e64980; font-size: 0.85rem; }
+        .freq-count strong { color: #e64980; font-size: 0.85rem; display: block; margin-bottom: 2px;}
+        .freq-count-detail {
+            font-size: 0.65rem;
+            color: #999;
+        }
 
         /* Analysis Tab Style */
         .analysis-controls {
@@ -824,7 +832,10 @@
                 item.title = `당첨: ${stat.main}회 / 보너스: ${stat.bonus}회`;
                 item.innerHTML = `
                     <div class="ball ${getBallColor(i)}">${i}</div>
-                    <div class="freq-count"><strong>${stat.total}</strong>회</div>
+                    <div class="freq-count">
+                        <strong>${stat.total}</strong>
+                        <div class="freq-count-detail">${stat.main}/${stat.bonus}</div>
+                    </div>
                 `;
                 container.appendChild(item);
             }
