@@ -230,22 +230,27 @@
 
         .lotto-balls {
             display: flex;
-            gap: 8px;
+            gap: 6px; /* 간격 축소 */
             justify-content: center;
             align-items: center;
             margin: 16px 0 24px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap; /* 한 줄 고정 */
+            overflow-x: auto; /* 넘치면 스크롤 */
+            padding: 4px 0;
+        }
+        .lotto-balls::-webkit-scrollbar {
+            display: none;
         }
         .ball {
-            width: 38px;
-            height: 38px;
+            width: 36px; /* 크기 약간 축소 */
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 800;
-            font-size: 15px;
+            font-size: 14px;
             flex: 0 0 auto;
             box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -311,13 +316,33 @@
             margin: 0;
             font-size: 0.9rem;
             display: grid;
-            gap: 10px;
+            gap: 12px; /* 간격 넓힘 */
             color: #555;
+        }
+        .detail-list li {
+            display: flex;
+            align-items: center; /* 세로 중앙 정렬 */
+            gap: 8px;
+            flex-wrap: wrap; /* 내용 길면 줄바꿈 */
         }
         .detail-list strong {
             color: #333;
             display: inline-block;
-            width: 80px;
+            min-width: 60px; /* 라벨 너비 고정 */
+        }
+        .detail-list span {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .color-ball-mini {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: inset -1px -1px 2px rgba(0,0,0,0.1);
         }
 
         /* Frequency Table Style */
@@ -630,6 +655,17 @@
         return 'green';
     };
 
+    const getHexColor = (colorName) => {
+        const colors = {
+            'yellow': '#fbc400',
+            'blue': '#69c8f2',
+            'red': '#ff7272',
+            'gray': '#aaaaaa',
+            'green': '#b0d840'
+        };
+        return colors[colorName] || '#aaaaaa';
+    };
+
     async function loadSpecificRound(round) {
         if (!round) return;
         try {
@@ -660,7 +696,7 @@
         });
 
         const plus = document.createElement('div');
-        plus.style.cssText = 'font-size: 20px; align-self: center; color:#aaa;';
+        plus.style.cssText = 'font-size: 18px; align-self: center; color:#aaa; margin: 0 2px;';
         plus.textContent = '+';
         ballsContainer.appendChild(plus);
 
@@ -684,7 +720,7 @@
         const nums = data.numbers;
 
         // 1. 연번
-        let consecStr = "연번 없음";
+        let consecStr = "없음";
         const consecs = [];
         const sorted = [...nums].sort((a,b)=>a-b);
         for(let i=0; i<sorted.length-1; i++) {
@@ -704,13 +740,14 @@
             endingStr = sameEndings.map(([e, ns]) => `<strong>${e}끝</strong>(${ns.join(',')})`).join(', ');
         }
 
-        // 3. 색상 분포
+        // 3. 색상 분포 (공 모양 아이콘 적용)
         const colors = { yellow:0, blue:0, red:0, gray:0, green:0 };
-        const colorNames = { yellow:'노랑', blue:'파랑', red:'빨강', gray:'회색', green:'초록' };
         nums.forEach(n => colors[getBallColor(n)]++);
         const colorStr = [];
         ['yellow','blue','red','gray','green'].forEach(c => {
-            if(colors[c] > 0) colorStr.push(`${colorNames[c]} ${colors[c]}개`);
+            if(colors[c] > 0) {
+                colorStr.push(`<span style="display:inline-flex; align-items:center; gap:4px; background:#fff; padding:2px 8px; border-radius:12px; border:1px solid #eee; font-size:0.85rem;"><span class="color-ball-mini" style="background:${getHexColor(c)};"></span>${colors[c]}개</span>`);
+            }
         });
 
         // 4. 이월수
@@ -727,7 +764,7 @@
 
         document.getElementById('detail-consecutive').innerHTML = `<strong>🔗 연번</strong> <span>${consecStr}</span>`;
         document.getElementById('detail-ending').innerHTML = `<strong>🔢 끝수</strong> <span>${endingStr}</span>`;
-        document.getElementById('detail-color').innerHTML = `<strong>🎨 분포</strong> <span>${colorStr.join(', ')}</span>`;
+        document.getElementById('detail-color').innerHTML = `<strong>🎨 분포</strong> <span>${colorStr.join('')}</span>`;
         document.getElementById('detail-carryover').innerHTML = `<strong>🔄 이월수</strong> <span>${carryStr}</span>`;
     }
 
