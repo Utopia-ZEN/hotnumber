@@ -278,8 +278,8 @@
 
         .lotto-balls {
             display: flex;
-            gap: 6px;
-            /* 간격 축소 */
+            gap: 4px;
+            /* 간격 축소 (기존 6px) */
             justify-content: center;
             align-items: center;
             margin: 16px 0 24px;
@@ -295,16 +295,17 @@
         }
 
         .ball {
-            width: 36px;
-            /* 크기 약간 축소 */
-            height: 36px;
+            width: 32px;
+            /* 크기 조절 (기존 36px) */
+            height: 32px;
+            /* 크기 조절 (기존 36px) */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13px;
             flex: 0 0 auto;
             box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -842,7 +843,7 @@
             });
 
             const plus = document.createElement('div');
-            plus.style.cssText = 'font-size: 18px; align-self: center; color:#aaa; margin: 0 2px;';
+            plus.style.cssText = 'font-size: 16px; align-self: center; color:#aaa; margin: 0 1px;';
             plus.textContent = '+';
             ballsContainer.appendChild(plus);
 
