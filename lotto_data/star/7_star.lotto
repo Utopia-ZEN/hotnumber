@@ -1,0 +1,19 @@
+{
+    "round": 7,
+    "predicted_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+    ],
+    "actual_numbers": [
+        2,
+        9,
+        16,
+        25,
+        26,
+        40
+    ]
+}

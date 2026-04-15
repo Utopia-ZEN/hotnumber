@@ -1,0 +1,35 @@
+{
+    "round": 198,
+    "date": "2024.02.15",
+    "winning_group": 2,
+    "winning_numbers": [
+        4,
+        3,
+        7,
+        8,
+        0,
+        3
+    ],
+    "bonus_numbers": [
+        6,
+        2,
+        0,
+        1,
+        2,
+        5
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 25,
+            "high_low_ratio": "2:4",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 16,
+            "high_low_ratio": "2:4",
+            "range": 6
+        }
+    }
+}

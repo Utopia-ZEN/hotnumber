@@ -1,0 +1,35 @@
+{
+    "round": 73,
+    "date": "2021.09.23",
+    "winning_group": 1,
+    "winning_numbers": [
+        5,
+        0,
+        1,
+        0,
+        2,
+        6
+    ],
+    "bonus_numbers": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        7
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 14,
+            "high_low_ratio": "2:4",
+            "range": 6
+        },
+        "bonus": {
+            "odd_even_ratio": "1:5",
+            "sum_value": 19,
+            "high_low_ratio": "1:5",
+            "range": 5
+        }
+    }
+}

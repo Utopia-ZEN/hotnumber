@@ -1,0 +1,35 @@
+{
+    "round": 51,
+    "date": "2021.04.22",
+    "winning_group": 2,
+    "winning_numbers": [
+        5,
+        1,
+        0,
+        0,
+        1,
+        2
+    ],
+    "bonus_numbers": [
+        0,
+        8,
+        8,
+        1,
+        8,
+        5
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 9,
+            "high_low_ratio": "1:5",
+            "range": 5
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 30,
+            "high_low_ratio": "4:2",
+            "range": 8
+        }
+    }
+}

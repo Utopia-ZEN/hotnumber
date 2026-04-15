@@ -1,0 +1,35 @@
+{
+    "round": 125,
+    "date": "2022.09.22",
+    "winning_group": 5,
+    "winning_numbers": [
+        8,
+        4,
+        5,
+        3,
+        9,
+        0
+    ],
+    "bonus_numbers": [
+        0,
+        1,
+        0,
+        8,
+        1,
+        2
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 29,
+            "high_low_ratio": "3:3",
+            "range": 9
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 12,
+            "high_low_ratio": "1:5",
+            "range": 8
+        }
+    }
+}

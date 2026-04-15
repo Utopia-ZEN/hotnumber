@@ -1,0 +1,35 @@
+{
+    "round": 171,
+    "date": "2023.08.10",
+    "winning_group": 2,
+    "winning_numbers": [
+        8,
+        4,
+        4,
+        5,
+        7,
+        8
+    ],
+    "bonus_numbers": [
+        7,
+        3,
+        5,
+        2,
+        8,
+        4
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 36,
+            "high_low_ratio": "4:2",
+            "range": 4
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 29,
+            "high_low_ratio": "3:3",
+            "range": 6
+        }
+    }
+}

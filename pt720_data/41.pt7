@@ -1,0 +1,35 @@
+{
+    "round": 41,
+    "date": "2021.02.11",
+    "winning_group": 1,
+    "winning_numbers": [
+        7,
+        4,
+        2,
+        7,
+        1,
+        4
+    ],
+    "bonus_numbers": [
+        6,
+        9,
+        8,
+        3,
+        3,
+        5
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 25,
+            "high_low_ratio": "2:4",
+            "range": 6
+        },
+        "bonus": {
+            "odd_even_ratio": "4:2",
+            "sum_value": 34,
+            "high_low_ratio": "4:2",
+            "range": 6
+        }
+    }
+}

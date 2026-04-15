@@ -1,0 +1,35 @@
+{
+    "round": 237,
+    "date": "2024.11.14",
+    "winning_group": 5,
+    "winning_numbers": [
+        7,
+        9,
+        3,
+        9,
+        6,
+        9
+    ],
+    "bonus_numbers": [
+        0,
+        4,
+        5,
+        8,
+        8,
+        6
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 43,
+            "high_low_ratio": "5:1",
+            "range": 6
+        },
+        "bonus": {
+            "odd_even_ratio": "1:5",
+            "sum_value": 31,
+            "high_low_ratio": "4:2",
+            "range": 8
+        }
+    }
+}

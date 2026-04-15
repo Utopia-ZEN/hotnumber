@@ -1,0 +1,35 @@
+{
+    "round": 297,
+    "date": "2026.01.08",
+    "winning_group": 5,
+    "winning_numbers": [
+        4,
+        4,
+        4,
+        1,
+        6,
+        3
+    ],
+    "bonus_numbers": [
+        2,
+        4,
+        8,
+        8,
+        2,
+        5
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 22,
+            "high_low_ratio": "1:5",
+            "range": 5
+        },
+        "bonus": {
+            "odd_even_ratio": "1:5",
+            "sum_value": 29,
+            "high_low_ratio": "3:3",
+            "range": 6
+        }
+    }
+}

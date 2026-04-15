@@ -1,0 +1,35 @@
+{
+    "round": 87,
+    "date": "2021.12.30",
+    "winning_group": 4,
+    "winning_numbers": [
+        7,
+        4,
+        0,
+        9,
+        4,
+        2
+    ],
+    "bonus_numbers": [
+        5,
+        1,
+        1,
+        9,
+        5,
+        5
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 26,
+            "high_low_ratio": "2:4",
+            "range": 9
+        },
+        "bonus": {
+            "odd_even_ratio": "6:0",
+            "sum_value": 26,
+            "high_low_ratio": "4:2",
+            "range": 8
+        }
+    }
+}

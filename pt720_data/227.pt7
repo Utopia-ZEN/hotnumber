@@ -1,0 +1,35 @@
+{
+    "round": 227,
+    "date": "2024.09.05",
+    "winning_group": 5,
+    "winning_numbers": [
+        0,
+        6,
+        8,
+        5,
+        1,
+        6
+    ],
+    "bonus_numbers": [
+        9,
+        8,
+        9,
+        8,
+        9,
+        0
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 26,
+            "high_low_ratio": "4:2",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 43,
+            "high_low_ratio": "5:1",
+            "range": 9
+        }
+    }
+}

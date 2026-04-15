@@ -1,0 +1,35 @@
+{
+    "round": 249,
+    "date": "2025.02.06",
+    "winning_group": 1,
+    "winning_numbers": [
+        0,
+        9,
+        0,
+        7,
+        8,
+        5
+    ],
+    "bonus_numbers": [
+        2,
+        9,
+        5,
+        8,
+        4,
+        6
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 29,
+            "high_low_ratio": "4:2",
+            "range": 9
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 34,
+            "high_low_ratio": "4:2",
+            "range": 7
+        }
+    }
+}

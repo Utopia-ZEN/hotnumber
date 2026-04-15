@@ -1,0 +1,35 @@
+{
+    "round": 77,
+    "date": "2021.10.21",
+    "winning_group": 5,
+    "winning_numbers": [
+        4,
+        3,
+        6,
+        3,
+        0,
+        5
+    ],
+    "bonus_numbers": [
+        2,
+        9,
+        4,
+        6,
+        9,
+        3
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 21,
+            "high_low_ratio": "2:4",
+            "range": 6
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 33,
+            "high_low_ratio": "3:3",
+            "range": 7
+        }
+    }
+}

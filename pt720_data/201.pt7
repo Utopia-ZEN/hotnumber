@@ -1,0 +1,35 @@
+{
+    "round": 201,
+    "date": "2024.03.07",
+    "winning_group": 1,
+    "winning_numbers": [
+        4,
+        7,
+        2,
+        6,
+        7,
+        5
+    ],
+    "bonus_numbers": [
+        5,
+        5,
+        1,
+        7,
+        4,
+        5
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 31,
+            "high_low_ratio": "4:2",
+            "range": 5
+        },
+        "bonus": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 27,
+            "high_low_ratio": "4:2",
+            "range": 6
+        }
+    }
+}

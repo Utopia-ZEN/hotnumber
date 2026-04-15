@@ -1,0 +1,35 @@
+{
+    "round": 166,
+    "date": "2023.07.06",
+    "winning_group": 4,
+    "winning_numbers": [
+        3,
+        4,
+        2,
+        1,
+        0,
+        3
+    ],
+    "bonus_numbers": [
+        3,
+        8,
+        2,
+        9,
+        5,
+        6
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 13,
+            "high_low_ratio": "0:6",
+            "range": 4
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 33,
+            "high_low_ratio": "4:2",
+            "range": 7
+        }
+    }
+}

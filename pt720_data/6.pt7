@@ -1,0 +1,35 @@
+{
+    "round": 6,
+    "date": "2020.06.11",
+    "winning_group": 5,
+    "winning_numbers": [
+        1,
+        9,
+        3,
+        2,
+        0,
+        2
+    ],
+    "bonus_numbers": [
+        2,
+        0,
+        6,
+        4,
+        6,
+        0
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 17,
+            "high_low_ratio": "1:5",
+            "range": 9
+        },
+        "bonus": {
+            "odd_even_ratio": "0:6",
+            "sum_value": 18,
+            "high_low_ratio": "2:4",
+            "range": 6
+        }
+    }
+}

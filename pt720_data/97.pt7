@@ -1,0 +1,35 @@
+{
+    "round": 97,
+    "date": "2022.03.10",
+    "winning_group": 1,
+    "winning_numbers": [
+        7,
+        8,
+        3,
+        6,
+        8,
+        8
+    ],
+    "bonus_numbers": [
+        3,
+        9,
+        7,
+        7,
+        1,
+        2
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 40,
+            "high_low_ratio": "5:1",
+            "range": 5
+        },
+        "bonus": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 29,
+            "high_low_ratio": "3:3",
+            "range": 8
+        }
+    }
+}

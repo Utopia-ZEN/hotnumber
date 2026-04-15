@@ -1,0 +1,35 @@
+{
+    "round": 44,
+    "date": "2021.03.04",
+    "winning_group": 3,
+    "winning_numbers": [
+        6,
+        6,
+        8,
+        8,
+        1,
+        8
+    ],
+    "bonus_numbers": [
+        7,
+        9,
+        9,
+        1,
+        8,
+        1
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "1:5",
+            "sum_value": 37,
+            "high_low_ratio": "5:1",
+            "range": 7
+        },
+        "bonus": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 35,
+            "high_low_ratio": "4:2",
+            "range": 8
+        }
+    }
+}

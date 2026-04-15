@@ -1,0 +1,35 @@
+{
+    "round": 63,
+    "date": "2021.07.15",
+    "winning_group": 4,
+    "winning_numbers": [
+        3,
+        3,
+        5,
+        2,
+        2,
+        6
+    ],
+    "bonus_numbers": [
+        7,
+        9,
+        1,
+        1,
+        8,
+        1
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 21,
+            "high_low_ratio": "2:4",
+            "range": 4
+        },
+        "bonus": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 27,
+            "high_low_ratio": "3:3",
+            "range": 8
+        }
+    }
+}

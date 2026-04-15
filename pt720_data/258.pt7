@@ -1,0 +1,35 @@
+{
+    "round": 258,
+    "date": "2025.04.10",
+    "winning_group": 1,
+    "winning_numbers": [
+        2,
+        6,
+        5,
+        2,
+        5,
+        6
+    ],
+    "bonus_numbers": [
+        5,
+        8,
+        1,
+        2,
+        6,
+        7
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 26,
+            "high_low_ratio": "4:2",
+            "range": 4
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 29,
+            "high_low_ratio": "4:2",
+            "range": 7
+        }
+    }
+}

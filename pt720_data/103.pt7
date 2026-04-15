@@ -1,0 +1,35 @@
+{
+    "round": 103,
+    "date": "2022.04.21",
+    "winning_group": 4,
+    "winning_numbers": [
+        7,
+        8,
+        6,
+        2,
+        7,
+        6
+    ],
+    "bonus_numbers": [
+        7,
+        6,
+        3,
+        4,
+        4,
+        3
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 36,
+            "high_low_ratio": "5:1",
+            "range": 6
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 27,
+            "high_low_ratio": "2:4",
+            "range": 4
+        }
+    }
+}

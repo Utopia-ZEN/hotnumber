@@ -1,0 +1,35 @@
+{
+    "round": 112,
+    "date": "2022.06.23",
+    "winning_group": 3,
+    "winning_numbers": [
+        8,
+        0,
+        2,
+        0,
+        0,
+        7
+    ],
+    "bonus_numbers": [
+        2,
+        7,
+        9,
+        1,
+        4,
+        2
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "1:5",
+            "sum_value": 17,
+            "high_low_ratio": "2:4",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 25,
+            "high_low_ratio": "2:4",
+            "range": 8
+        }
+    }
+}

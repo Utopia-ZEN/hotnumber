@@ -1,0 +1,35 @@
+{
+    "round": 28,
+    "date": "2020.11.12",
+    "winning_group": 5,
+    "winning_numbers": [
+        0,
+        8,
+        0,
+        8,
+        3,
+        9
+    ],
+    "bonus_numbers": [
+        3,
+        7,
+        8,
+        8,
+        5,
+        6
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 28,
+            "high_low_ratio": "3:3",
+            "range": 9
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 37,
+            "high_low_ratio": "5:1",
+            "range": 5
+        }
+    }
+}

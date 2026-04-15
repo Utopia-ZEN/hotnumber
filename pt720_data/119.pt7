@@ -1,0 +1,35 @@
+{
+    "round": 119,
+    "date": "2022.08.11",
+    "winning_group": 4,
+    "winning_numbers": [
+        0,
+        8,
+        8,
+        2,
+        5,
+        7
+    ],
+    "bonus_numbers": [
+        4,
+        8,
+        4,
+        2,
+        6,
+        6
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 30,
+            "high_low_ratio": "4:2",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "0:6",
+            "sum_value": 30,
+            "high_low_ratio": "3:3",
+            "range": 6
+        }
+    }
+}

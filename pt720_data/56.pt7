@@ -1,0 +1,35 @@
+{
+    "round": 56,
+    "date": "2021.05.27",
+    "winning_group": 1,
+    "winning_numbers": [
+        9,
+        9,
+        3,
+        1,
+        7,
+        4
+    ],
+    "bonus_numbers": [
+        6,
+        7,
+        7,
+        7,
+        9,
+        9
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 33,
+            "high_low_ratio": "3:3",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 45,
+            "high_low_ratio": "6:0",
+            "range": 3
+        }
+    }
+}

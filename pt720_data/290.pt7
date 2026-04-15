@@ -1,0 +1,35 @@
+{
+    "round": 290,
+    "date": "2025.11.20",
+    "winning_group": 5,
+    "winning_numbers": [
+        2,
+        0,
+        0,
+        1,
+        1,
+        5
+    ],
+    "bonus_numbers": [
+        6,
+        9,
+        4,
+        7,
+        4,
+        8
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 9,
+            "high_low_ratio": "1:5",
+            "range": 5
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 38,
+            "high_low_ratio": "4:2",
+            "range": 5
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "round": 232,
+    "date": "2024.10.10",
+    "winning_group": 1,
+    "winning_numbers": [
+        8,
+        6,
+        8,
+        4,
+        7,
+        6
+    ],
+    "bonus_numbers": [
+        1,
+        1,
+        7,
+        3,
+        4,
+        2
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "1:5",
+            "sum_value": 39,
+            "high_low_ratio": "5:1",
+            "range": 4
+        },
+        "bonus": {
+            "odd_even_ratio": "4:2",
+            "sum_value": 18,
+            "high_low_ratio": "1:5",
+            "range": 6
+        }
+    }
+}

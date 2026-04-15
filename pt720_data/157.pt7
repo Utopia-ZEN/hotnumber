@@ -1,0 +1,35 @@
+{
+    "round": 157,
+    "date": "2023.05.04",
+    "winning_group": 5,
+    "winning_numbers": [
+        2,
+        4,
+        3,
+        4,
+        3,
+        0
+    ],
+    "bonus_numbers": [
+        8,
+        1,
+        6,
+        5,
+        8,
+        0
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 16,
+            "high_low_ratio": "0:6",
+            "range": 4
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 28,
+            "high_low_ratio": "4:2",
+            "range": 8
+        }
+    }
+}

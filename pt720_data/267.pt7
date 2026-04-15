@@ -1,0 +1,35 @@
+{
+    "round": 267,
+    "date": "2025.06.12",
+    "winning_group": 2,
+    "winning_numbers": [
+        8,
+        3,
+        2,
+        9,
+        6,
+        3
+    ],
+    "bonus_numbers": [
+        0,
+        1,
+        4,
+        6,
+        4,
+        5
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 31,
+            "high_low_ratio": "3:3",
+            "range": 7
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 20,
+            "high_low_ratio": "2:4",
+            "range": 6
+        }
+    }
+}

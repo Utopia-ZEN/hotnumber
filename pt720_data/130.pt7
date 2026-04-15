@@ -1,0 +1,35 @@
+{
+    "round": 130,
+    "date": "2022.10.27",
+    "winning_group": 3,
+    "winning_numbers": [
+        7,
+        3,
+        7,
+        7,
+        4,
+        7
+    ],
+    "bonus_numbers": [
+        9,
+        8,
+        2,
+        0,
+        0,
+        3
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 35,
+            "high_low_ratio": "4:2",
+            "range": 4
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 22,
+            "high_low_ratio": "2:4",
+            "range": 9
+        }
+    }
+}

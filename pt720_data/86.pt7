@@ -1,0 +1,35 @@
+{
+    "round": 86,
+    "date": "2021.12.23",
+    "winning_group": 5,
+    "winning_numbers": [
+        9,
+        5,
+        0,
+        3,
+        2,
+        0
+    ],
+    "bonus_numbers": [
+        0,
+        9,
+        4,
+        5,
+        0,
+        4
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 19,
+            "high_low_ratio": "2:4",
+            "range": 9
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 22,
+            "high_low_ratio": "2:4",
+            "range": 9
+        }
+    }
+}

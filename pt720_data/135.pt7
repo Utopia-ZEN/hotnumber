@@ -1,0 +1,35 @@
+{
+    "round": 135,
+    "date": "2022.12.01",
+    "winning_group": 2,
+    "winning_numbers": [
+        4,
+        0,
+        0,
+        8,
+        7,
+        6
+    ],
+    "bonus_numbers": [
+        4,
+        8,
+        0,
+        1,
+        9,
+        0
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "1:5",
+            "sum_value": 25,
+            "high_low_ratio": "3:3",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 22,
+            "high_low_ratio": "2:4",
+            "range": 9
+        }
+    }
+}

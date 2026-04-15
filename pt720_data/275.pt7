@@ -1,0 +1,35 @@
+{
+    "round": 275,
+    "date": "2025.08.07",
+    "winning_group": 1,
+    "winning_numbers": [
+        0,
+        3,
+        8,
+        8,
+        7,
+        5
+    ],
+    "bonus_numbers": [
+        8,
+        4,
+        9,
+        8,
+        7,
+        2
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 31,
+            "high_low_ratio": "4:2",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 38,
+            "high_low_ratio": "4:2",
+            "range": 7
+        }
+    }
+}

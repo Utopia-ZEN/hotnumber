@@ -1,0 +1,35 @@
+{
+    "round": 286,
+    "date": "2025.10.23",
+    "winning_group": 2,
+    "winning_numbers": [
+        8,
+        2,
+        4,
+        7,
+        5,
+        6
+    ],
+    "bonus_numbers": [
+        7,
+        8,
+        3,
+        9,
+        6,
+        2
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 32,
+            "high_low_ratio": "4:2",
+            "range": 6
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 35,
+            "high_low_ratio": "4:2",
+            "range": 7
+        }
+    }
+}

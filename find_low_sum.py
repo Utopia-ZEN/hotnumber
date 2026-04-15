@@ -40,4 +40,4 @@ def find_low_sum_rounds(base_path, threshold=120):
 
 if __name__ == "__main__":
     target_dir = r"D:\PycharmProjects\hotnumber\lotto_data"
-    find_low_sum_rounds(target_dir, 120)
+    find_low_sum_rounds(target_dir, 100)

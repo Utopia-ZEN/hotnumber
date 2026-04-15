@@ -1,0 +1,35 @@
+{
+    "round": 67,
+    "date": "2021.08.12",
+    "winning_group": 3,
+    "winning_numbers": [
+        8,
+        0,
+        7,
+        5,
+        3,
+        1
+    ],
+    "bonus_numbers": [
+        1,
+        3,
+        7,
+        5,
+        6,
+        0
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "4:2",
+            "sum_value": 24,
+            "high_low_ratio": "3:3",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "4:2",
+            "sum_value": 22,
+            "high_low_ratio": "3:3",
+            "range": 7
+        }
+    }
+}

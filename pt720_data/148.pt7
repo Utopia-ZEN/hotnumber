@@ -1,0 +1,35 @@
+{
+    "round": 148,
+    "date": "2023.03.02",
+    "winning_group": 1,
+    "winning_numbers": [
+        8,
+        2,
+        6,
+        9,
+        3,
+        0
+    ],
+    "bonus_numbers": [
+        3,
+        1,
+        2,
+        7,
+        1,
+        7
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 28,
+            "high_low_ratio": "3:3",
+            "range": 9
+        },
+        "bonus": {
+            "odd_even_ratio": "5:1",
+            "sum_value": 21,
+            "high_low_ratio": "2:4",
+            "range": 6
+        }
+    }
+}

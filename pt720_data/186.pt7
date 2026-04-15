@@ -1,0 +1,35 @@
+{
+    "round": 186,
+    "date": "2023.11.23",
+    "winning_group": 5,
+    "winning_numbers": [
+        6,
+        1,
+        6,
+        8,
+        1,
+        4
+    ],
+    "bonus_numbers": [
+        2,
+        1,
+        2,
+        2,
+        5,
+        0
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 26,
+            "high_low_ratio": "3:3",
+            "range": 7
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 12,
+            "high_low_ratio": "1:5",
+            "range": 5
+        }
+    }
+}

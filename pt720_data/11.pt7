@@ -1,0 +1,35 @@
+{
+    "round": 11,
+    "date": "2020.07.16",
+    "winning_group": 1,
+    "winning_numbers": [
+        8,
+        6,
+        7,
+        6,
+        5,
+        4
+    ],
+    "bonus_numbers": [
+        4,
+        8,
+        5,
+        5,
+        3,
+        0
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 36,
+            "high_low_ratio": "5:1",
+            "range": 4
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 25,
+            "high_low_ratio": "3:3",
+            "range": 8
+        }
+    }
+}

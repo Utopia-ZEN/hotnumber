@@ -1,0 +1,35 @@
+{
+    "round": 94,
+    "date": "2022.02.17",
+    "winning_group": 1,
+    "winning_numbers": [
+        8,
+        0,
+        7,
+        1,
+        2,
+        1
+    ],
+    "bonus_numbers": [
+        4,
+        8,
+        1,
+        2,
+        1,
+        6
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 19,
+            "high_low_ratio": "2:4",
+            "range": 8
+        },
+        "bonus": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 22,
+            "high_low_ratio": "2:4",
+            "range": 7
+        }
+    }
+}

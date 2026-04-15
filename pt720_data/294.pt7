@@ -1,0 +1,35 @@
+{
+    "round": 294,
+    "date": "2025.12.18",
+    "winning_group": 1,
+    "winning_numbers": [
+        7,
+        4,
+        6,
+        1,
+        8,
+        6
+    ],
+    "bonus_numbers": [
+        1,
+        7,
+        1,
+        0,
+        2,
+        3
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "2:4",
+            "sum_value": 32,
+            "high_low_ratio": "4:2",
+            "range": 7
+        },
+        "bonus": {
+            "odd_even_ratio": "4:2",
+            "sum_value": 14,
+            "high_low_ratio": "1:5",
+            "range": 7
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "round": 208,
+    "date": "2024.04.25",
+    "winning_group": 1,
+    "winning_numbers": [
+        8,
+        7,
+        9,
+        8,
+        2,
+        9
+    ],
+    "bonus_numbers": [
+        0,
+        3,
+        9,
+        6,
+        3,
+        6
+    ],
+    "analysis": {
+        "winning": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 43,
+            "high_low_ratio": "5:1",
+            "range": 7
+        },
+        "bonus": {
+            "odd_even_ratio": "3:3",
+            "sum_value": 27,
+            "high_low_ratio": "3:3",
+            "range": 9
+        }
+    }
+}
