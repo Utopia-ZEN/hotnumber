@@ -6,9 +6,9 @@
             "total": 200
         },
         "2": {
-            "main": 153,
+            "main": 154,
             "bonus": 36,
-            "total": 189
+            "total": 190
         },
         "3": {
             "main": 171,
@@ -77,8 +77,8 @@
         },
         "16": {
             "main": 166,
-            "bonus": 28,
-            "total": 194
+            "bonus": 29,
+            "total": 195
         },
         "17": {
             "main": 169,
@@ -106,9 +106,9 @@
             "total": 190
         },
         "22": {
-            "main": 141,
+            "main": 142,
             "bonus": 20,
-            "total": 161
+            "total": 162
         },
         "23": {
             "main": 147,
@@ -121,9 +121,9 @@
             "total": 197
         },
         "25": {
-            "main": 150,
+            "main": 151,
             "bonus": 23,
-            "total": 173
+            "total": 174
         },
         "26": {
             "main": 164,
@@ -136,9 +136,9 @@
             "total": 211
         },
         "28": {
-            "main": 153,
+            "main": 154,
             "bonus": 25,
-            "total": 178
+            "total": 179
         },
         "29": {
             "main": 153,
@@ -166,9 +166,9 @@
             "total": 204
         },
         "34": {
-            "main": 181,
+            "main": 182,
             "bonus": 23,
-            "total": 204
+            "total": 205
         },
         "35": {
             "main": 161,
@@ -211,9 +211,9 @@
             "total": 179
         },
         "43": {
-            "main": 162,
+            "main": 163,
             "bonus": 35,
-            "total": 197
+            "total": 198
         },
         "44": {
             "main": 161,
@@ -236,6 +236,14 @@
             }
         },
         {
+            "number": 34,
+            "counts": {
+                "main": 182,
+                "bonus": 23,
+                "total": 205
+            }
+        },
+        {
             "number": 12,
             "counts": {
                 "main": 177,
@@ -248,14 +256,6 @@
             "counts": {
                 "main": 173,
                 "bonus": 31,
-                "total": 204
-            }
-        },
-        {
-            "number": 34,
-            "counts": {
-                "main": 181,
-                "bonus": 23,
                 "total": 204
             }
         },
@@ -316,6 +316,14 @@
             }
         },
         {
+            "number": 43,
+            "counts": {
+                "main": 163,
+                "bonus": 35,
+                "total": 198
+            }
+        },
+        {
             "number": 6,
             "counts": {
                 "main": 163,
@@ -348,11 +356,11 @@
             }
         },
         {
-            "number": 43,
+            "number": 16,
             "counts": {
-                "main": 162,
-                "bonus": 35,
-                "total": 197
+                "main": 166,
+                "bonus": 29,
+                "total": 195
             }
         },
         {
@@ -376,14 +384,6 @@
             "counts": {
                 "main": 159,
                 "bonus": 35,
-                "total": 194
-            }
-        },
-        {
-            "number": 16,
-            "counts": {
-                "main": 166,
-                "bonus": 28,
                 "total": 194
             }
         },
@@ -436,6 +436,14 @@
             }
         },
         {
+            "number": 2,
+            "counts": {
+                "main": 154,
+                "bonus": 36,
+                "total": 190
+            }
+        },
+        {
             "number": 11,
             "counts": {
                 "main": 164,
@@ -449,14 +457,6 @@
                 "main": 165,
                 "bonus": 25,
                 "total": 190
-            }
-        },
-        {
-            "number": 2,
-            "counts": {
-                "main": 153,
-                "bonus": 36,
-                "total": 189
             }
         },
         {
@@ -508,6 +508,14 @@
             }
         },
         {
+            "number": 28,
+            "counts": {
+                "main": 154,
+                "bonus": 25,
+                "total": 179
+            }
+        },
+        {
             "number": 42,
             "counts": {
                 "main": 154,
@@ -517,14 +525,6 @@
         },
         {
             "number": 5,
-            "counts": {
-                "main": 153,
-                "bonus": 25,
-                "total": 178
-            }
-        },
-        {
-            "number": 28,
             "counts": {
                 "main": 153,
                 "bonus": 25,
@@ -542,9 +542,9 @@
         {
             "number": 25,
             "counts": {
-                "main": 150,
+                "main": 151,
                 "bonus": 23,
-                "total": 173
+                "total": 174
             }
         },
         {
@@ -574,9 +574,9 @@
         {
             "number": 22,
             "counts": {
-                "main": 141,
+                "main": 142,
                 "bonus": 20,
-                "total": 161
+                "total": 162
             }
         },
         {
@@ -588,5 +588,5 @@
             }
         }
     ],
-    "total_rounds": 1219
+    "total_rounds": 2439
 }
