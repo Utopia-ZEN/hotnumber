@@ -195,6 +195,93 @@
             margin-top: 20px;
         }
 
+        .owner-pick-section {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            padding: 18px 16px;
+            border-radius: 18px;
+            border: 1px solid #e7edf8;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            margin: 0 16px 20px 16px;
+        }
+
+        .owner-pick-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .owner-pick-header h2 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #222;
+            line-height: 1.35;
+        }
+
+        .owner-pick-badge {
+            flex: 0 0 auto;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #edf2ff;
+            color: #4263eb;
+            font-size: 0.72rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .owner-pick-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .owner-pick-card {
+            display: grid;
+            grid-template-columns: 30px 1fr;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid #edf0f5;
+        }
+
+        .owner-pick-rank {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #222;
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .owner-pick-balls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .owner-pick-meta {
+            grid-column: 2;
+            color: #777;
+            font-size: 0.74rem;
+            line-height: 1.35;
+        }
+
+        .owner-pick-empty {
+            padding: 14px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            color: #777;
+            font-size: 0.86rem;
+            text-align: center;
+        }
+
         .stats-container {
             background: var(--card);
             padding: 20px;
@@ -636,6 +723,16 @@
         </script>
     </div-->
 
+    <section class="owner-pick-section" id="owner-pick-section">
+        <div class="owner-pick-header">
+            <h2 id="owner-pick-title">주인장 예측 번호 로딩 중...</h2>
+            <span class="owner-pick-badge">Future Engine</span>
+        </div>
+        <div class="owner-pick-list" id="owner-pick-list">
+            <div class="owner-pick-empty">예측 번호를 불러오는 중입니다.</div>
+        </div>
+    </section>
+
     <div class="stats-container">
         <div class="tabs">
             <button class="tab-btn active" onclick="openTab('result-tab', event)">당첨 결과</button>
@@ -813,6 +910,71 @@
             return colors[colorName] || '#aaaaaa';
         };
 
+        function renderOwnerPick(round, picks) {
+            const title = document.getElementById('owner-pick-title');
+            const list = document.getElementById('owner-pick-list');
+            if (!title || !list) return;
+
+            title.textContent = `${round}회차 주인장 예측 번호`;
+            list.innerHTML = '';
+
+            picks.slice(0, 5).forEach((pick, idx) => {
+                const card = document.createElement('div');
+                card.className = 'owner-pick-card';
+
+                const rank = document.createElement('div');
+                rank.className = 'owner-pick-rank';
+                rank.textContent = pick.rank || idx + 1;
+
+                const balls = document.createElement('div');
+                balls.className = 'owner-pick-balls';
+                (pick.numbers || []).forEach(num => {
+                    const ball = document.createElement('div');
+                    ball.className = `ball ${getBallColor(num)}`;
+                    ball.style.cssText = 'width:30px;height:30px;font-size:0.8rem;box-shadow:none;';
+                    ball.textContent = String(num).padStart(2, '0');
+                    balls.appendChild(ball);
+                });
+
+                const meta = document.createElement('div');
+                meta.className = 'owner-pick-meta';
+                const score = typeof pick.final_score === 'number' ? pick.final_score.toFixed(2) : '-';
+                meta.textContent = `합계 ${pick.sum || '-'} · 홀짝 ${pick.odd_even || '-'} · 점수 ${score}`;
+
+                card.appendChild(rank);
+                card.appendChild(balls);
+                card.appendChild(meta);
+                list.appendChild(card);
+            });
+        }
+
+        function renderOwnerPickEmpty(message) {
+            const title = document.getElementById('owner-pick-title');
+            const list = document.getElementById('owner-pick-list');
+            if (title) title.textContent = '주인장 예측 번호';
+            if (list) list.innerHTML = `<div class="owner-pick-empty">${message}</div>`;
+        }
+
+        async function loadOwnerPicks(latestRound) {
+            const nextRound = parseInt(latestRound, 10) + 1;
+            try {
+                const res = await fetch(`lotto_data/star/${nextRound}_star.lotto`, { cache: 'no-store' });
+                if (!res.ok) {
+                    renderOwnerPickEmpty(`${nextRound}회차 예측 번호가 아직 준비되지 않았습니다.`);
+                    return;
+                }
+                const picks = await res.json();
+                if (!Array.isArray(picks) || picks.length === 0) {
+                    renderOwnerPickEmpty(`${nextRound}회차 예측 번호 형식을 확인할 수 없습니다.`);
+                    return;
+                }
+                renderOwnerPick(nextRound, picks);
+            } catch (e) {
+                console.error('주인장 예측 번호 로드 실패:', e);
+                renderOwnerPickEmpty('예측 번호를 불러오지 못했습니다.');
+            }
+        }
+
         async function loadSpecificRound(round) {
             if (!round) return;
             try {
@@ -920,6 +1082,7 @@
                 const latestRes = await fetch('lotto_data/latest.lotto');
                 const latestRound = (await latestRes.text()).trim();
                 currentLatestRound = parseInt(latestRound);
+                loadOwnerPicks(currentLatestRound);
 
                 // 셀렉트 박스 채우기 (결과 탭)
                 const select = document.getElementById('round-select');

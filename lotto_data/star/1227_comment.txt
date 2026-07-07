@@ -1,0 +1,15 @@
+# StarNumber 1227 round picks
+
+- Range: 839-1226
+- Games: 6
+- Engine: hybrid
+- Mix: PickNumber link/rarity scoring + StarNumber chaos/entanglement/genetic candidates
+- Note: lottery draws are independent random events; this is data-based combination design, not a guarantee.
+
+## Picks
+1. 03 16 27 35 38 39 | strategy=A_hot_pair_rare | sum=158 | odd_even=4:2 | high_low=4:2 | score=759.42
+2. 01 03 15 24 27 45 | strategy=B_recent_cold_bridge | sum=115 | odd_even=5:1 | high_low=3:3 | score=721.02
+3. 06 27 28 30 38 41 | strategy=G_pair_seed | sum=170 | odd_even=2:4 | high_low=5:1 | score=714.99
+4. 04 18 26 27 31 38 | strategy=H_star_chaos_quantum | sum=144 | odd_even=2:4 | high_low=4:2 | score=711.19 | star_fitness=261.31
+5. 07 16 24 27 36 37 | strategy=A_hot_pair_rare | sum=147 | odd_even=3:3 | high_low=4:2 | score=702.74
+6. 01 16 28 30 31 39 | strategy=B_recent_cold_bridge | sum=145 | odd_even=3:3 | high_low=4:2 | score=695.13

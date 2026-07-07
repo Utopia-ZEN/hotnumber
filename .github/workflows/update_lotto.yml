@@ -29,9 +29,40 @@ jobs:
         python -m pip install --upgrade pip
         # Install dependencies from requirements.txt (includes selenium, webdriver_manager)
         pip install -r requirements.txt
+
+    - name: Read previous latest round
+      id: before-latest
+      run: |
+        if [ -f lotto_data/latest.lotto ]; then
+          echo "round=$(cat lotto_data/latest.lotto | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+        else
+          echo "round=0" >> "$GITHUB_OUTPUT"
+        fi
         
     - name: Run crawler
       run: python crawler.py
+
+    - name: Check latest round update
+      id: after-latest
+      run: |
+        if [ -f lotto_data/latest.lotto ]; then
+          LATEST_ROUND=$(cat lotto_data/latest.lotto | tr -d '[:space:]')
+        else
+          LATEST_ROUND=0
+        fi
+
+        echo "round=$LATEST_ROUND" >> "$GITHUB_OUTPUT"
+        if [ "$LATEST_ROUND" != "${{ steps.before-latest.outputs.round }}" ]; then
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "latest.lotto changed: ${{ steps.before-latest.outputs.round }} -> $LATEST_ROUND"
+        else
+          echo "changed=false" >> "$GITHUB_OUTPUT"
+          echo "latest.lotto unchanged: $LATEST_ROUND"
+        fi
+
+    - name: Generate owner prediction numbers
+      if: steps.after-latest.outputs.changed == 'true'
+      run: python -B StarNumber.py 5 --engine future --start-round 1
       
     - name: Commit and push changes
       run: |
@@ -42,6 +73,6 @@ jobs:
         if git diff --staged --quiet; then
           echo "No changes to commit"
         else
-          git commit -m "Auto-update lotto data and stats"
+          git commit -m "Auto-update lotto data, stats, and star numbers"
           git push
         fi

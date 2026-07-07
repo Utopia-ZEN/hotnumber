@@ -1,0 +1,14 @@
+# StarNumber 1232 round picks
+
+- Range: 1-1231
+- Games: 5
+- Engine: future
+- Mix: statistical base rates, recency decay, gap pressure, pair/triple lift, pattern likelihood, stability penalty, PickNumber links, and StarNumber genetic candidates
+- Note: lottery draws are independent random events; this is data-based combination design, not a guarantee.
+
+## Picks
+1. 06 27 31 37 38 40 | strategy=J_future_triple_lift | sum=179 | odd_even=3:3 | high_low=5:1 | score=1644.95
+2. 03 12 13 24 27 38 | strategy=J_future_triple_lift | sum=117 | odd_even=3:3 | high_low=3:3 | score=1622.02
+3. 03 08 17 18 27 45 | strategy=J_future_triple_lift | sum=118 | odd_even=4:2 | high_low=2:4 | score=1620.59
+4. 01 13 27 28 42 45 | strategy=I_future_pair_lift | sum=156 | odd_even=4:2 | high_low=4:2 | score=1607.41
+5. 13 18 31 34 44 45 | strategy=J_future_triple_lift | sum=185 | odd_even=3:3 | high_low=4:2 | score=1585.67

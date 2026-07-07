@@ -1,0 +1,37 @@
+[
+  {
+    "numbers": [
+      3,
+      16,
+      27,
+      35,
+      38,
+      39
+    ],
+    "sum": 158,
+    "odd_even": "4:2",
+    "high_low": "4:2",
+    "ac": 9,
+    "consecutive_pairs": 1,
+    "endings": "3,5,6,7,8,9",
+    "overdue_avg": 7.67,
+    "freq_score": 353,
+    "recent_score": 122.8,
+    "pair_score": 133,
+    "triple_score": 28,
+    "link_score": 728.46,
+    "rare_score": 36.18,
+    "final_score": 764.64,
+    "pattern": {
+      "sum_bucket": "150-159",
+      "odd_even": "4:2",
+      "high_low": "4:2",
+      "ending_max_dup": 1,
+      "consecutive_pairs": 1,
+      "span_bucket": "35-39",
+      "ac": 9
+    },
+    "strategy": "B_recent_cold_bridge",
+    "rank": 1
+  }
+]

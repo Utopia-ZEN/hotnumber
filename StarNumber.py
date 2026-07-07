@@ -1,282 +1,395 @@
+import argparse
+import itertools
 import json
-import os
-import math
 import random
 from collections import Counter
-from analyze_pattern import LottoAnalyzer
+from pathlib import Path
+
+from PickNumber.picknumber_analysis import (
+    SEED,
+    START_ROUND,
+    build_stats,
+    generate_pick_numbers,
+    load_draws,
+    picks_to_json_ready,
+    score_candidate,
+    select_diverse,
+)
+from PickNumber.future_engine import generate_future_numbers
+
+
+ROOT = Path(__file__).resolve().parent
+DATA_DIR = ROOT / "lotto_data"
+STAR_DIR = DATA_DIR / "star"
+
 
 class StarNumberGenerator:
-    def __init__(self):
-        self.data_dir = "lotto_data"
-        self.star_dir = os.path.join(self.data_dir, "star")
-        if not os.path.exists(self.star_dir):
-            os.makedirs(self.star_dir)
-        
-        latest_path = os.path.join(self.data_dir, "latest.lotto")
-        if os.path.exists(latest_path):
-            with open(latest_path, 'r') as f:
-                self.latest_round = int(f.read().strip())
-        else:
-            self.latest_round = 0
+    """StarNumber hybrid generator.
 
-        self.analyzer = LottoAnalyzer(1, self.latest_round)
-        self.all_data = self.analyzer.data
+    engine="pick" uses the PickNumber frequency/pair/rarity engine only.
+    engine="star" uses the old StarNumber chaos/entanglement/genetic engine
+    and scores those candidates with PickNumber filters.
+    engine="hybrid" mixes PickNumber and StarNumber candidate pools.
+    engine="future" mixes PickNumber, StarNumber, and the future inference
+    ensemble, and is the default.
+    """
 
-    # --- [1] 양자 얽힘 (Quantum Entanglement) ---
+    def __init__(self, start_round=START_ROUND, end_round=None, seed=SEED, engine="future"):
+        self.start_round = start_round
+        self.latest_round = self._get_latest_round()
+        self.end_round = end_round or self.latest_round
+        self.seed = seed
+        self.engine = engine
+        STAR_DIR.mkdir(parents=True, exist_ok=True)
+
+    def _get_latest_round(self):
+        latest_path = DATA_DIR / "latest.lotto"
+        if latest_path.exists():
+            return int(latest_path.read_text(encoding="utf-8").strip())
+        return 0
+
+    def _history(self, end_round=None):
+        end = end_round or self.end_round
+        return load_draws(1, end)
+
     def _build_entanglement_matrix(self, history):
-        """번호 간의 동시 출현 빈도를 기반으로 얽힘 강도 계산"""
         matrix = {n: Counter() for n in range(1, 46)}
-        # 최근 50회차 가중치 부여
         recent_weight = 2.0
-        
-        for i, d in enumerate(history):
-            nums = d['numbers']
+
+        for i, draw in enumerate(history):
+            nums = draw["numbers"]
             weight = recent_weight if i >= len(history) - 50 else 1.0
-            
             for n1 in nums:
                 for n2 in nums:
                     if n1 != n2:
                         matrix[n1][n2] += weight
         return matrix
 
-    # --- [2] 카오스 이론 (Chaos Theory - Bifurcation) ---
     def _analyze_chaos(self, history):
-        """급격한 패턴 변화(분기점) 감지 및 유사 구간 탐색"""
         scores = Counter()
-        if len(history) < 20: return scores, []
+        if len(history) < 20:
+            return scores, []
 
-        # 최근 5회차의 총합 변화량 계산 (변동성 측정)
-        recent_sums = [sum(d['numbers']) for d in history[-5:]]
-        recent_volatility = sum(abs(recent_sums[i] - recent_sums[i-1]) for i in range(1, 5))
-        
-        # 과거 데이터에서 유사한 변동성을 보인 구간 탐색
+        recent_sums = [sum(d["numbers"]) for d in history[-5:]]
+        recent_volatility = sum(
+            abs(recent_sums[i] - recent_sums[i - 1]) for i in range(1, 5)
+        )
+
         chaos_points = []
         for i in range(len(history) - 10):
-            past_sums = [sum(d['numbers']) for d in history[i:i+5]]
-            past_volatility = sum(abs(past_sums[j] - past_sums[j-1]) for j in range(1, 5))
-            
-            # 변동성 유사도 (차이가 적을수록 유사)
+            past_sums = [sum(d["numbers"]) for d in history[i : i + 5]]
+            past_volatility = sum(
+                abs(past_sums[j] - past_sums[j - 1]) for j in range(1, 5)
+            )
             diff = abs(recent_volatility - past_volatility)
-            if diff < 10: # 임계값
-                # 유사 분기점 직후 회차 번호에 가중치
-                next_nums = history[i+5]['numbers']
-                for n in next_nums:
-                    scores[n] += 5.0 / (1.0 + diff) # 유사할수록 높은 점수
-                chaos_points.append(history[i+5]['round'])
-                
-        return scores, chaos_points[-3:] # 최근 유사 회차 3개 반환
+            if diff < 10:
+                for n in history[i + 5]["numbers"]:
+                    scores[n] += 5.0 / (1.0 + diff)
+                chaos_points.append(history[i + 5]["round"])
 
-    # --- [3] 유전 알고리즘 (Genetic Algorithm) ---
+        return scores, chaos_points[-3:]
+
     def _fitness(self, combo, weights, entanglement):
-        """적합도 함수: 가중치 합 + 얽힘 점수 + 필터 패널티"""
+        combo = sorted(combo)
         score = sum(weights[n] for n in combo)
-        
-        # 얽힘 점수 추가
+
         entangle_score = 0
-        for i in range(6):
-            for j in range(i+1, 6):
-                n1, n2 = combo[i], combo[j]
-                entangle_score += entanglement[n1][n2] * 0.01
-        
+        for a, b in itertools.combinations(combo, 2):
+            entangle_score += entanglement[a][b] * 0.01
         score += entangle_score
-        
-        # 필터 패널티 (조건 불만족 시 점수 대폭 삭감)
-        if not (100 <= sum(combo) <= 175): score -= 50
-        odd = sum(1 for n in combo if n % 2 != 0)
-        if not (2 <= odd <= 4): score -= 30
-        
-        # 3연번 패널티
-        sorted_c = sorted(combo)
-        for k in range(4):
-            if sorted_c[k+2] == sorted_c[k+1]+1 == sorted_c[k]+2:
+
+        total = sum(combo)
+        if not 100 <= total <= 175:
+            score -= 50
+
+        odd = sum(1 for n in combo if n % 2)
+        if not 2 <= odd <= 4:
+            score -= 30
+
+        for i in range(4):
+            if combo[i + 2] == combo[i + 1] + 1 == combo[i] + 2:
                 score -= 100
-                
+
         return score
 
-    def _genetic_algorithm(self, weights, entanglement):
-        """진화 연산 수행"""
-        POPULATION_SIZE = 100
-        GENERATIONS = 50
-        MUTATION_RATE = 0.1
-        
-        # 초기 세대 생성 (가중치 기반 랜덤)
-        population = []
+    def _genetic_algorithm(self, weights, entanglement, rng, generations=55):
+        population_size = 120
+        mutation_rate = 0.12
         nums = list(range(1, 46))
-        w_list = [weights[n] for n in nums]
-        
-        for _ in range(POPULATION_SIZE):
-            # 중복 없이 6개 추출
-            ind = set()
-            while len(ind) < 6:
-                ind.update(random.choices(nums, weights=w_list, k=6-len(ind)))
-            population.append(sorted(list(ind)))
-            
+        weight_list = [max(0.1, weights[n]) for n in nums]
+
+        population = []
+        for _ in range(population_size):
+            individual = set()
+            while len(individual) < 6:
+                individual.update(rng.choices(nums, weights=weight_list, k=6 - len(individual)))
+            population.append(sorted(individual))
+
         best_history = []
-        
-        for gen in range(GENERATIONS):
-            # 적합도 평가
+        best_individual = population[0]
+
+        for _ in range(generations):
             fitness_scores = [self._fitness(ind, weights, entanglement) for ind in population]
-            
-            # 최고점 기록
-            max_score = max(fitness_scores)
-            best_ind = population[fitness_scores.index(max_score)]
-            best_history.append(max_score)
-            
-            # 선택 (Roulette Wheel Selection)
-            # 음수 점수 보정
+            best_idx = max(range(len(fitness_scores)), key=lambda i: fitness_scores[i])
+            best_individual = population[best_idx]
+            best_history.append(fitness_scores[best_idx])
+
             min_fit = min(fitness_scores)
-            adj_scores = [s - min_fit + 1 for s in fitness_scores]
-            
-            new_population = []
-            # 엘리트 보존 (상위 2개 무조건 생존)
-            elite_indices = sorted(range(len(fitness_scores)), key=lambda i: fitness_scores[i], reverse=True)[:2]
-            for idx in elite_indices:
-                new_population.append(population[idx])
-            
-            while len(new_population) < POPULATION_SIZE:
-                # 부모 선택
-                p1, p2 = random.choices(population, weights=adj_scores, k=2)
-                
-                # 교차 (Crossover) - 단일 지점
-                cut = random.randint(1, 5)
-                child = list(set(p1[:cut] + p2[cut:]))
-                
-                # 부족한 번호 채우기
+            adjusted = [s - min_fit + 1 for s in fitness_scores]
+
+            elite_indices = sorted(
+                range(len(fitness_scores)), key=lambda i: fitness_scores[i], reverse=True
+            )[:4]
+            new_population = [population[i] for i in elite_indices]
+
+            while len(new_population) < population_size:
+                parent_1, parent_2 = rng.choices(population, weights=adjusted, k=2)
+                cut = rng.randint(1, 5)
+                child = list(set(parent_1[:cut] + parent_2[cut:]))
+
                 while len(child) < 6:
-                    new_n = random.choices(nums, weights=w_list)[0]
-                    if new_n not in child: child.append(new_n)
-                
-                # 돌연변이 (Mutation)
-                if random.random() < MUTATION_RATE:
-                    idx = random.randint(0, 5)
-                    new_n = random.randint(1, 45)
-                    while new_n in child: new_n = random.randint(1, 45)
-                    child[idx] = new_n
-                
+                    n = rng.choices(nums, weights=weight_list, k=1)[0]
+                    if n not in child:
+                        child.append(n)
+
+                if rng.random() < mutation_rate:
+                    idx = rng.randint(0, 5)
+                    n = rng.randint(1, 45)
+                    while n in child:
+                        n = rng.randint(1, 45)
+                    child[idx] = n
+
                 new_population.append(sorted(child[:6]))
-            
+
             population = new_population
 
-        return best_ind, best_history
+        return sorted(best_individual), best_history
 
-    def analyze_and_predict(self, target_round):
-        history = [d for d in self.all_data if d['round'] < target_round]
-        actual_data = next((d for d in self.all_data if d['round'] == target_round), None)
-        
+    def _star_candidates(self, game_count, stats, history):
         if len(history) < 50:
-            return [1, 2, 3, 4, 5, 6], "데이터 부족"
+            return []
 
-        # --- 1. 종합 가중치 산출 ---
-        weights = {n: 1.0 for n in range(1, 46)}
-        details = {n: [] for n in range(1, 46)}
-
-        # A. 기본 통계 (최근 10주)
-        recent_10 = [n for d in history[-10:] for n in d['numbers']]
-        freq_10 = Counter(recent_10)
-        for n in range(1, 46):
-            w = freq_10.get(n, 0) * 1.0
-            weights[n] += w
-            if w > 0: details[n].append(f"최근빈도({w:.1f})")
-
-        # B. 카오스 이론 (분기점 분석)
+        rng = random.Random(self.seed + 991)
+        recent_10 = Counter(n for d in history[-10:] for n in d["numbers"])
         chaos_scores, chaos_rounds = self._analyze_chaos(history)
-        for n, s in chaos_scores.items():
-            weights[n] += s
-            if s > 2.0: details[n].append(f"카오스패턴({s:.1f})")
-
-        # C. 양자 얽힘 매트릭스 생성
         entanglement = self._build_entanglement_matrix(history)
 
-        # --- 2. 유전 알고리즘 실행 ---
-        best_combo, fit_history = self._genetic_algorithm(weights, entanglement)
-        recommended = sorted(best_combo)
+        weights = {n: 1.0 + recent_10.get(n, 0) for n in range(1, 46)}
+        for n, score in chaos_scores.items():
+            weights[n] += score
 
-        # --- 리포트 작성 ---
-        report = []
-        report.append(f"■ {target_round}회차 [Chaos & Quantum] 분석 리포트 (v6.0) ■")
-        report.append("="*60)
-        
-        if actual_data:
-            actual_nums = actual_data['numbers']
-            bonus = actual_data.get('bonus')
-            matched = set(recommended) & set(actual_nums)
-            rank = "낙첨"
-            if len(matched) == 6: rank = "1등"
-            elif len(matched) == 5 and bonus in recommended: rank = "2등"
-            elif len(matched) == 5: rank = "3등"
-            elif len(matched) == 4: rank = "4등"
-            elif len(matched) == 3: rank = "5등"
-            report.append(f"▶ [검증 결과] {len(matched)}개 적중 {sorted(list(matched))} -> {rank}")
-            report.append(f"   (실제: {actual_nums} +{bonus})")
-        
-        report.append("-" * 60)
-        report.append("1. 적용된 알고리즘 (v6.0)")
-        report.append("  - 카오스 이론: 급격한 패턴 변화(분기점)를 감지하여 유사 과거 회차의 번호 추적")
-        if chaos_rounds:
-            report.append(f"    (유사 분기점 회차: {chaos_rounds})")
-        report.append("  - 양자 얽힘: 번호 간의 보이지 않는 연결고리(동시 출현)를 매트릭스로 분석")
-        report.append("  - 유전 알고리즘: 50세대에 걸친 교배와 돌연변이를 통해 최적의 조합 진화")
-        report.append(f"    (적합도 진화: {fit_history[0]:.1f} -> {fit_history[-1]:.1f})")
-        report.append("-" * 60)
-        
-        report.append("2. 번호별 DNA 분석 (선택 근거)")
-        for n in recommended:
-            w = weights[n]
-            d_str = ", ".join(details[n]) if details[n] else "기본 가중치"
-            
-            # 얽힘 파트너 찾기 (조합 내에서)
-            partners = []
-            for other in recommended:
-                if n == other: continue
-                if entanglement[n][other] > 5: # 강한 얽힘 기준
-                    partners.append(f"{other}번")
-            
-            report.append(f"  ★ [{n:02d}번] 가중치 합: {w:.1f}")
-            report.append(f"     └ 근거: {d_str}")
-            if partners:
-                report.append(f"     └ 양자 얽힘(동반): {', '.join(partners)}")
-            
-        report.append("-" * 60)
-        report.append(f"★ 최종 진화 결과: {recommended}")
+        raw = []
+        seen = set()
+        attempts = max(20, game_count * 10)
+        for _ in range(attempts):
+            combo, fit_history = self._genetic_algorithm(weights, entanglement, rng)
+            legacy_fitness = fit_history[-1] if fit_history else self._fitness(combo, weights, entanglement)
+            variants = [combo]
+            weighted_nums = list(range(1, 46))
+            weighted_values = [max(0.1, weights[n]) for n in weighted_nums]
 
-        return recommended, "\n".join(report)
+            for _ in range(24):
+                variant = set(combo)
+                remove_count = rng.choice([1, 1, 2])
+                for n in rng.sample(list(variant), remove_count):
+                    variant.remove(n)
+                while len(variant) < 6:
+                    n = rng.choices(weighted_nums, weights=weighted_values, k=1)[0]
+                    variant.add(n)
+                variants.append(sorted(variant))
 
-    def run_verification(self):
-        print(f"2회차부터 {self.latest_round}회차까지 v6.0 알고리즘 검증 중...")
-        for r in range(2, self.latest_round + 1):
-            prediction, comment = self.analyze_and_predict(r)
-            
-            actual = next((d['numbers'] for d in self.all_data if d['round'] == r), None)
-            result = {"round": r, "predicted_numbers": prediction, "actual_numbers": actual}
-            
-            with open(os.path.join(self.star_dir, f"{r}_star.lotto"), 'w', encoding='utf-8') as f:
-                json.dump(result, f, indent=4, ensure_ascii=False)
-            
-            with open(os.path.join(self.star_dir, f"{r}_comment.txt"), 'w', encoding='utf-8') as f:
-                f.write(comment)
-            
-            if r % 50 == 0:
-                print(f"진화 연산 진행률: {r}/{self.latest_round}...")
-        print("검증 완료.")
+            for variant in variants:
+                nums_key = tuple(sorted(variant))
+                if nums_key in seen:
+                    continue
+                seen.add(nums_key)
+                scored = score_candidate(
+                    variant,
+                    stats,
+                    self.end_round - self.start_round + 1,
+                    self.start_round,
+                    self.end_round,
+                )
+                if not scored:
+                    continue
 
-    def predict_next(self):
-        next_round = self.latest_round + 1
-        prediction, comment = self.analyze_and_predict(next_round)
-        
-        print("\n" + "="*60)
-        print(f"다음 {next_round}회차 [Chaos & Quantum] 예측 결과")
-        print("="*60)
-        print(comment)
-        
-        with open(os.path.join(self.star_dir, f"{next_round}_star.lotto"), 'w', encoding='utf-8') as f:
-            json.dump({"round": next_round, "predicted_numbers": prediction}, f, indent=4, ensure_ascii=False)
-            
-        with open(os.path.join(self.star_dir, f"{next_round}_comment.txt"), 'w', encoding='utf-8') as f:
-            f.write(comment)
-        
-        return prediction
+                variant_fitness = self._fitness(variant, weights, entanglement)
+                quantum_score = sum(entanglement[a][b] for a, b in itertools.combinations(variant, 2))
+                scored["strategy"] = "H_star_chaos_quantum"
+                scored["star_fitness"] = round(max(legacy_fitness, variant_fitness), 2)
+                scored["quantum_score"] = round(quantum_score, 2)
+                scored["chaos_rounds"] = chaos_rounds
+                scored["final_score"] = round(
+                    scored["final_score"] + min(45, max(legacy_fitness, variant_fitness) * 1.4),
+                    2,
+                )
+                raw.append(scored)
+
+        return raw
+
+    def generate_games(self, n, output_path=None, engine=None):
+        engine = engine or self.engine
+        if engine not in {"pick", "star", "hybrid", "future"}:
+            raise ValueError("engine must be one of: pick, star, hybrid, future")
+
+        history = self._history(self.end_round)
+        stats = build_stats([d for d in history if self.start_round <= d["round"] <= self.end_round])
+
+        candidates = []
+        if engine in {"pick", "hybrid", "future"}:
+            _, _, pick_picks = generate_pick_numbers(
+                game_count=max(n, 6),
+                start_round=self.start_round,
+                end_round=self.end_round,
+                seed=self.seed,
+                samples_per_strategy=35000,
+                pair_seed_samples=500,
+            )
+            candidates.extend(pick_picks)
+
+        if engine in {"star", "hybrid", "future"}:
+            candidates.extend(self._star_candidates(n, stats, history))
+
+        if engine == "future":
+            _, _, future_picks = generate_future_numbers(
+                game_count=max(n, 6),
+                start_round=self.start_round,
+                end_round=self.end_round,
+                seed=self.seed,
+                candidate_budget=70000,
+            )
+            candidates.extend(future_picks)
+
+        picks = select_diverse(candidates, limit=n)
+        if len(picks) < n:
+            raise RuntimeError(f"Could not produce {n} games with {engine} engine")
+
+        payload = picks_to_json_ready(picks)
+        path = Path(output_path) if output_path else STAR_DIR / f"{self.end_round + 1}_star.lotto"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        return payload, path
+
+    def build_comment(self, target_round, payload, engine=None):
+        engine = engine or self.engine
+        lines = [
+            f"# StarNumber {target_round} round picks",
+            "",
+            f"- Range: {self.start_round}-{self.end_round}",
+            f"- Games: {len(payload)}",
+            f"- Engine: {engine}",
+            "- Mix: statistical base rates, recency decay, gap pressure, pair/triple lift, pattern likelihood, stability penalty, PickNumber links, and StarNumber genetic candidates",
+            "- Note: lottery draws are independent random events; this is data-based combination design, not a guarantee.",
+            "",
+            "## Picks",
+        ]
+        for item in payload:
+            nums = " ".join(f"{n:02d}" for n in item["numbers"])
+            line = (
+                f"{item['rank']}. {nums} | strategy={item['strategy']} | "
+                f"sum={item['sum']} | odd_even={item['odd_even']} | "
+                f"high_low={item['high_low']} | score={item['final_score']}"
+            )
+            if "star_fitness" in item:
+                line += f" | star_fitness={item['star_fitness']}"
+            lines.append(line)
+        return "\n".join(lines) + "\n"
+
+    def predict_next(self, n=6, engine=None):
+        target_round = self.end_round + 1
+        payload, json_path = self.generate_games(n, STAR_DIR / f"{target_round}_star.lotto", engine)
+        comment = self.build_comment(target_round, payload, engine)
+        comment_path = STAR_DIR / f"{target_round}_comment.txt"
+        comment_path.write_text(comment, encoding="utf-8")
+        return payload, json_path, comment_path
+
+    def analyze_and_predict(self, target_round, n=1, engine=None):
+        if target_round <= self.start_round:
+            raise ValueError("target_round must be greater than start_round")
+        previous_end_round = self.end_round
+        self.end_round = target_round - 1
+        try:
+            payload, _ = self.generate_games(n, engine=engine)
+            comment = self.build_comment(target_round, payload, engine)
+            first_numbers = payload[0]["numbers"] if payload else []
+            return first_numbers, comment
+        finally:
+            self.end_round = previous_end_round
+
+    def run_verification(self, start_round=None, end_round=None, engine=None):
+        first = start_round or max(self.start_round + 1, 2)
+        last = end_round or self.latest_round
+        results = []
+
+        for target_round in range(first, last + 1):
+            predicted, _ = self.analyze_and_predict(target_round, n=1, engine=engine)
+            actual = self._load_actual_numbers(target_round)
+            matched = sorted(set(predicted) & set(actual or []))
+            results.append(
+                {
+                    "round": target_round,
+                    "predicted_numbers": predicted,
+                    "actual_numbers": actual,
+                    "match_count": len(matched),
+                    "matched_numbers": matched,
+                }
+            )
+
+        output_path = STAR_DIR / "verification_summary.json"
+        output_path.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+        return results, output_path
+
+    def _load_actual_numbers(self, round_no):
+        for path in DATA_DIR.rglob(f"{round_no}.lotto"):
+            if "_star" in path.name:
+                continue
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if data.get("round") == round_no:
+                return sorted(data.get("numbers", []))
+        return None
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Generate StarNumber lottery games.")
+    parser.add_argument("n", nargs="?", type=int, default=6, help="number of games to generate")
+    parser.add_argument("--start-round", type=int, default=START_ROUND)
+    parser.add_argument("--end-round", type=int)
+    parser.add_argument("--seed", type=int, default=SEED)
+    parser.add_argument("--engine", choices=["pick", "star", "hybrid", "future"], default="future")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--verify", action="store_true", help="run historical verification summary")
+    args = parser.parse_args()
+
+    generator = StarNumberGenerator(
+        start_round=args.start_round,
+        end_round=args.end_round,
+        seed=args.seed,
+        engine=args.engine,
+    )
+
+    if args.verify:
+        _, path = generator.run_verification(engine=args.engine)
+        print(f"verification saved: {path}")
+        return
+
+    if args.output:
+        payload, path = generator.generate_games(args.n, args.output, args.engine)
+        target_round = generator.end_round + 1
+        comment = generator.build_comment(target_round, payload, args.engine)
+        comment_path = Path(args.output).with_suffix(".txt")
+        comment_path.write_text(comment, encoding="utf-8")
+    else:
+        payload, path, comment_path = generator.predict_next(args.n, args.engine)
+
+    for item in payload:
+        numbers = " ".join(f"{n:02d}" for n in item["numbers"])
+        print(f"{item['rank']}. {numbers} | {item['strategy']} | score={item['final_score']}")
+    print(f"saved: {path}")
+    print(f"comment: {comment_path}")
+
 
 if __name__ == "__main__":
-    generator = StarNumberGenerator()
-    generator.run_verification()
-    generator.predict_next()
+    main()
