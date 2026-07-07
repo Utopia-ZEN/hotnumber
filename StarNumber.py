@@ -21,6 +21,16 @@ from PickNumber.future_engine import generate_future_numbers
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "lotto_data"
 STAR_DIR = DATA_DIR / "star"
+STAR_BUCKET_SIZE = 500
+
+
+def get_star_round_dir(round_no):
+    start = ((int(round_no) - 1) // STAR_BUCKET_SIZE) * STAR_BUCKET_SIZE + 1
+    return STAR_DIR / f"{start}-{start + STAR_BUCKET_SIZE - 1}"
+
+
+def get_star_file_path(round_no, suffix):
+    return get_star_round_dir(round_no) / f"{round_no}_{suffix}"
 
 
 class StarNumberGenerator:
@@ -265,7 +275,7 @@ class StarNumberGenerator:
             raise RuntimeError(f"Could not produce {n} games with {engine} engine")
 
         payload = picks_to_json_ready(picks)
-        path = Path(output_path) if output_path else STAR_DIR / f"{self.end_round + 1}_star.lotto"
+        path = Path(output_path) if output_path else get_star_file_path(self.end_round + 1, "star.lotto")
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         return payload, path
@@ -297,9 +307,10 @@ class StarNumberGenerator:
 
     def predict_next(self, n=6, engine=None):
         target_round = self.end_round + 1
-        payload, json_path = self.generate_games(n, STAR_DIR / f"{target_round}_star.lotto", engine)
+        payload, json_path = self.generate_games(n, get_star_file_path(target_round, "star.lotto"), engine)
         comment = self.build_comment(target_round, payload, engine)
-        comment_path = STAR_DIR / f"{target_round}_comment.txt"
+        comment_path = get_star_file_path(target_round, "comment.txt")
+        comment_path.parent.mkdir(parents=True, exist_ok=True)
         comment_path.write_text(comment, encoding="utf-8")
         return payload, json_path, comment_path
 

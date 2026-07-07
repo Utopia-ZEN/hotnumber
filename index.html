@@ -955,10 +955,20 @@
             if (list) list.innerHTML = `<div class="owner-pick-empty">${message}</div>`;
         }
 
+        function getStarRoundFolder(round) {
+            const bucketSize = 500;
+            const start = Math.floor((parseInt(round, 10) - 1) / bucketSize) * bucketSize + 1;
+            return `${start}-${start + bucketSize - 1}`;
+        }
+
         async function loadOwnerPicks(latestRound) {
             const nextRound = parseInt(latestRound, 10) + 1;
             try {
-                const res = await fetch(`lotto_data/star/${nextRound}_star.lotto`, { cache: 'no-store' });
+                const folder = getStarRoundFolder(nextRound);
+                let res = await fetch(`lotto_data/star/${folder}/${nextRound}_star.lotto`, { cache: 'no-store' });
+                if (!res.ok) {
+                    res = await fetch(`lotto_data/star/${nextRound}_star.lotto`, { cache: 'no-store' });
+                }
                 if (!res.ok) {
                     renderOwnerPickEmpty(`${nextRound}회차 예측 번호가 아직 준비되지 않았습니다.`);
                     return;
