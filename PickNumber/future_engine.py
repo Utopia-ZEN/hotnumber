@@ -35,14 +35,32 @@ class FutureInferenceEngine:
             return START_ROUND
         return latest[-1]["round"]
 
-    def generate(self, game_count=6, candidate_budget=90000):
-        candidates = self._build_candidates(candidate_budget)
+    def generate(
+        self,
+        game_count=6,
+        candidate_budget=90000,
+        min_pool_iterations=2000,
+        pair_iterations=350,
+        triple_iterations=220,
+    ):
+        candidates = self._build_candidates(
+            candidate_budget,
+            min_pool_iterations=min_pool_iterations,
+            pair_iterations=pair_iterations,
+            triple_iterations=triple_iterations,
+        )
         picks = select_diverse(candidates, limit=game_count)
         if len(picks) < game_count:
             raise RuntimeError(f"Could not produce {game_count} future inference picks")
         return self.draws, self.stats, picks
 
-    def _build_candidates(self, candidate_budget):
+    def _build_candidates(
+        self,
+        candidate_budget,
+        min_pool_iterations=2000,
+        pair_iterations=350,
+        triple_iterations=220,
+    ):
         rng = random.Random(self.seed + 4049)
         number_model = self._number_model()
         top_pairs = self._top_lift_pairs(number_model, 120)
@@ -55,7 +73,7 @@ class FutureInferenceEngine:
         for strategy, pool, weight_boost in pools:
             clean_pool = sorted(set(pool))
             weights = [max(0.01, number_model[n]["weight"] * weight_boost.get(n, 1.0)) for n in clean_pool]
-            iterations = max(2000, candidate_budget // len(pools))
+            iterations = max(min_pool_iterations, candidate_budget // len(pools))
 
             for _ in range(iterations):
                 nums = self._weighted_unique_sample(rng, clean_pool, weights, 6)
@@ -65,14 +83,14 @@ class FutureInferenceEngine:
         for pair in top_pairs[:90]:
             base = [n for n in all_nums if n not in pair]
             weights = [number_model[n]["weight"] for n in base]
-            for _ in range(350):
+            for _ in range(pair_iterations):
                 nums = sorted(set(pair) | set(self._weighted_unique_sample(rng, base, weights, 4)))
                 self._add_scored_candidate(candidates, seen, nums, number_model, "I_future_pair_lift")
 
         for triple in top_triples[:45]:
             base = [n for n in all_nums if n not in triple]
             weights = [number_model[n]["weight"] for n in base]
-            for _ in range(220):
+            for _ in range(triple_iterations):
                 nums = sorted(set(triple) | set(self._weighted_unique_sample(rng, base, weights, 3)))
                 self._add_scored_candidate(candidates, seen, nums, number_model, "J_future_triple_lift")
 
@@ -265,6 +283,15 @@ def generate_future_numbers(
     end_round=None,
     seed=SEED,
     candidate_budget=90000,
+    min_pool_iterations=2000,
+    pair_iterations=350,
+    triple_iterations=220,
 ):
     engine = FutureInferenceEngine(start_round=start_round, end_round=end_round, seed=seed)
-    return engine.generate(game_count=game_count, candidate_budget=candidate_budget)
+    return engine.generate(
+        game_count=game_count,
+        candidate_budget=candidate_budget,
+        min_pool_iterations=min_pool_iterations,
+        pair_iterations=pair_iterations,
+        triple_iterations=triple_iterations,
+    )
