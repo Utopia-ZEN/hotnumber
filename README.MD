@@ -134,3 +134,44 @@ python recommend_numbers.py
     3.  변경된 데이터(`lotto_data/`)를 감지하여 자동으로 Commit & Push
 
 따라서 별도의 수동 조작 없이도 저장소의 데이터는 항상 최신 상태로 유지됩니다.
+
+## 추가 기능: StarNumber Future Engine
+
+### 다음 회차 예측 번호 생성
+
+`StarNumber.py`는 `PickNumber` 분석 로직과 기존 StarNumber 로직, `FutureInferenceEngine`을 함께 사용해 다음 회차용 1~n게임을 생성합니다.
+
+```bash
+python -B StarNumber.py 5 --engine future --start-round 1
+```
+
+- `5`: 생성할 게임 수입니다. 필요하면 1~n개로 바꿀 수 있습니다.
+- `--engine future`: 통계 기반 미래 추론 엔진을 사용합니다.
+- `--start-round 1`: 1회부터 `lotto_data/latest.lotto`의 최신 회차까지 전체 이력을 반영합니다.
+- 결과는 `pick_numbers.json`과 비슷한 JSON 구조로 저장되며, 기본 출력은 `lotto_data/star/` 하위에 생성됩니다.
+
+독립 실행용 진입점도 사용할 수 있습니다.
+
+```bash
+python -B PickNumber/generate_future_numbers.py 5 --start-round 1
+```
+
+### GitHub Actions 자동 생성
+
+`.github/workflows/update_lotto.yml`은 `crawler.py` 실행 후 `lotto_data/latest.lotto`가 새 회차로 바뀌었는지 확인합니다. 최신 회차가 갱신되면 아래 명령으로 다음 회차 StarNumber 예측을 자동 생성하고 `lotto_data/` 변경분을 커밋합니다.
+
+```bash
+python -B StarNumber.py 5 --engine future --start-round 1
+```
+
+### star 폴더 분리 정책
+
+GitHub에서 한 폴더에 파일이 과도하게 쌓이지 않도록 `lotto_data/star/`는 500회차 단위 버킷으로 분리됩니다.
+
+- 예: `lotto_data/star/1-500/`
+- 예: `lotto_data/star/501-1000/`
+- 예: `lotto_data/star/1001-1500/`
+
+각 회차는 기본적으로 `{회차}_star.lotto`, `{회차}_comment.txt` 두 파일을 만들기 때문에 500회차 단위로 나누면 폴더당 최대 1000개 이하를 유지할 수 있습니다.
+
+현재 GitHub Pages의 `index.html`에는 예측 번호를 표시하지 않습니다. 예측 파일은 자동 생성 및 보관용 데이터로만 관리합니다.
