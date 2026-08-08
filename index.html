@@ -282,6 +282,107 @@
             text-align: center;
         }
 
+        .owner-result {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid #dfe6f1;
+        }
+
+        .owner-result-header,
+        .owner-result-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .owner-result-header h3 {
+            margin: 0;
+            color: #222;
+            font-size: 0.98rem;
+        }
+
+        .owner-result-round {
+            color: #777;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .owner-result-summary {
+            margin: 10px 0;
+            padding: 10px 0;
+            border-top: 1px dashed #dfe6f1;
+            border-bottom: 1px dashed #dfe6f1;
+            color: #555;
+            font-size: 0.82rem;
+        }
+
+        .owner-result-summary strong {
+            color: #e03131;
+            font-size: 1rem;
+        }
+
+        .owner-result-list {
+            display: grid;
+            gap: 7px;
+        }
+
+        .owner-result-row {
+            display: grid;
+            grid-template-columns: 28px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 8px;
+            min-height: 34px;
+            color: #555;
+            font-size: 0.78rem;
+        }
+
+        .owner-result-rank {
+            color: #777;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .owner-result-balls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .owner-result-ball {
+            width: 26px;
+            height: 26px;
+            font-size: 0.72rem;
+            box-shadow: none;
+            transition: opacity 0.2s;
+        }
+
+        .owner-result-ball.is-match {
+            outline: 2px solid #e03131;
+            outline-offset: 1px;
+        }
+
+        .owner-result-ball.is-bonus {
+            outline: 2px solid #1971c2;
+            outline-offset: 1px;
+        }
+
+        .owner-result-ball.is-miss {
+            opacity: 0.24;
+            filter: grayscale(0.65);
+        }
+
+        .owner-result-count {
+            color: #333;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .owner-result-prize {
+            color: #1971c2;
+        }
+
         .stats-container {
             background: var(--card);
             padding: 20px;
@@ -731,6 +832,13 @@
         <div class="owner-pick-list" id="owner-pick-list">
             <div class="owner-pick-empty">예측 번호를 불러오는 중입니다.</div>
         </div>
+        <div class="owner-result" id="owner-result">
+            <div class="owner-result-header">
+                <h3>지난 예측 적중 결과</h3>
+                <span class="owner-result-round" id="owner-result-round">확인 중...</span>
+            </div>
+            <div id="owner-result-content" class="owner-pick-empty">적중 결과를 불러오는 중입니다.</div>
+        </div>
     </section>
 
     <div class="stats-container">
@@ -961,27 +1069,130 @@
             return `${start}-${start + bucketSize - 1}`;
         }
 
+        async function fetchOwnerPicks(round) {
+            const folder = getStarRoundFolder(round);
+            let res = await fetch(`lotto_data/star/${folder}/${round}_star.lotto`, { cache: 'no-store' });
+            if (!res.ok) {
+                res = await fetch(`lotto_data/star/${round}_star.lotto`, { cache: 'no-store' });
+            }
+            if (!res.ok) return null;
+
+            const picks = await res.json();
+            return Array.isArray(picks) && picks.length > 0 ? picks : null;
+        }
+
         async function loadOwnerPicks(latestRound) {
             const nextRound = parseInt(latestRound, 10) + 1;
             try {
-                const folder = getStarRoundFolder(nextRound);
-                let res = await fetch(`lotto_data/star/${folder}/${nextRound}_star.lotto`, { cache: 'no-store' });
-                if (!res.ok) {
-                    res = await fetch(`lotto_data/star/${nextRound}_star.lotto`, { cache: 'no-store' });
-                }
-                if (!res.ok) {
+                const picks = await fetchOwnerPicks(nextRound);
+                if (!picks) {
                     renderOwnerPickEmpty(`${nextRound}회차 예측 번호가 아직 준비되지 않았습니다.`);
-                    return;
-                }
-                const picks = await res.json();
-                if (!Array.isArray(picks) || picks.length === 0) {
-                    renderOwnerPickEmpty(`${nextRound}회차 예측 번호 형식을 확인할 수 없습니다.`);
                     return;
                 }
                 renderOwnerPick(nextRound, picks);
             } catch (e) {
                 console.error('주인장 예측 번호 로드 실패:', e);
                 renderOwnerPickEmpty('예측 번호를 불러오지 못했습니다.');
+            }
+        }
+
+        function getPrizeLabel(mainMatches, bonusMatched) {
+            if (mainMatches === 6) return '1등';
+            if (mainMatches === 5 && bonusMatched) return '2등';
+            if (mainMatches === 5) return '3등';
+            if (mainMatches === 4) return '4등';
+            if (mainMatches === 3) return '5등';
+            return '';
+        }
+
+        function renderOwnerPickResult(round, picks, draw) {
+            const roundLabel = document.getElementById('owner-result-round');
+            const content = document.getElementById('owner-result-content');
+            if (!roundLabel || !content) return;
+
+            const winningNumbers = new Set(draw.numbers || []);
+            const results = picks.slice(0, 5).map((pick, idx) => {
+                const matched = (pick.numbers || []).filter(num => winningNumbers.has(num));
+                const bonusMatched = (pick.numbers || []).includes(draw.bonus);
+                return {
+                    rank: pick.rank || idx + 1,
+                    numbers: pick.numbers || [],
+                    matched,
+                    bonusMatched,
+                    prize: getPrizeLabel(matched.length, bonusMatched)
+                };
+            });
+            const best = Math.max(0, ...results.map(result => result.matched.length));
+
+            roundLabel.textContent = `${round}회차`;
+            content.className = '';
+            content.innerHTML = '';
+
+            const summary = document.createElement('div');
+            summary.className = 'owner-result-summary';
+            summary.innerHTML = `<span>5게임 중 최고 적중</span><strong>${best}개</strong>`;
+            content.appendChild(summary);
+
+            const list = document.createElement('div');
+            list.className = 'owner-result-list';
+            results.forEach(result => {
+                const row = document.createElement('div');
+                row.className = 'owner-result-row';
+
+                const prizeText = result.prize
+                    ? ` <span class="owner-result-prize">(${result.prize})</span>`
+                    : '';
+
+                const rank = document.createElement('span');
+                rank.className = 'owner-result-rank';
+                rank.textContent = `${result.rank}위`;
+
+                const balls = document.createElement('div');
+                balls.className = 'owner-result-balls';
+                result.numbers.forEach(num => {
+                    const ball = document.createElement('span');
+                    const isMatch = winningNumbers.has(num);
+                    const isBonus = num === draw.bonus;
+                    const resultClass = isMatch ? 'is-match' : (isBonus ? 'is-bonus' : 'is-miss');
+                    ball.className = `ball ${getBallColor(num)} owner-result-ball ${resultClass}`;
+                    ball.textContent = String(num).padStart(2, '0');
+                    ball.title = isMatch ? '당첨번호 일치' : (isBonus ? '보너스 번호' : '미적중');
+                    balls.appendChild(ball);
+                });
+
+                const count = document.createElement('span');
+                count.className = 'owner-result-count';
+                count.innerHTML = `${result.matched.length}개${prizeText}`;
+
+                row.appendChild(rank);
+                row.appendChild(balls);
+                row.appendChild(count);
+                list.appendChild(row);
+            });
+            content.appendChild(list);
+        }
+
+        function renderOwnerPickResultEmpty(round, message) {
+            const roundLabel = document.getElementById('owner-result-round');
+            const content = document.getElementById('owner-result-content');
+            if (roundLabel) roundLabel.textContent = round ? `${round}회차` : '';
+            if (content) {
+                content.className = 'owner-pick-empty';
+                content.textContent = message;
+            }
+        }
+
+        async function loadOwnerPickResult(round, draw) {
+            try {
+                const picks = await fetchOwnerPicks(round);
+                if (!picks) {
+                    renderOwnerPickResultEmpty(round, `${round}회차 예측 기록이 없습니다.`);
+                    return;
+                }
+                renderOwnerPickResult(round, picks, draw);
+            } catch (e) {
+                console.error('주인장 예측 적중 결과 로드 실패:', e);
+                renderOwnerPickResultEmpty(round, '예측 적중 결과를 불러오지 못했습니다.');
             }
         }
 
@@ -997,6 +1208,7 @@
                 }
 
                 updateUI(data, prevData);
+                loadOwnerPickResult(parseInt(round, 10), data);
             } catch (e) {
                 console.error('회차 데이터 로드 실패:', e);
             }
