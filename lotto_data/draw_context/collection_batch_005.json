@@ -1,0 +1,1607 @@
+{
+  "created_at_utc": "2026-08-21T04:20:00Z",
+  "purpose": "fifth extraction-order collection batch; preregistered third-party reupload acquisition batch toward the 300-record checkpoint",
+  "round_count": 81,
+  "rounds": [
+    987,
+    986,
+    985,
+    984,
+    983,
+    982,
+    981,
+    980,
+    979,
+    978,
+    977,
+    976,
+    975,
+    974,
+    973,
+    972,
+    971,
+    970,
+    969,
+    968,
+    967,
+    966,
+    965,
+    964,
+    963,
+    962,
+    961,
+    960,
+    959,
+    958,
+    957,
+    956,
+    955,
+    954,
+    953,
+    952,
+    951,
+    950,
+    949,
+    948,
+    947,
+    946,
+    945,
+    944,
+    943,
+    942,
+    941,
+    940,
+    939,
+    938,
+    937,
+    936,
+    935,
+    934,
+    933,
+    932,
+    931,
+    930,
+    929,
+    928,
+    927,
+    926,
+    925,
+    924,
+    923,
+    922,
+    921,
+    920,
+    919,
+    918,
+    917,
+    916,
+    915,
+    914,
+    913,
+    912,
+    911,
+    910,
+    909,
+    908,
+    907
+  ],
+  "evidence_notes_by_method": {
+    "manual_reupload_video_review": "Third-party LottoLab reupload containing continuous MBC draw footage; visible round label, each extracted ball, completed rack, and bonus were manually reviewed and cross-checked against the canonical draw."
+  },
+  "reviewed_rows": [
+    {
+      "round": 987,
+      "order": [
+        23,
+        29,
+        2,
+        38,
+        15,
+        4
+      ],
+      "bonus": 7,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 986,
+      "order": [
+        10,
+        7,
+        42,
+        28,
+        41,
+        16
+      ],
+      "bonus": 40,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 985,
+      "order": [
+        23,
+        21,
+        44,
+        34,
+        30,
+        17
+      ],
+      "bonus": 19,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 984,
+      "order": [
+        37,
+        36,
+        10,
+        35,
+        23,
+        3
+      ],
+      "bonus": 18,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 983,
+      "order": [
+        31,
+        13,
+        35,
+        23,
+        26,
+        43
+      ],
+      "bonus": 15,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 982,
+      "order": [
+        44,
+        7,
+        21,
+        5,
+        13,
+        20
+      ],
+      "bonus": 33,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 981,
+      "order": [
+        27,
+        45,
+        43,
+        41,
+        37,
+        36
+      ],
+      "bonus": 32,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 980,
+      "order": [
+        16,
+        23,
+        3,
+        13,
+        35,
+        24
+      ],
+      "bonus": 14,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 979,
+      "order": [
+        33,
+        7,
+        11,
+        16,
+        27,
+        21
+      ],
+      "bonus": 24,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 978,
+      "order": [
+        7,
+        15,
+        34,
+        1,
+        32,
+        42
+      ],
+      "bonus": 8,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 977,
+      "order": [
+        44,
+        22,
+        14,
+        9,
+        2,
+        10
+      ],
+      "bonus": 16,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 976,
+      "order": [
+        25,
+        35,
+        14,
+        12,
+        4,
+        37
+      ],
+      "bonus": 2,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 975,
+      "order": [
+        9,
+        17,
+        8,
+        22,
+        24,
+        7
+      ],
+      "bonus": 5,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 973,
+      "order": [
+        26,
+        22,
+        41,
+        42,
+        31,
+        37
+      ],
+      "bonus": 24,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 972,
+      "order": [
+        37,
+        17,
+        39,
+        23,
+        3,
+        6
+      ],
+      "bonus": 26,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 971,
+      "order": [
+        17,
+        2,
+        21,
+        26,
+        18,
+        6
+      ],
+      "bonus": 7,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 970,
+      "order": [
+        21,
+        28,
+        11,
+        36,
+        16,
+        9
+      ],
+      "bonus": 5,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 969,
+      "order": [
+        45,
+        9,
+        29,
+        40,
+        3,
+        10
+      ],
+      "bonus": 7,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 968,
+      "order": [
+        39,
+        24,
+        2,
+        12,
+        5,
+        14
+      ],
+      "bonus": 33,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 967,
+      "order": [
+        6,
+        37,
+        13,
+        1,
+        38,
+        40
+      ],
+      "bonus": 9,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 966,
+      "order": [
+        21,
+        37,
+        25,
+        34,
+        29,
+        1
+      ],
+      "bonus": 36,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 965,
+      "order": [
+        2,
+        29,
+        25,
+        28,
+        13,
+        36
+      ],
+      "bonus": 34,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 964,
+      "order": [
+        39,
+        6,
+        21,
+        38,
+        43,
+        36
+      ],
+      "bonus": 30,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 963,
+      "order": [
+        19,
+        42,
+        6,
+        34,
+        23,
+        12
+      ],
+      "bonus": 35,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 962,
+      "order": [
+        34,
+        28,
+        43,
+        1,
+        31,
+        18
+      ],
+      "bonus": 40,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 961,
+      "order": [
+        11,
+        29,
+        33,
+        42,
+        31,
+        20
+      ],
+      "bonus": 43,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 960,
+      "order": [
+        30,
+        2,
+        32,
+        45,
+        24,
+        18
+      ],
+      "bonus": 14,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 959,
+      "order": [
+        1,
+        14,
+        40,
+        41,
+        24,
+        15
+      ],
+      "bonus": 35,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 958,
+      "order": [
+        2,
+        16,
+        35,
+        37,
+        10,
+        9
+      ],
+      "bonus": 1,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 957,
+      "order": [
+        4,
+        40,
+        24,
+        15,
+        36,
+        35
+      ],
+      "bonus": 1,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 956,
+      "order": [
+        11,
+        25,
+        41,
+        20,
+        10,
+        21
+      ],
+      "bonus": 40,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 955,
+      "order": [
+        23,
+        26,
+        33,
+        29,
+        4,
+        9
+      ],
+      "bonus": 8,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 954,
+      "order": [
+        26,
+        41,
+        30,
+        28,
+        1,
+        9
+      ],
+      "bonus": 32,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 953,
+      "order": [
+        37,
+        7,
+        27,
+        22,
+        42,
+        9
+      ],
+      "bonus": 34,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 952,
+      "order": [
+        41,
+        24,
+        33,
+        12,
+        4,
+        22
+      ],
+      "bonus": 38,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 951,
+      "order": [
+        2,
+        12,
+        39,
+        30,
+        31,
+        43
+      ],
+      "bonus": 38,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 950,
+      "order": [
+        22,
+        4,
+        28,
+        3,
+        15,
+        40
+      ],
+      "bonus": 10,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 949,
+      "order": [
+        36,
+        21,
+        44,
+        40,
+        35,
+        14
+      ],
+      "bonus": 30,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 948,
+      "order": [
+        30,
+        18,
+        13,
+        41,
+        31,
+        38
+      ],
+      "bonus": 5,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 947,
+      "order": [
+        27,
+        17,
+        35,
+        20,
+        3,
+        8
+      ],
+      "bonus": 26,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 946,
+      "order": [
+        34,
+        19,
+        30,
+        9,
+        18,
+        40
+      ],
+      "bonus": 20,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 945,
+      "order": [
+        37,
+        9,
+        30,
+        10,
+        33,
+        15
+      ],
+      "bonus": 26,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 944,
+      "order": [
+        33,
+        32,
+        19,
+        13,
+        2,
+        16
+      ],
+      "bonus": 42,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 943,
+      "order": [
+        45,
+        13,
+        1,
+        8,
+        44,
+        36
+      ],
+      "bonus": 39,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 942,
+      "order": [
+        12,
+        10,
+        43,
+        35,
+        42,
+        18
+      ],
+      "bonus": 39,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 941,
+      "order": [
+        39,
+        12,
+        40,
+        14,
+        27,
+        25
+      ],
+      "bonus": 35,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 940,
+      "order": [
+        22,
+        24,
+        41,
+        3,
+        20,
+        15
+      ],
+      "bonus": 11,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 939,
+      "order": [
+        4,
+        45,
+        39,
+        42,
+        28,
+        11
+      ],
+      "bonus": 6,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 938,
+      "order": [
+        31,
+        4,
+        16,
+        10,
+        36,
+        8
+      ],
+      "bonus": 9,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 937,
+      "order": [
+        29,
+        2,
+        40,
+        10,
+        13,
+        22
+      ],
+      "bonus": 26,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 936,
+      "order": [
+        17,
+        18,
+        29,
+        7,
+        11,
+        13
+      ],
+      "bonus": 43,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 935,
+      "order": [
+        32,
+        38,
+        4,
+        44,
+        10,
+        20
+      ],
+      "bonus": 18,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 934,
+      "order": [
+        39,
+        36,
+        3,
+        30,
+        1,
+        33
+      ],
+      "bonus": 12,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 933,
+      "order": [
+        45,
+        36,
+        31,
+        23,
+        29,
+        27
+      ],
+      "bonus": 37,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 932,
+      "order": [
+        37,
+        38,
+        36,
+        15,
+        6,
+        1
+      ],
+      "bonus": 5,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 931,
+      "order": [
+        15,
+        35,
+        14,
+        43,
+        25,
+        23
+      ],
+      "bonus": 32,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 930,
+      "order": [
+        25,
+        44,
+        21,
+        39,
+        8,
+        38
+      ],
+      "bonus": 28,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 929,
+      "order": [
+        9,
+        19,
+        7,
+        15,
+        23,
+        12
+      ],
+      "bonus": 4,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 928,
+      "order": [
+        44,
+        20,
+        4,
+        3,
+        10,
+        28
+      ],
+      "bonus": 30,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 927,
+      "order": [
+        15,
+        43,
+        41,
+        22,
+        4,
+        38
+      ],
+      "bonus": 26,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 926,
+      "order": [
+        25,
+        18,
+        31,
+        16,
+        20,
+        10
+      ],
+      "bonus": 6,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 925,
+      "order": [
+        39,
+        24,
+        34,
+        13,
+        42,
+        32
+      ],
+      "bonus": 4,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 924,
+      "order": [
+        42,
+        44,
+        3,
+        34,
+        11,
+        43
+      ],
+      "bonus": 13,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 923,
+      "order": [
+        41,
+        36,
+        23,
+        18,
+        17,
+        3
+      ],
+      "bonus": 26,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 922,
+      "order": [
+        2,
+        6,
+        13,
+        27,
+        43,
+        17
+      ],
+      "bonus": 36,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 921,
+      "order": [
+        41,
+        5,
+        22,
+        7,
+        28,
+        12
+      ],
+      "bonus": 1,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 920,
+      "order": [
+        3,
+        34,
+        26,
+        43,
+        2,
+        33
+      ],
+      "bonus": 29,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 919,
+      "order": [
+        18,
+        42,
+        14,
+        9,
+        17,
+        44
+      ],
+      "bonus": 35,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 918,
+      "order": [
+        12,
+        7,
+        11,
+        31,
+        33,
+        38
+      ],
+      "bonus": 5,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 917,
+      "order": [
+        27,
+        23,
+        43,
+        24,
+        1,
+        3
+      ],
+      "bonus": 34,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 916,
+      "order": [
+        21,
+        36,
+        35,
+        6,
+        22,
+        32
+      ],
+      "bonus": 17,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 915,
+      "order": [
+        37,
+        22,
+        13,
+        2,
+        11,
+        6
+      ],
+      "bonus": 14,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 914,
+      "order": [
+        44,
+        42,
+        24,
+        16,
+        33,
+        19
+      ],
+      "bonus": 27,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 913,
+      "order": [
+        21,
+        16,
+        27,
+        37,
+        14,
+        6
+      ],
+      "bonus": 40,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 912,
+      "order": [
+        5,
+        21,
+        22,
+        8,
+        18,
+        38
+      ],
+      "bonus": 10,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 911,
+      "order": [
+        4,
+        5,
+        12,
+        14,
+        42,
+        32
+      ],
+      "bonus": 35,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 909,
+      "order": [
+        34,
+        24,
+        35,
+        7,
+        30,
+        29
+      ],
+      "bonus": 33,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 908,
+      "order": [
+        3,
+        21,
+        44,
+        16,
+        23,
+        22
+      ],
+      "bonus": 30,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 907,
+      "order": [
+        44,
+        27,
+        38,
+        21,
+        29,
+        40
+      ],
+      "bonus": 37,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    }
+  ],
+  "rejected_rows": [
+    {
+      "round": 974,
+      "reason": "The available reupload shows only a result/analysis screen; a continuous draw sequence is not visible."
+    },
+    {
+      "round": 910,
+      "reason": "The available reupload shows only a result/analysis screen; a continuous draw sequence is not visible."
+    }
+  ],
+  "selection_rule": "all 81 consecutive rounds immediately preceding the 219 verified observations, selected before video-content review; candidates restricted to the LottoLab reupload channel and subject to the complete content-verification checklist",
+  "selection_digest_algorithm": "sha256(compact-json-round-array)",
+  "selection_sha256": "14f57df729f79d25cc2e29a3ec572a9047dbfb2526655fc52ade241acef46a9d"
+}

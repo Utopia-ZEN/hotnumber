@@ -60,15 +60,15 @@ jobs:
           echo "latest.lotto unchanged: $LATEST_ROUND"
         fi
 
-    - name: Generate owner prediction numbers
+    - name: Settle previous owner picks and seal next 5+5 owner set
       if: steps.after-latest.outputs.changed == 'true'
-      run: python -B StarNumber.py 5 --engine future --start-round 1
+      run: python -B -m PickNumber.order_experiment owner-cycle --start-round 1
       
     - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add lotto_data/
+        git add lotto_data/ outputs/order_experiment/prediction_ledger.jsonl
         # Check if there are changes to commit
         if git diff --staged --quiet; then
           echo "No changes to commit"

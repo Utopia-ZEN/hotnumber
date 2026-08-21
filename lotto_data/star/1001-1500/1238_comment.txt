@@ -1,14 +1,19 @@
-# StarNumber 1238 round picks
+# Owner Picks round 1238
 
-- Range: 1-1237
-- Games: 5
-- Engine: future
-- Mix: statistical base rates, recency decay, gap pressure, pair/triple lift, pattern likelihood, stability penalty, PickNumber links, and StarNumber genetic candidates
-- Note: lottery draws are independent random events; this is data-based combination design, not a guarantee.
+- Games: 10 (order model 5 + sealed uniform random 5)
+- Owner-pick ledger hash: b3bda8e486fb2af0d506752fa4b8c83bb8222dd7be7cb3463cabd8cb52e743da
+- Prediction ledger hash: e9c353c13a196523850bfd31bbde3ac7fd591d3c3f607b2defdcdfdbb2a4052d
+- Uniform random seed: 1224693503
+- Evaluation: compare both groups after the draw; no game may be replaced.
 
 ## Picks
-1. 06 13 18 31 37 38 | strategy=J_future_triple_lift | sum=143 | odd_even=3:3 | high_low=3:3 | score=1628.45
-2. 03 12 13 20 24 27 | strategy=I_future_lift_bridge | sum=99 | odd_even=3:3 | high_low=2:4 | score=1626.82
-3. 08 15 19 21 27 45 | strategy=J_future_triple_lift | sum=135 | odd_even=5:1 | high_low=2:4 | score=1612.36
-4. 12 15 28 34 42 45 | strategy=J_future_triple_lift | sum=176 | odd_even=2:4 | high_low=4:2 | score=1612.24
-5. 01 03 27 37 38 40 | strategy=J_future_triple_lift | sum=146 | odd_even=4:2 | high_low=4:2 | score=1585.46
+1. [질서 모델 1] 12 13 18 27 34 45 | relative_to_uniform=1.682505
+2. [질서 모델 2] 03 14 33 37 38 40 | relative_to_uniform=1.326499
+3. [질서 모델 3] 07 15 20 24 31 35 | relative_to_uniform=1.122054
+4. [질서 모델 4] 06 10 19 21 39 44 | relative_to_uniform=1.043594
+5. [질서 모델 5] 01 02 11 25 41 43 | relative_to_uniform=0.822220
+6. [무작위 기준 1] 03 07 12 18 31 33 | relative_to_uniform=1.000000
+7. [무작위 기준 2] 05 11 19 26 29 38 | relative_to_uniform=1.000000
+8. [무작위 기준 3] 06 09 16 26 42 44 | relative_to_uniform=1.000000
+9. [무작위 기준 4] 08 18 22 26 28 29 | relative_to_uniform=1.000000
+10. [무작위 기준 5] 18 24 26 27 35 45 | relative_to_uniform=1.000000

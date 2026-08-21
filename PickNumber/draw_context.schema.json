@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hotnumber.local/schemas/draw-context-v1.json",
+  "title": "Lotto 6/45 draw context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "round",
+    "draw_date",
+    "source_url",
+    "retrieved_at_utc"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "round": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "draw_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "source_title": {
+      "type": ["string", "null"]
+    },
+    "source_channel": {
+      "type": ["string", "null"]
+    },
+    "source_thumbnail_url": {
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "source_verified": {
+      "type": "boolean"
+    },
+    "video_id": {
+      "type": ["string", "null"]
+    },
+    "discovery_url": {
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "retrieved_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "machine_id": {
+      "type": ["string", "null"]
+    },
+    "ball_set_id": {
+      "type": ["string", "null"]
+    },
+    "ordered_numbers": {
+      "type": ["array", "null"],
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 45
+      }
+    },
+    "bonus_number": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "maximum": 45
+    },
+    "draw_video_url": {
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "machine_start_offset_seconds": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "result_board_offset_seconds": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "review_status": {
+      "enum": ["pending", "verified", "rejected"]
+    },
+    "reviewed_at_utc": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "review_method": {
+      "type": ["string", "null"]
+    },
+    "ball_position_observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "offset_seconds",
+          "phase",
+          "position_basis",
+          "ordered_visible_numbers",
+          "confidence"
+        ],
+        "properties": {
+          "offset_seconds": {
+            "type": ["number", "null"],
+            "minimum": 0
+          },
+          "phase": {
+            "enum": ["pre_draw", "mixing", "extraction", "result_rack"]
+          },
+          "position_basis": {
+            "enum": ["left_to_right", "top_to_bottom", "normalized_frame_coordinates"]
+          },
+          "ordered_visible_numbers": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 45,
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 45
+            }
+          },
+          "confidence": {
+            "enum": ["low", "medium", "high"]
+          }
+        }
+      }
+    },
+    "evidence_notes": {
+      "type": ["string", "null"]
+    }
+  }
+}

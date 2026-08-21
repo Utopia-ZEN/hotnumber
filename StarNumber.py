@@ -261,9 +261,15 @@ class StarNumberGenerator:
         stats = build_stats([d for d in history if self.start_round <= d["round"] <= self.end_round])
 
         candidates = []
+        source_game_count = max(n, 6)
+        if engine == "future":
+            # Give the final portfolio selector enough alternatives to spread
+            # number exposure across all games instead of repeating top picks.
+            source_game_count = max(15, n * 3)
+
         if engine in {"pick", "hybrid", "future"}:
             _, _, pick_picks = generate_pick_numbers(
-                game_count=max(n, 6),
+                game_count=source_game_count,
                 start_round=self.start_round,
                 end_round=self.end_round,
                 seed=self.seed,
@@ -275,7 +281,7 @@ class StarNumberGenerator:
         if engine in {"star", "hybrid", "future"}:
             candidates.extend(
                 self._star_candidates(
-                    n,
+                    source_game_count,
                     stats,
                     history,
                     generations=star_generations,
@@ -285,7 +291,7 @@ class StarNumberGenerator:
 
         if engine == "future":
             _, _, future_picks = generate_future_numbers(
-                game_count=max(n, 6),
+                game_count=source_game_count,
                 start_round=self.start_round,
                 end_round=self.end_round,
                 seed=self.seed,
@@ -296,7 +302,7 @@ class StarNumberGenerator:
             )
             candidates.extend(future_picks)
 
-        picks = select_diverse(candidates, limit=n)
+        picks = self._select_portfolio(candidates, limit=n)
         if len(picks) < n:
             raise RuntimeError(f"Could not produce {n} games with {engine} engine")
 
@@ -309,8 +315,78 @@ class StarNumberGenerator:
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         return payload, path
 
+    def _select_portfolio(self, candidates, limit):
+        """Select strong games while controlling repeated number exposure."""
+        unique = {}
+        for item in candidates:
+            nums = tuple(sorted(item["numbers"]))
+            current = unique.get(nums)
+            if current is None or item["final_score"] > current["final_score"]:
+                unique[nums] = item
+
+        ranked = sorted(unique.values(), key=lambda item: item["final_score"], reverse=True)
+        selected = []
+        selected_numbers = set()
+        number_load = Counter()
+        pair_load = Counter()
+
+        passes = [
+            {"max_overlap": 2, "max_number_load": 2, "max_pair_load": 1},
+            {"max_overlap": 3, "max_number_load": 2, "max_pair_load": 2},
+            {"max_overlap": 3, "max_number_load": 3, "max_pair_load": 3},
+            {"max_overlap": 4, "max_number_load": limit, "max_pair_load": limit},
+        ]
+
+        for rules in passes:
+            while len(selected) < limit:
+                eligible = []
+                for item in ranked:
+                    nums = tuple(item["numbers"])
+                    if nums in selected_numbers:
+                        continue
+                    overlap = max(
+                        (len(set(nums) & set(chosen["numbers"])) for chosen in selected),
+                        default=0,
+                    )
+                    if overlap > rules["max_overlap"]:
+                        continue
+                    if any(number_load[n] + 1 > rules["max_number_load"] for n in nums):
+                        continue
+                    loaded_pairs = sum(pair_load[p] for p in itertools.combinations(nums, 2))
+                    if loaded_pairs > rules["max_pair_load"]:
+                        continue
+
+                    repeated_slots = sum(number_load[n] for n in nums)
+                    new_numbers = sum(1 for n in nums if number_load[n] == 0)
+                    portfolio_score = (
+                        item["final_score"]
+                        - repeated_slots * 18
+                        - overlap * 12
+                        - loaded_pairs * 8
+                        + new_numbers * 4
+                    )
+                    eligible.append((portfolio_score, item, new_numbers))
+
+                if not eligible:
+                    break
+
+                portfolio_score, chosen, new_numbers = max(
+                    eligible,
+                    key=lambda entry: (entry[0], entry[1]["final_score"]),
+                )
+                chosen = dict(chosen)
+                chosen["portfolio_score"] = round(portfolio_score, 2)
+                chosen["portfolio_new_numbers"] = new_numbers
+                selected.append(chosen)
+                selected_numbers.add(tuple(chosen["numbers"]))
+                number_load.update(chosen["numbers"])
+                pair_load.update(itertools.combinations(chosen["numbers"], 2))
+
+        return selected
+
     def build_comment(self, target_round, payload, engine=None):
         engine = engine or self.engine
+        number_load = Counter(n for item in payload for n in item["numbers"])
         lines = [
             f"# StarNumber {target_round} round picks",
             "",
@@ -318,6 +394,7 @@ class StarNumberGenerator:
             f"- Games: {len(payload)}",
             f"- Engine: {engine}",
             "- Mix: statistical base rates, recency decay, gap pressure, pair/triple lift, pattern likelihood, stability penalty, PickNumber links, and StarNumber genetic candidates",
+            f"- Portfolio: {len(number_load)} unique numbers, max number reuse {max(number_load.values(), default=0)}, overlap and repeated-pair penalties enabled",
             "- Note: lottery draws are independent random events; this is data-based combination design, not a guarantee.",
             "",
             "## Picks",
@@ -387,6 +464,7 @@ class StarNumberGenerator:
         games=5,
         engine=None,
         output_path=None,
+        write_output=True,
         pick_samples_per_strategy=6000,
         pair_seed_samples=120,
         future_candidate_budget=12000,
@@ -512,10 +590,127 @@ class StarNumberGenerator:
             "failed": failed_rounds,
             "rounds": rounds,
         }
+        if not write_output:
+            return report, None
+
         output_path = Path(output_path) if output_path else STAR_DIR / "verification_summary.json"
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         return report, output_path
+
+    def run_seed_search(
+        self,
+        seed_start=0,
+        seed_end=99,
+        start_round=None,
+        end_round=None,
+        games=5,
+        engine=None,
+        output_path=None,
+        pick_samples_per_strategy=80,
+        pair_seed_samples=8,
+        future_candidate_budget=180,
+        future_min_pool_iterations=10,
+        future_pair_iterations=3,
+        future_triple_iterations=2,
+        star_generations=0,
+        star_attempts_multiplier=1,
+        top_limit=20,
+    ):
+        if seed_end < seed_start:
+            raise ValueError("seed_end must be greater than or equal to seed_start")
+
+        original_seed = self.seed
+        seed_results = []
+        try:
+            for seed in range(seed_start, seed_end + 1):
+                self.seed = seed
+                report, _ = self.run_verification(
+                    start_round=start_round,
+                    end_round=end_round,
+                    games=games,
+                    engine=engine,
+                    output_path=None,
+                    write_output=False,
+                    pick_samples_per_strategy=pick_samples_per_strategy,
+                    pair_seed_samples=pair_seed_samples,
+                    future_candidate_budget=future_candidate_budget,
+                    future_min_pool_iterations=future_min_pool_iterations,
+                    future_pair_iterations=future_pair_iterations,
+                    future_triple_iterations=future_triple_iterations,
+                    star_generations=star_generations,
+                    star_attempts_multiplier=star_attempts_multiplier,
+                )
+                summary = report["summary"]
+                seed_results.append(
+                    {
+                        "seed": seed,
+                        "score": self._seed_score(summary),
+                        "checked_rounds": summary["checked_rounds"],
+                        "failed_rounds": summary["failed_rounds"],
+                        "average_match_per_game": summary["average_match_per_game"],
+                        "average_best_match_per_round": summary["average_best_match_per_round"],
+                        "rounds_with_best_3plus": summary["rounds_with_best_3plus"],
+                        "rounds_with_best_4plus": summary["rounds_with_best_4plus"],
+                        "rounds_with_best_5plus": summary["rounds_with_best_5plus"],
+                        "match_distribution": summary["match_distribution"],
+                        "best_match_distribution": summary["best_match_distribution"],
+                        "prize_distribution": summary["prize_distribution"],
+                    }
+                )
+        finally:
+            self.seed = original_seed
+
+        seed_results.sort(
+            key=lambda item: (
+                item["score"],
+                item["rounds_with_best_5plus"],
+                item["rounds_with_best_4plus"],
+                item["rounds_with_best_3plus"],
+                item["average_best_match_per_round"],
+                item["average_match_per_game"],
+            ),
+            reverse=True,
+        )
+        report = {
+            "summary": {
+                "created_at": datetime.now().isoformat(timespec="seconds"),
+                "engine": engine or self.engine,
+                "seed_start": seed_start,
+                "seed_end": seed_end,
+                "seed_count": seed_end - seed_start + 1,
+                "best_seed": seed_results[0]["seed"] if seed_results else None,
+                "best_score": seed_results[0]["score"] if seed_results else 0,
+                "start_round": start_round or max(self.start_round + 1, 2),
+                "end_round": end_round or self.latest_round,
+                "games_per_round": games,
+                "pick_samples_per_strategy": pick_samples_per_strategy,
+                "pair_seed_samples": pair_seed_samples,
+                "future_candidate_budget": future_candidate_budget,
+                "future_min_pool_iterations": future_min_pool_iterations,
+                "future_pair_iterations": future_pair_iterations,
+                "future_triple_iterations": future_triple_iterations,
+                "star_generations": star_generations,
+                "star_attempts_multiplier": star_attempts_multiplier,
+                "score_rule": "best_5plus*100000 + best_4plus*1000 + best_3plus*25 + avg_best*10 + avg_game",
+            },
+            "top": seed_results[:top_limit],
+            "seeds": seed_results,
+        }
+        output_path = Path(output_path) if output_path else STAR_DIR / "seed_search_summary.json"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+        return report, output_path
+
+    def _seed_score(self, summary):
+        return round(
+            summary["rounds_with_best_5plus"] * 100000
+            + summary["rounds_with_best_4plus"] * 1000
+            + summary["rounds_with_best_3plus"] * 25
+            + summary["average_best_match_per_round"] * 10
+            + summary["average_match_per_game"],
+            4,
+        )
 
     def _prize_tier(self, match_count, bonus_matched=False):
         if match_count == 6:
@@ -571,6 +766,11 @@ def main():
     parser.add_argument("--verify-future-triple-iterations", type=int, default=40)
     parser.add_argument("--verify-star-generations", type=int, default=12)
     parser.add_argument("--verify-star-attempts-multiplier", type=int, default=3)
+    parser.add_argument("--seed-search", action="store_true", help="search the best seed by historical verification")
+    parser.add_argument("--seed-start", type=int, default=0)
+    parser.add_argument("--seed-end", type=int, default=99)
+    parser.add_argument("--seed-search-output", type=Path)
+    parser.add_argument("--seed-search-top", type=int, default=20)
     args = parser.parse_args()
 
     generator = StarNumberGenerator(
@@ -579,6 +779,40 @@ def main():
         seed=args.seed,
         engine=args.engine,
     )
+
+    if args.seed_search:
+        report, path = generator.run_seed_search(
+            seed_start=args.seed_start,
+            seed_end=args.seed_end,
+            start_round=args.verify_start_round,
+            end_round=args.verify_end_round,
+            games=args.verify_games or args.n,
+            engine=args.engine,
+            output_path=args.seed_search_output,
+            pick_samples_per_strategy=args.verify_pick_samples,
+            pair_seed_samples=args.verify_pair_samples,
+            future_candidate_budget=args.verify_future_budget,
+            future_min_pool_iterations=args.verify_future_min_pool_iterations,
+            future_pair_iterations=args.verify_future_pair_iterations,
+            future_triple_iterations=args.verify_future_triple_iterations,
+            star_generations=args.verify_star_generations,
+            star_attempts_multiplier=args.verify_star_attempts_multiplier,
+            top_limit=args.seed_search_top,
+        )
+        best = report["top"][0] if report["top"] else None
+        print(f"seed search saved: {path}")
+        if best:
+            print(
+                "best: "
+                f"seed={best['seed']}, "
+                f"score={best['score']}, "
+                f"avg_match={best['average_match_per_game']}, "
+                f"avg_best={best['average_best_match_per_round']}, "
+                f"best_3plus={best['rounds_with_best_3plus']}, "
+                f"best_4plus={best['rounds_with_best_4plus']}, "
+                f"best_5plus={best['rounds_with_best_5plus']}"
+            )
+        return
 
     if args.verify:
         report, path = generator.run_verification(

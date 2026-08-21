@@ -247,6 +247,14 @@
             border: 1px solid #edf0f5;
         }
 
+        .owner-pick-card.is-order-model {
+            border-left: 3px solid #4263eb;
+        }
+
+        .owner-pick-card.is-uniform-random {
+            border-left: 3px solid #2b8a3e;
+        }
+
         .owner-pick-rank {
             width: 30px;
             height: 30px;
@@ -271,6 +279,18 @@
             color: #777;
             font-size: 0.74rem;
             line-height: 1.35;
+        }
+
+        .owner-pick-group {
+            font-weight: 800;
+        }
+
+        .owner-pick-group.is-order-model {
+            color: #4263eb;
+        }
+
+        .owner-pick-group.is-uniform-random {
+            color: #2b8a3e;
         }
 
         .owner-pick-empty {
@@ -329,7 +349,7 @@
 
         .owner-result-row {
             display: grid;
-            grid-template-columns: 28px minmax(0, 1fr) auto;
+            grid-template-columns: 52px minmax(0, 1fr) auto;
             align-items: center;
             gap: 8px;
             min-height: 34px;
@@ -341,10 +361,12 @@
             color: #777;
             font-weight: 800;
             text-align: center;
+            font-size: 0.7rem;
         }
 
         .owner-result-balls {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 4px;
             min-width: 0;
@@ -827,7 +849,7 @@
     <section class="owner-pick-section" id="owner-pick-section">
         <div class="owner-pick-header">
             <h2 id="owner-pick-title">주인장 예측 번호 로딩 중...</h2>
-            <span class="owner-pick-badge">Future Engine</span>
+            <span class="owner-pick-badge">질서 5 + 무작위 5</span>
         </div>
         <div class="owner-pick-list" id="owner-pick-list">
             <div class="owner-pick-empty">예측 번호를 불러오는 중입니다.</div>
@@ -1023,16 +1045,18 @@
             const list = document.getElementById('owner-pick-list');
             if (!title || !list) return;
 
-            title.textContent = `${round}회차 주인장 예측 번호`;
+            title.textContent = `${round}회차 주인장 픽 10게임`;
             list.innerHTML = '';
 
-            picks.slice(0, 5).forEach((pick, idx) => {
+            picks.forEach((pick, idx) => {
+                const group = pick.group || 'order_model';
+                const groupLabel = pick.group_label || (group === 'uniform_random' ? '무작위 기준' : '질서 모델');
                 const card = document.createElement('div');
-                card.className = 'owner-pick-card';
+                card.className = `owner-pick-card is-${group.replace('_', '-')}`;
 
                 const rank = document.createElement('div');
                 rank.className = 'owner-pick-rank';
-                rank.textContent = pick.rank || idx + 1;
+                rank.textContent = pick.group_rank || pick.rank || idx + 1;
 
                 const balls = document.createElement('div');
                 balls.className = 'owner-pick-balls';
@@ -1046,8 +1070,14 @@
 
                 const meta = document.createElement('div');
                 meta.className = 'owner-pick-meta';
-                const score = typeof pick.final_score === 'number' ? pick.final_score.toFixed(2) : '-';
-                meta.textContent = `합계 ${pick.sum || '-'} · 홀짝 ${pick.odd_even || '-'} · 점수 ${score}`;
+                const relative = typeof pick.relative_to_uniform === 'number'
+                    ? `${pick.relative_to_uniform.toFixed(3)}배`
+                    : '-';
+                const groupText = document.createElement('span');
+                groupText.className = `owner-pick-group is-${group.replace('_', '-')}`;
+                groupText.textContent = groupLabel;
+                meta.appendChild(groupText);
+                meta.append(` · 합계 ${pick.sum || '-'} · 홀짝 ${pick.odd_even || '-'} · 균등 대비 ${relative}`);
 
                 card.appendChild(rank);
                 card.appendChild(balls);
@@ -1111,11 +1141,14 @@
             if (!roundLabel || !content) return;
 
             const winningNumbers = new Set(draw.numbers || []);
-            const results = picks.slice(0, 5).map((pick, idx) => {
+            const results = picks.map((pick, idx) => {
                 const matched = (pick.numbers || []).filter(num => winningNumbers.has(num));
                 const bonusMatched = (pick.numbers || []).includes(draw.bonus);
                 return {
                     rank: pick.rank || idx + 1,
+                    group: pick.group || 'order_model',
+                    groupLabel: pick.group_label || (pick.group === 'uniform_random' ? '무작위' : '질서'),
+                    groupRank: pick.group_rank || idx + 1,
                     numbers: pick.numbers || [],
                     matched,
                     bonusMatched,
@@ -1123,6 +1156,13 @@
                 };
             });
             const best = Math.max(0, ...results.map(result => result.matched.length));
+            const hasRandomGroup = results.some(result => result.group === 'uniform_random');
+            const orderBest = Math.max(0, ...results
+                .filter(result => result.group === 'order_model')
+                .map(result => result.matched.length));
+            const randomBest = Math.max(0, ...results
+                .filter(result => result.group === 'uniform_random')
+                .map(result => result.matched.length));
 
             roundLabel.textContent = `${round}회차`;
             content.className = '';
@@ -1130,7 +1170,9 @@
 
             const summary = document.createElement('div');
             summary.className = 'owner-result-summary';
-            summary.innerHTML = `<span>5게임 중 최고 적중</span><strong>${best}개</strong>`;
+            summary.innerHTML = hasRandomGroup
+                ? `<span>질서 최고 ${orderBest}개 · 무작위 최고 ${randomBest}개</span><strong>전체 ${best}개</strong>`
+                : `<span>기존 5게임 최고 적중</span><strong>${best}개</strong>`;
             content.appendChild(summary);
 
             const list = document.createElement('div');
@@ -1145,7 +1187,7 @@
 
                 const rank = document.createElement('span');
                 rank.className = 'owner-result-rank';
-                rank.textContent = `${result.rank}위`;
+                rank.textContent = `${result.group === 'uniform_random' ? '무작위' : '질서'}${result.groupRank}`;
 
                 const balls = document.createElement('div');
                 balls.className = 'owner-result-balls';

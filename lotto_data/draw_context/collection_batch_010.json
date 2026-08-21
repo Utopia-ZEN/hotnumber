@@ -1,0 +1,9 @@
+{
+  "created_at_utc": "2026-08-21T07:30:00Z",
+  "purpose": "tenth extraction-order collection batch; preregistered official broadcaster archive pair required to reach the 300-record checkpoint",
+  "round_count": 2,
+  "rounds": [551, 550],
+  "selection_rule": "the two highest exact-round draw videos located on the verified SBS STORY official broadcaster archive, selected before video-content review",
+  "selection_digest_algorithm": "sha256(compact-json-round-array)",
+  "selection_sha256": "9e17a3d4a95134252297d213735cd7ed6a519dfae2eb2654693c33618410d8f0"
+}

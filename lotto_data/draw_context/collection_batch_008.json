@@ -1,0 +1,9 @@
+{
+  "created_at_utc": "2026-08-21T07:20:00Z",
+  "purpose": "eighth extraction-order collection batch; preregistered two-round continuation required to reach the 300-record checkpoint",
+  "round_count": 2,
+  "rounds": [902, 901],
+  "selection_rule": "the next two consecutive rounds immediately preceding batch 007, selected before video-content review; prefer the LottoLab reupload and allow another uploader only when the full draw sequence can be independently verified",
+  "selection_digest_algorithm": "sha256(compact-json-round-array)",
+  "selection_sha256": "46d72f64cf8fa08f01e7b5059360d8fba621dad51c006de638616745d016d923"
+}

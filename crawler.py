@@ -103,20 +103,35 @@ def get_latest_round_and_setup_driver():
         return 0, None
 
 def get_saved_rounds():
-    saved = []
+    saved = set()
     if not os.path.exists(DATA_DIR):
-        return saved
+        return []
     
     # Walk through all subdirectories to find .lotto files
     for root, dirs, files in os.walk(DATA_DIR):
+        dirs[:] = [directory for directory in dirs if directory.lower() != 'star']
         for filename in files:
-            if filename.endswith('.lotto') and filename != LATEST_FILE and filename != FREQUENCY_FILE:
+            if is_draw_data_file(root, filename):
                 try:
                     round_num = int(filename.split('.')[0])
-                    saved.append(round_num)
+                    saved.add(round_num)
                 except ValueError:
                     pass
     return sorted(saved)
+
+
+def is_draw_data_file(root, filename):
+    """Return True only for canonical numeric draw files, never predictions."""
+    if not filename.endswith('.lotto'):
+        return False
+    stem = filename[:-len('.lotto')]
+    if not stem.isdigit():
+        return False
+    try:
+        relative_parts = os.path.relpath(root, DATA_DIR).split(os.sep)
+    except ValueError:
+        return False
+    return 'star' not in {part.lower() for part in relative_parts}
 
 def parse_money(money_str):
     clean = re.sub(r'[^\d]', '', money_str)
@@ -243,13 +258,16 @@ def update_existing_files_with_analysis():
     updated_count = 0
     # Walk through all subdirectories
     for root, dirs, files in os.walk(DATA_DIR):
+        dirs[:] = [directory for directory in dirs if directory.lower() != 'star']
         for filename in files:
-            if filename.endswith('.lotto') and filename != LATEST_FILE and filename != FREQUENCY_FILE:
+            if is_draw_data_file(root, filename):
                 filepath = os.path.join(root, filename)
                 try:
                     with open(filepath, 'r', encoding='utf-8') as f:
                         data = json.load(f)
-                    
+
+                    if not isinstance(data, dict) or int(data.get('round', 0)) != int(filename[:-len('.lotto')]):
+                        continue
                     if 'analysis' not in data:
                         numbers = data.get('numbers', [])
                         bonus = data.get('bonus', 0)
@@ -275,28 +293,37 @@ def update_frequency_data():
     if not os.path.exists(DATA_DIR):
         return
 
-    count = 0
+    draws_by_round = {}
     # Walk through all subdirectories
     for root, dirs, files in os.walk(DATA_DIR):
+        dirs[:] = [directory for directory in dirs if directory.lower() != 'star']
         for filename in files:
-            if filename.endswith('.lotto') and filename != LATEST_FILE and filename != FREQUENCY_FILE:
+            if is_draw_data_file(root, filename):
                 try:
                     with open(os.path.join(root, filename), 'r', encoding='utf-8') as f:
                         data = json.load(f)
-                        numbers = data.get('numbers', [])
-                        bonus = data.get('bonus', 0)
-                        
-                        for num in numbers:
-                            if 1 <= num <= 45:
-                                frequency[str(num)]['main'] += 1
-                                frequency[str(num)]['total'] += 1
-                        
-                        if 1 <= bonus <= 45:
-                            frequency[str(bonus)]['bonus'] += 1
-                            frequency[str(bonus)]['total'] += 1
-                        count += 1
+                    if not isinstance(data, dict):
+                        continue
+                    round_num = int(data.get('round', 0))
+                    numbers = data.get('numbers', [])
+                    if round_num != int(filename[:-len('.lotto')]) or len(numbers) != 6:
+                        continue
+                    draws_by_round[round_num] = data
                 except Exception as e:
                     print(f"Error reading {filename}: {e}")
+
+    for data in draws_by_round.values():
+        numbers = data.get('numbers', [])
+        bonus = data.get('bonus', 0)
+        for num in numbers:
+            if 1 <= num <= 45:
+                frequency[str(num)]['main'] += 1
+                frequency[str(num)]['total'] += 1
+        if 1 <= bonus <= 45:
+            frequency[str(bonus)]['bonus'] += 1
+            frequency[str(bonus)]['total'] += 1
+
+    count = len(draws_by_round)
 
     sorted_by_total = sorted(frequency.items(), key=lambda x: x[1]['total'], reverse=True)
     

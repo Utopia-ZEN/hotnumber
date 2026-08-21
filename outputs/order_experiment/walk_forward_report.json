@@ -1,0 +1,35 @@
+{
+  "protocol": "strict_walk_forward",
+  "first_evaluated_round": 201,
+  "last_evaluated_round": 1237,
+  "evaluated_rounds": 1037,
+  "games_per_round": 5,
+  "model": {
+    "model_id": "bayesian-order-v1",
+    "prior_strength": 180.0
+  },
+  "average_log_loss": 15.935545261167812,
+  "uniform_average_log_loss": 15.912922166473464,
+  "log_loss_improvement": -0.022623094694347756,
+  "log_loss_improvement_standard_error": 0.00591912932329375,
+  "log_loss_improvement_95pct_interval": [
+    -0.03422458816800351,
+    -0.011021601220692007
+  ],
+  "model_better_than_uniform": false,
+  "model_best_match_distribution": {
+    "1": 330,
+    "2": 594,
+    "3": 105,
+    "4": 8
+  },
+  "uniform_best_match_distribution": {
+    "0": 13,
+    "1": 402,
+    "2": 515,
+    "3": 99,
+    "4": 7,
+    "5": 1
+  },
+  "data_sha256": "96db95dfece05b30cb967a38a639d2d305edd9105411a51cf9d44887f0908c19"
+}

@@ -1,0 +1,78 @@
+{
+  "event": "prediction",
+  "created_at_utc": "2026-08-20T14:43:43.240967+00:00",
+  "target_round": 1238,
+  "training_start_round": 1,
+  "training_end_round": 1237,
+  "training_draw_count": 1237,
+  "training_data_sha256": "96db95dfece05b30cb967a38a639d2d305edd9105411a51cf9d44887f0908c19",
+  "model": {
+    "model_id": "bayesian-order-v1",
+    "prior_strength": 180.0
+  },
+  "generation_seed": 20260605,
+  "games": [
+    {
+      "numbers": [
+        12,
+        13,
+        18,
+        27,
+        34,
+        45
+      ],
+      "probability": 2.0656757884720982e-07,
+      "relative_to_uniform": 1.682505323765255
+    },
+    {
+      "numbers": [
+        3,
+        14,
+        33,
+        37,
+        38,
+        40
+      ],
+      "probability": 1.6285930580049938e-07,
+      "relative_to_uniform": 1.3264988173034156
+    },
+    {
+      "numbers": [
+        7,
+        15,
+        20,
+        24,
+        31,
+        35
+      ],
+      "probability": 1.377587777215508e-07,
+      "relative_to_uniform": 1.1220535100686946
+    },
+    {
+      "numbers": [
+        6,
+        10,
+        19,
+        21,
+        39,
+        44
+      ],
+      "probability": 1.2812595364941617e-07,
+      "relative_to_uniform": 1.0435935800317138
+    },
+    {
+      "numbers": [
+        1,
+        2,
+        11,
+        25,
+        41,
+        43
+      ],
+      "probability": 1.009470752643309e-07,
+      "relative_to_uniform": 0.822219984852491
+    }
+  ],
+  "previous_hash": null,
+  "record_hash": "e9c353c13a196523850bfd31bbde3ac7fd591d3c3f607b2defdcdfdbb2a4052d"
+}

@@ -1,0 +1,9 @@
+{
+  "created_at_utc": "2026-08-21T07:15:00Z",
+  "purpose": "seventh extraction-order collection batch; preregistered two-round continuation required to reach the 300-record checkpoint",
+  "round_count": 2,
+  "rounds": [904, 903],
+  "selection_rule": "the next two consecutive rounds immediately preceding batch 006, selected before video-content review; candidates restricted to the LottoLab reupload channel and subject to the complete content-verification checklist",
+  "selection_digest_algorithm": "sha256(compact-json-round-array)",
+  "selection_sha256": "4921e4726f14e6582dc81c6d321712ce440a8ece99e16e2b2af06ba24ccc3096"
+}

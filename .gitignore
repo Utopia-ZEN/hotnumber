@@ -3,4 +3,14 @@
 .idea/modules.xml
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/hotnumber.iml
-__pycache__/analyze_pattern.cpython-313.pyc
+__pycache__/
+*.py[cod]
+
+# Local seed-search checkpoints and bulky analysis exports are reproducible.
+lotto_data/star/seed_search*.json
+lotto_data/star/seed_search*.jsonl
+lotto_data/star/seed_search*.csv
+lotto_data/star/seed_search*.log
+lotto_data/star/**/*_seed*.lotto
+lotto_data/star/**/*_seed*.txt
+outputs/seed-search-*/

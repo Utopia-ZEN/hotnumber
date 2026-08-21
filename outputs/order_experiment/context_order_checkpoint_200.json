@@ -1,0 +1,631 @@
+{
+  "accepted_for_live_predictions": false,
+  "decision": "rejected",
+  "development_count": 100,
+  "development_rounds": [
+    1117,
+    1237
+  ],
+  "evaluation_design": "frozen_acquisition_holdout",
+  "frozen_development_report": "outputs\\order_experiment\\context_order_report.json",
+  "generated_at_utc": "2026-08-21T03:26:10.468139Z",
+  "holdout_batches": [
+    "lotto_data\\draw_context\\collection_batch_002.json",
+    "lotto_data\\draw_context\\collection_batch_003.json"
+  ],
+  "holdout_count": 100,
+  "holdout_log_loss_improvement_95pct_interval": [
+    -0.04285002329298693,
+    0.003299757072064518
+  ],
+  "holdout_mean_log_loss_improvement_vs_uniform": -0.019775133110461206,
+  "holdout_rounds": [
+    1006,
+    1203
+  ],
+  "model_id": "extraction-order-conditional-v1",
+  "per_round": [
+    {
+      "conditional_log_loss": 15.906811173513614,
+      "round": 1006,
+      "unconditional_baseline_log_loss": 15.906175207406895,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.853439384431091,
+      "round": 1007,
+      "unconditional_baseline_log_loss": 15.849602910283155,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.956184633586346,
+      "round": 1008,
+      "unconditional_baseline_log_loss": 15.963382994553234,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.95238836271171,
+      "round": 1009,
+      "unconditional_baseline_log_loss": 15.959678047865117,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.741048295543191,
+      "round": 1010,
+      "unconditional_baseline_log_loss": 15.714170453521708,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.701425745647157,
+      "round": 1011,
+      "unconditional_baseline_log_loss": 15.678194848750438,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.18074474332181,
+      "round": 1012,
+      "unconditional_baseline_log_loss": 16.226178915829603,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.00601472505564,
+      "round": 1013,
+      "unconditional_baseline_log_loss": 16.031727283308392,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.047495150029985,
+      "round": 1014,
+      "unconditional_baseline_log_loss": 16.063039972015623,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.06671619628375,
+      "round": 1015,
+      "unconditional_baseline_log_loss": 16.092947570591626,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.778930299492762,
+      "round": 1016,
+      "unconditional_baseline_log_loss": 15.757978903812843,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.977838402333512,
+      "round": 1017,
+      "unconditional_baseline_log_loss": 15.996354097485762,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.789836024428066,
+      "round": 1018,
+      "unconditional_baseline_log_loss": 15.770440616553165,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.894275693277505,
+      "round": 1019,
+      "unconditional_baseline_log_loss": 15.89973326718691,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.829747320408373,
+      "round": 1020,
+      "unconditional_baseline_log_loss": 15.81270640795491,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.86318707648138,
+      "round": 1021,
+      "unconditional_baseline_log_loss": 15.86286473444949,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.138913919148035,
+      "round": 1022,
+      "unconditional_baseline_log_loss": 16.169535762467675,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.038645421287928,
+      "round": 1023,
+      "unconditional_baseline_log_loss": 16.05402985572925,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.8749909704445,
+      "round": 1024,
+      "unconditional_baseline_log_loss": 15.86779473410978,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.862122063440223,
+      "round": 1025,
+      "unconditional_baseline_log_loss": 15.860330331217217,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.93711799825336,
+      "round": 1026,
+      "unconditional_baseline_log_loss": 15.940747039680621,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.946343793793375,
+      "round": 1027,
+      "unconditional_baseline_log_loss": 15.943324941958094,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.977986543157709,
+      "round": 1028,
+      "unconditional_baseline_log_loss": 15.995566164914482,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.980484148111353,
+      "round": 1029,
+      "unconditional_baseline_log_loss": 15.993145213081254,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.13208497299966,
+      "round": 1030,
+      "unconditional_baseline_log_loss": 16.168502190353557,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.97892698212742,
+      "round": 1031,
+      "unconditional_baseline_log_loss": 15.99283819012167,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.805204755319371,
+      "round": 1032,
+      "unconditional_baseline_log_loss": 15.788275877458418,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.889382483618444,
+      "round": 1033,
+      "unconditional_baseline_log_loss": 15.888372879672918,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.842757483480055,
+      "round": 1034,
+      "unconditional_baseline_log_loss": 15.82890564092306,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.976090344869823,
+      "round": 1035,
+      "unconditional_baseline_log_loss": 15.979440998738179,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.061932441330182,
+      "round": 1036,
+      "unconditional_baseline_log_loss": 16.089405863994457,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.918831405266339,
+      "round": 1037,
+      "unconditional_baseline_log_loss": 15.924988548186354,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.80278207539247,
+      "round": 1038,
+      "unconditional_baseline_log_loss": 15.78822524447502,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.821780164997179,
+      "round": 1039,
+      "unconditional_baseline_log_loss": 15.80979291953946,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.85783619811895,
+      "round": 1040,
+      "unconditional_baseline_log_loss": 15.862880068836983,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.01665903651563,
+      "round": 1041,
+      "unconditional_baseline_log_loss": 16.03773405803278,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.171249995781142,
+      "round": 1042,
+      "unconditional_baseline_log_loss": 16.198331689068095,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.900499148582965,
+      "round": 1043,
+      "unconditional_baseline_log_loss": 15.885326984385568,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.857316003214407,
+      "round": 1044,
+      "unconditional_baseline_log_loss": 15.848055620986983,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.85890292049375,
+      "round": 1045,
+      "unconditional_baseline_log_loss": 15.851214853389827,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.910950473955653,
+      "round": 1046,
+      "unconditional_baseline_log_loss": 15.917699194070844,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.031341607924233,
+      "round": 1047,
+      "unconditional_baseline_log_loss": 16.047860548905653,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.910102089797858,
+      "round": 1048,
+      "unconditional_baseline_log_loss": 15.917215761016479,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.872647007891363,
+      "round": 1049,
+      "unconditional_baseline_log_loss": 15.864506820364953,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.799396835030437,
+      "round": 1050,
+      "unconditional_baseline_log_loss": 15.780173550501166,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.839480431562697,
+      "round": 1052,
+      "unconditional_baseline_log_loss": 15.831794691423159,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.962080590112791,
+      "round": 1053,
+      "unconditional_baseline_log_loss": 15.974322124177982,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.752127945589287,
+      "round": 1054,
+      "unconditional_baseline_log_loss": 15.725183620267686,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.079579948463785,
+      "round": 1055,
+      "unconditional_baseline_log_loss": 16.108821751339846,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.950554981216312,
+      "round": 1056,
+      "unconditional_baseline_log_loss": 15.955289692008654,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.117260695667717,
+      "round": 1058,
+      "unconditional_baseline_log_loss": 16.15000382422199,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.977583447364914,
+      "round": 1059,
+      "unconditional_baseline_log_loss": 15.99283819012167,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.774275083978637,
+      "round": 1060,
+      "unconditional_baseline_log_loss": 15.754784882598859,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.87806307492852,
+      "round": 1061,
+      "unconditional_baseline_log_loss": 15.881652366738818,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.01558866211581,
+      "round": 1062,
+      "unconditional_baseline_log_loss": 16.032464582896274,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.781240387145159,
+      "round": 1063,
+      "unconditional_baseline_log_loss": 15.757993767003367,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.817580622376175,
+      "round": 1064,
+      "unconditional_baseline_log_loss": 15.809377977298654,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.708424977740437,
+      "round": 1074,
+      "unconditional_baseline_log_loss": 15.68262804105329,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.848943639730559,
+      "round": 1082,
+      "unconditional_baseline_log_loss": 15.843806375477362,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.877129454223933,
+      "round": 1084,
+      "unconditional_baseline_log_loss": 15.878879330332182,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.982937835498403,
+      "round": 1085,
+      "unconditional_baseline_log_loss": 15.979448656159505,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.907869646492257,
+      "round": 1086,
+      "unconditional_baseline_log_loss": 15.906709273444658,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.985968064913264,
+      "round": 1087,
+      "unconditional_baseline_log_loss": 15.997473631627502,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.077696812948822,
+      "round": 1088,
+      "unconditional_baseline_log_loss": 16.11054251351071,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.097691952853104,
+      "round": 1089,
+      "unconditional_baseline_log_loss": 16.13340971253288,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.907777613736243,
+      "round": 1090,
+      "unconditional_baseline_log_loss": 15.900684798908147,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.984126524086465,
+      "round": 1092,
+      "unconditional_baseline_log_loss": 15.995358256647329,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.08450581438774,
+      "round": 1093,
+      "unconditional_baseline_log_loss": 16.112053746159127,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.995403563236813,
+      "round": 1097,
+      "unconditional_baseline_log_loss": 16.014412529608162,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.798502780014072,
+      "round": 1099,
+      "unconditional_baseline_log_loss": 15.768833511842884,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.023021087877343,
+      "round": 1100,
+      "unconditional_baseline_log_loss": 16.0379306224103,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.790931784646606,
+      "round": 1101,
+      "unconditional_baseline_log_loss": 15.77422876976439,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.923518937404042,
+      "round": 1102,
+      "unconditional_baseline_log_loss": 15.925881476152503,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.934848329932644,
+      "round": 1103,
+      "unconditional_baseline_log_loss": 15.93698549277369,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.756573394806683,
+      "round": 1104,
+      "unconditional_baseline_log_loss": 15.7330139739843,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.854868329918904,
+      "round": 1105,
+      "unconditional_baseline_log_loss": 15.844397775727408,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.938340959399428,
+      "round": 1106,
+      "unconditional_baseline_log_loss": 15.938487163554681,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.972944144088098,
+      "round": 1107,
+      "unconditional_baseline_log_loss": 15.980228931309458,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.941344443641707,
+      "round": 1108,
+      "unconditional_baseline_log_loss": 15.956469163460609,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.833706735522476,
+      "round": 1109,
+      "unconditional_baseline_log_loss": 15.825561875879313,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.07586125458556,
+      "round": 1110,
+      "unconditional_baseline_log_loss": 16.094792153635517,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.940373062940765,
+      "round": 1111,
+      "unconditional_baseline_log_loss": 15.945811004030888,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.964607669546474,
+      "round": 1112,
+      "unconditional_baseline_log_loss": 15.974271491194585,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.020879326252558,
+      "round": 1113,
+      "unconditional_baseline_log_loss": 16.03463165791059,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.721599434818415,
+      "round": 1114,
+      "unconditional_baseline_log_loss": 15.699177824793718,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.99629876213334,
+      "round": 1115,
+      "unconditional_baseline_log_loss": 16.013783434889266,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.703379503247199,
+      "round": 1116,
+      "unconditional_baseline_log_loss": 15.676833822117416,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.978081002232752,
+      "round": 1118,
+      "unconditional_baseline_log_loss": 15.986668348086775,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.711375159655692,
+      "round": 1132,
+      "unconditional_baseline_log_loss": 15.683390046821769,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.02601310208041,
+      "round": 1145,
+      "unconditional_baseline_log_loss": 16.035368957498473,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.06337339217846,
+      "round": 1160,
+      "unconditional_baseline_log_loss": 16.088833646469894,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.03621290207924,
+      "round": 1166,
+      "unconditional_baseline_log_loss": 16.056103744034804,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.206054596568983,
+      "round": 1174,
+      "unconditional_baseline_log_loss": 16.24580414644105,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.782274515723008,
+      "round": 1177,
+      "unconditional_baseline_log_loss": 15.762977600157402,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.131645171407282,
+      "round": 1178,
+      "unconditional_baseline_log_loss": 16.160057074489913,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.083357780729383,
+      "round": 1181,
+      "unconditional_baseline_log_loss": 16.10858648127099,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.941497696007927,
+      "round": 1183,
+      "unconditional_baseline_log_loss": 15.943147085756783,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.027702510959163,
+      "round": 1187,
+      "unconditional_baseline_log_loss": 16.05106943331016,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 16.065518501409898,
+      "round": 1191,
+      "unconditional_baseline_log_loss": 16.09257911006944,
+      "uniform_log_loss": 15.912922166473654
+    },
+    {
+      "conditional_log_loss": 15.901769405343508,
+      "round": 1203,
+      "unconditional_baseline_log_loss": 15.90199946717905,
+      "uniform_log_loss": 15.912922166473654
+    }
+  ],
+  "selected_prior_strength": 360.0,
+  "unconditional_baseline_mean_log_loss_improvement_vs_uniform": -0.02395020752960054
+}

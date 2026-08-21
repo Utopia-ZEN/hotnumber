@@ -1,0 +1,12 @@
+{
+  "reviewed_at_utc": "2026-08-20T18:35:00Z",
+  "purpose": "Determine whether machine or ball-set conditions can be identified from official broadcast video without inference.",
+  "samples": [
+    {"round": 1092, "source_url": "https://www.youtube.com/watch?v=iFHt5heAIKQ", "visible_selection_display": "1", "machine_id": null, "ball_set_id": null},
+    {"round": 1064, "source_url": "https://www.youtube.com/watch?v=i6MP-XZxBFU", "visible_selection_display": "5", "machine_id": null, "ball_set_id": null},
+    {"round": 1060, "source_url": "https://www.youtube.com/watch?v=kIdqQ8B_ZyE", "visible_selection_display": "4", "machine_id": null, "ball_set_id": null},
+    {"round": 1059, "source_url": "https://www.youtube.com/watch?v=nvNgCKFETNE", "visible_selection_display": "5", "machine_id": null, "ball_set_id": null}
+  ],
+  "conclusion": "A numbered selection display is visible, but the sampled image and available official metadata do not establish whether it identifies a draw machine, a ball set, or another control. Do not populate machine_id or ball_set_id until official narration or documentation defines the display.",
+  "model_eligibility": false
+}

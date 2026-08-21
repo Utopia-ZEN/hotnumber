@@ -175,3 +175,29 @@ GitHub에서 한 폴더에 파일이 과도하게 쌓이지 않도록 `lotto_dat
 각 회차는 기본적으로 `{회차}_star.lotto`, `{회차}_comment.txt` 두 파일을 만들기 때문에 500회차 단위로 나누면 폴더당 최대 1000개 이하를 유지할 수 있습니다.
 
 현재 GitHub Pages의 `index.html`에는 예측 번호를 표시하지 않습니다. 예측 파일은 자동 생성 및 보관용 데이터로만 관리합니다.
+
+## Evidence-First Order Experiment
+
+`PickNumber/order_experiment.py`는 과거 적합도가 아니라 보지 않은 다음
+회차에서 반복되는 확률 우위가 있는지 검증합니다.
+
+- 모든 평가는 대상 회차 이전 데이터만 사용하는 워크포워드 방식입니다.
+- 베이지안 출현률은 균등한 `6/45` 확률로 강하게 축소됩니다.
+- 모델 로그손실을 균등 조합 기준선과 비교합니다.
+- 5게임은 가능한 동안 번호를 재사용하지 않아 커버리지를 넓힙니다.
+- 미래 예측은 SHA-256 해시 체인 원장에 추가되며 덮어쓸 수 없습니다.
+
+```bash
+python -B -m PickNumber.order_experiment backtest --start-round 1 --games 5
+python -B -m PickNumber.order_experiment predict --start-round 1 --games 5
+python -B -m PickNumber.order_experiment owner-cycle --start-round 1
+python -B -m PickNumber.order_experiment verify-ledger
+```
+
+`owner-cycle`은 새 추첨 데이터가 수집되면 직전 주인장 픽을 평가하고,
+다음 회차의 질서 모델 5게임과 봉인된 균등 무작위 5게임을 합쳐
+`{회차}_star.lotto`에 10게임으로 저장합니다. 웹 화면은 두 그룹을
+구분해 표시하고 추첨 후 각 그룹의 최고 적중 수를 함께 보여줍니다.
+
+프로토콜과 물리 조건 데이터 확장 계획은
+`PickNumber/ORDER_EXPERIMENT.md`에 정리되어 있습니다.

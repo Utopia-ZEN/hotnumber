@@ -1,0 +1,38 @@
+{
+  "created_at_utc": "2026-08-21T07:10:00Z",
+  "purpose": "sixth extraction-order collection batch; preregistered two-round continuation required to reach the 300-record checkpoint",
+  "round_count": 2,
+  "rounds": [906, 905],
+  "evidence_notes_by_method": {
+    "manual_reupload_video_review": "Third-party LottoLab reupload containing continuous MBC draw footage after the 240-second mark; visible round label, each extracted ball, completed rack, and bonus were manually reviewed and cross-checked against the canonical draw."
+  },
+  "reviewed_rows": [
+    {
+      "round": 906,
+      "order": [28, 5, 31, 2, 14, 32],
+      "bonus": 20,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 905,
+      "order": [4, 40, 38, 16, 3, 27],
+      "bonus": 20,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    }
+  ],
+  "selection_rule": "the next two consecutive rounds immediately preceding batch 005, selected before video-content review; candidates restricted to the LottoLab reupload channel and subject to the complete content-verification checklist",
+  "selection_digest_algorithm": "sha256(compact-json-round-array)",
+  "selection_sha256": "819ddd11fc36e01db987fc0c7adf22ee2a5a35ad79cf1b7d823ce52051b2433e"
+}
