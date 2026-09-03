@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import random
 import statistics
 from collections import Counter
 from pathlib import Path
@@ -26,6 +27,9 @@ from PickNumber.order_model import (
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / "outputs" / "order_experiment" / "context_order_report.json"
+DEFAULT_SPECTRUM_OUTPUT = (
+    ROOT / "outputs" / "order_experiment" / "context_order_spectrum_5.json"
+)
 POSITION_COUNT = 6
 NUMBER_COUNT = 45
 FULL_MASK = (1 << POSITION_COUNT) - 1
@@ -269,6 +273,140 @@ def run_frozen_acquisition_holdout_test(
     }
 
 
+def _sample_order(model: ExtractionOrderConditionalModel, rng: random.Random) -> tuple[int, ...]:
+    remaining = list(range(1, NUMBER_COUNT + 1))
+    order = []
+    for position in range(POSITION_COUNT):
+        weights = [model.weights[position][number] for number in remaining]
+        selected = rng.choices(remaining, weights=weights, k=1)[0]
+        order.append(selected)
+        remaining.remove(selected)
+    return tuple(sorted(order))
+
+
+def _select_spectrum_game(
+    model: ExtractionOrderConditionalModel,
+    seed: int,
+    selected_games: Sequence[Sequence[int]],
+    candidate_samples: int,
+) -> tuple[tuple[int, ...], float]:
+    rng = random.Random(seed)
+    candidates = {_sample_order(model, rng) for _ in range(candidate_samples)}
+    scored = sorted(
+        ((model.combination_probability(candidate), candidate) for candidate in candidates),
+        reverse=True,
+    )
+    selected_sets = [set(game) for game in selected_games]
+    for maximum_overlap in (2, 3, 4, 6):
+        for probability, candidate in scored:
+            if candidate in selected_games:
+                continue
+            if all(len(set(candidate) & game) <= maximum_overlap for game in selected_sets):
+                return candidate, probability
+    raise RuntimeError("Unable to generate a distinct spectrum game")
+
+
+def run_performance_spectrum(
+    records: Iterable[dict[str, Any]],
+    development_rounds: Iterable[int],
+    holdout_rounds: Iterable[int],
+    prior_grid: Sequence[float] = (45.0, 90.0, 135.0, 180.0, 360.0),
+    seed: int = 20260822,
+    candidate_samples: int = 2000,
+) -> dict[str, Any]:
+    """Build five exploratory games spanning rejected holdout performance."""
+    priors = tuple(float(value) for value in prior_grid)
+    if len(priors) != 5 or len(set(priors)) != 5 or any(value <= 0 for value in priors):
+        raise ValueError("Performance spectrum requires five unique positive prior strengths")
+    if candidate_samples < 10:
+        raise ValueError("candidate_samples must be at least 10")
+
+    observations = _ordered_records(records)
+    by_round = {int(record["round"]): record for record in observations}
+    development_ids = {int(value) for value in development_rounds}
+    holdout_ids = {int(value) for value in holdout_rounds}
+    if not development_ids or not holdout_ids or development_ids & holdout_ids:
+        raise ValueError("Development and holdout rounds must be non-empty and disjoint")
+    missing = (development_ids | holdout_ids) - by_round.keys()
+    if missing:
+        raise ValueError(f"Missing verified ordered observations for rounds: {sorted(missing)}")
+
+    development_orders = [
+        by_round[round_number]["ordered_numbers"] for round_number in sorted(development_ids)
+    ]
+    holdout_orders = [
+        by_round[round_number]["ordered_numbers"] for round_number in sorted(holdout_ids)
+    ]
+    uniform_log = math.log(UNIFORM_COMBINATION_PROBABILITY)
+    evaluated = []
+    for prior in priors:
+        model = ExtractionOrderConditionalModel(prior).fit(development_orders)
+        improvements = [model.log_probability(order) - uniform_log for order in holdout_orders]
+        evaluated.append(
+            {
+                "prior_strength": prior,
+                "holdout_mean_log_loss_improvement_vs_uniform": statistics.fmean(improvements),
+            }
+        )
+
+    evaluated.sort(
+        key=lambda item: (
+            item["holdout_mean_log_loss_improvement_vs_uniform"],
+            item["prior_strength"],
+        )
+    )
+    category_labels = (
+        ("worst", 1, "최악 1"),
+        ("worst", 2, "최악 2"),
+        ("median", 1, "중간값"),
+        ("best", 2, "최고 2"),
+        ("best", 1, "최고 1"),
+    )
+    all_orders = [record["ordered_numbers"] for record in observations]
+    selected_games: list[tuple[int, ...]] = []
+    variants = []
+    for performance_rank, (evaluation, category) in enumerate(
+        zip(evaluated, category_labels), start=1
+    ):
+        model = ExtractionOrderConditionalModel(evaluation["prior_strength"]).fit(all_orders)
+        numbers, probability = _select_spectrum_game(
+            model,
+            seed=seed + performance_rank * 1009,
+            selected_games=selected_games,
+            candidate_samples=candidate_samples,
+        )
+        selected_games.append(numbers)
+        category_key, category_rank, category_label = category
+        variants.append(
+            {
+                "performance_rank_low_to_high": performance_rank,
+                "category": category_key,
+                "category_rank": category_rank,
+                "category_label": category_label,
+                **evaluation,
+                "numbers": list(numbers),
+                "combination_probability": probability,
+                "relative_to_uniform": probability / UNIFORM_COMBINATION_PROBABILITY,
+            }
+        )
+
+    return {
+        "generated_at_utc": utc_now(),
+        "model_id": ExtractionOrderConditionalModel.model_id,
+        "decision_context": "rejected",
+        "accepted_for_live_predictions": False,
+        "experimental_only": True,
+        "selection_rule": "two worst, one median, and two best frozen-holdout variants",
+        "development_count": len(development_ids),
+        "holdout_count": len(holdout_ids),
+        "verified_ordered_records_used_for_generation": len(observations),
+        "target_round": max(by_round) + 1,
+        "seed": seed,
+        "candidate_samples_per_variant": candidate_samples,
+        "variants": variants,
+    }
+
+
 def resolve_frozen_cohorts(
     all_rounds: set[int],
     holdout_rounds: set[int],
@@ -304,6 +442,15 @@ def main() -> None:
     parser.add_argument("--frozen-development-report", type=Path)
     parser.add_argument("--holdout-batch", type=Path, action="append", default=[])
     parser.add_argument("--prior-holdout-batch", type=Path, action="append", default=[])
+    parser.add_argument("--spectrum", action="store_true")
+    parser.add_argument(
+        "--spectrum-priors",
+        type=float,
+        nargs=5,
+        default=(45.0, 90.0, 135.0, 180.0, 360.0),
+    )
+    parser.add_argument("--spectrum-seed", type=int, default=20260822)
+    parser.add_argument("--spectrum-candidates", type=int, default=2000)
     args = parser.parse_args()
 
     records = read_jsonl(args.context_dir / "observations.jsonl")
@@ -329,17 +476,31 @@ def main() -> None:
             prior_holdout_rounds,
             expected_development,
         )
-        report = run_frozen_acquisition_holdout_test(
-            records,
-            development_rounds=development_rounds,
-            holdout_rounds=holdout_rounds,
-            selected_prior_strength=float(development_report["selected_prior_strength"]),
-            minimum_holdout=args.minimum_sample,
-        )
+        if args.spectrum:
+            report = run_performance_spectrum(
+                records,
+                development_rounds=development_rounds,
+                holdout_rounds=holdout_rounds,
+                prior_grid=args.spectrum_priors,
+                seed=args.spectrum_seed,
+                candidate_samples=args.spectrum_candidates,
+            )
+            if args.output == DEFAULT_OUTPUT:
+                args.output = DEFAULT_SPECTRUM_OUTPUT
+        else:
+            report = run_frozen_acquisition_holdout_test(
+                records,
+                development_rounds=development_rounds,
+                holdout_rounds=holdout_rounds,
+                selected_prior_strength=float(development_report["selected_prior_strength"]),
+                minimum_holdout=args.minimum_sample,
+            )
         report["frozen_development_report"] = str(args.frozen_development_report)
         report["holdout_batches"] = [str(path) for path in args.holdout_batch]
         report["prior_holdout_batches"] = [str(path) for path in args.prior_holdout_batch]
     else:
+        if args.spectrum:
+            parser.error("--spectrum requires --frozen-development-report")
         report = run_holdout_test(
             records,
             validation_size=args.validation_size,

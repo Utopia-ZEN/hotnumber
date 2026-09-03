@@ -1,0 +1,38 @@
+{
+  "created_at_utc": "2026-09-01T00:00:00Z",
+  "purpose": "eleventh extraction-order collection batch; two manually reviewed LottoLab reuploads",
+  "round_count": 2,
+  "rounds": [1068, 1065],
+  "evidence_notes_by_method": {
+    "manual_reupload_video_review": "LottoLab reuploads containing the MBC draw sequence; the visible round label, continuous six-ball extraction, completed winning set, and bonus ball were manually reviewed and cross-checked against the canonical draw. No fixed timestamp is assumed for a reupload."
+  },
+  "reviewed_rows": [
+    {
+      "round": 1068,
+      "order": [4, 19, 35, 26, 7, 33],
+      "bonus": 3,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    },
+    {
+      "round": 1065,
+      "order": [23, 3, 32, 19, 18, 45],
+      "bonus": 24,
+      "review_method": "manual_reupload_video_review",
+      "content_verification": {
+        "round_label_visible": true,
+        "continuous_draw_sequence_visible": true,
+        "winning_numbers_match": true,
+        "bonus_match": true
+      }
+    }
+  ],
+  "selection_rule": "two newly discovered exact-round LottoLab reuploads selected before video-content review",
+  "selection_digest_algorithm": "sha256(compact-json-round-array)",
+  "selection_sha256": "0ace2cbfe430c9902637cd193c3135b2f26701ed53283ebb6b56bed26c528051"
+}

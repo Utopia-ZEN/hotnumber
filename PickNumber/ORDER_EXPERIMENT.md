@@ -57,7 +57,12 @@ python -B -m PickNumber.order_experiment owner-cycle --start-round 1
 The cycle settles the latest sealed owner set when its draw exists, then seals
 five order-model games and five reproducible uniform-random games for the next
 round. The ten games are published to the existing `star.lotto` path consumed
-by the web UI.
+by the web UI. Before sealing the next set, it also runs the strict walk-forward
+evaluation over every locally available round through the latest completed
+round and saves `walk_forward_report.json`. The new prediction record retains
+the report digest and summary so each update can be audited against the exact
+data interval used. A negative report does not promote the model or replace
+the owner picks.
 
 Outputs are written under `outputs/order_experiment/`.
 
@@ -126,6 +131,14 @@ as verified third-party reuploads. The repository now has 300 verified
 extraction sequences: 219 from the official channel and 81 from third-party
 reuploads. Later preregistered batches remain pending and have not contributed
 observations.
+
+Batch 011 added two manually reviewed LottoLab reuploads for rounds 1065 and
+1068, bringing the verified total to 302 sequences. Their visible round labels,
+continuous six-ball extraction, completed winning sets, and bonus balls matched
+the canonical draw files. The 05:25 timestamp convention applies only to
+official-channel videos; these reuploads therefore retain the observed order
+without an assumed fixed timestamp. These two rows extend collection evidence
+but do not reopen the frozen 300-record checkpoint.
 
 A four-video identifiability sample found a numbered selection display in the
 wide shot, but the official metadata reviewed so far does not define whether
@@ -228,6 +241,23 @@ versus uniform was -0.00750004 with a 95% interval of
 [-0.02816507, 0.01316499]. The interval still crosses zero and the mean is
 negative, so the order-aware model remains disconnected from owner-pick
 generation.
+
+For inspection only, a rejected-model spectrum can produce five unsealed games
+from five fixed prior strengths. The same frozen development and newest
+100-record holdout rank two worst, one median, and two best variants. This
+post-checkpoint view is marked `experimental_only` and never replaces sealed
+owner picks:
+
+```powershell
+python -B -m PickNumber.context_order_model `
+  --spectrum `
+  --frozen-development-report outputs\order_experiment\context_order_report.json `
+  --prior-holdout-batch lotto_data\draw_context\collection_batch_002.json `
+  --prior-holdout-batch lotto_data\draw_context\collection_batch_003.json `
+  --holdout-batch lotto_data\draw_context\collection_batch_004.json `
+  --holdout-batch lotto_data\draw_context\collection_batch_005.json `
+  --holdout-batch lotto_data\draw_context\collection_batch_006.json
+```
 
 ### Phase 4: Live Prospective Trial
 

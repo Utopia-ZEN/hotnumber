@@ -93,6 +93,7 @@ class PredictionLedger:
         model: BayesianOrderModel,
         games: Sequence[PortfolioGame],
         seed: int,
+        evaluation_summary: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         for record in self.records():
             if (
@@ -103,27 +104,28 @@ class PredictionLedger:
                 raise ValueError(f"Prediction for round {target_round} and {model.model_id} is already sealed")
         if not training_draws or training_draws[-1].round >= target_round:
             raise ValueError("Training data must end before the target round")
-        return self.append(
-            {
-                "event": "prediction",
-                "created_at_utc": datetime.now(timezone.utc).isoformat(),
-                "target_round": target_round,
-                "training_start_round": training_draws[0].round,
-                "training_end_round": training_draws[-1].round,
-                "training_draw_count": len(training_draws),
-                "training_data_sha256": draw_data_digest(training_draws),
-                "model": model.model_config(),
-                "generation_seed": seed,
-                "games": [
-                    {
-                        "numbers": list(game.numbers),
-                        "probability": game.probability,
-                        "relative_to_uniform": game.relative_to_uniform,
-                    }
-                    for game in games
-                ],
-            }
-        )
+        payload = {
+            "event": "prediction",
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
+            "target_round": target_round,
+            "training_start_round": training_draws[0].round,
+            "training_end_round": training_draws[-1].round,
+            "training_draw_count": len(training_draws),
+            "training_data_sha256": draw_data_digest(training_draws),
+            "model": model.model_config(),
+            "generation_seed": seed,
+            "games": [
+                {
+                    "numbers": list(game.numbers),
+                    "probability": game.probability,
+                    "relative_to_uniform": game.relative_to_uniform,
+                }
+                for game in games
+            ],
+        }
+        if evaluation_summary is not None:
+            payload["evaluation"] = evaluation_summary
+        return self.append(payload)
 
     def append_evaluation(self, draw: Draw) -> dict[str, Any]:
         records = self.records()
@@ -419,6 +421,22 @@ def command_owner_cycle(args: argparse.Namespace) -> None:
     ledger = PredictionLedger(args.ledger)
     records = ledger.records()
 
+    evaluation = run_walk_forward(
+        draws,
+        min_train_rounds=args.evaluation_min_train_rounds,
+        prior_strength=args.prior_strength,
+        games_per_round=5,
+        seed=args.seed,
+    )
+    evaluation_path = args.evaluation_output or (args.output_dir / "walk_forward_report.json")
+    _write_json(evaluation_path, evaluation)
+    print(
+        "evaluated through round "
+        f"{evaluation['last_evaluated_round']}: "
+        f"{evaluation['evaluated_rounds']} strict walk-forward rounds; "
+        f"log-loss improvement={evaluation['log_loss_improvement']:.6f}"
+    )
+
     if _find_record(records, "owner_pick_set", latest_draw.round) and not _find_record(
         records, "evaluation", latest_draw.round
     ):
@@ -431,7 +449,23 @@ def command_owner_cycle(args: argparse.Namespace) -> None:
     if prediction is None:
         model = BayesianOrderModel(prior_strength=args.prior_strength).fit(draws)
         games = model.generate_portfolio(game_count=5, seed=args.seed)
-        prediction = ledger.append_prediction(target_round, draws, model, games, args.seed)
+        prediction = ledger.append_prediction(
+            target_round,
+            draws,
+            model,
+            games,
+            args.seed,
+            evaluation_summary={
+                "report_path": str(evaluation_path),
+                "protocol": evaluation["protocol"],
+                "through_round": evaluation["last_evaluated_round"],
+                "evaluated_rounds": evaluation["evaluated_rounds"],
+                "log_loss_improvement": evaluation["log_loss_improvement"],
+                "log_loss_improvement_95pct_interval": evaluation["log_loss_improvement_95pct_interval"],
+                "model_better_than_uniform": evaluation["model_better_than_uniform"],
+                "data_sha256": evaluation["data_sha256"],
+            },
+        )
         records = ledger.records()
         print(f"sealed model prediction: round {target_round}")
 
@@ -492,6 +526,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     add_common_arguments(owner_cycle)
     owner_cycle.add_argument("--random-seed", type=int)
+    owner_cycle.add_argument("--evaluation-min-train-rounds", type=int, default=200)
+    owner_cycle.add_argument("--evaluation-output", type=Path)
     owner_cycle.set_defaults(handler=command_owner_cycle)
     return parser
 

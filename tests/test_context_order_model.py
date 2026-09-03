@@ -7,6 +7,7 @@ from PickNumber.context_order_model import (
     resolve_frozen_cohorts,
     run_frozen_acquisition_holdout_test,
     run_holdout_test,
+    run_performance_spectrum,
 )
 from PickNumber.order_model import UNIFORM_COMBINATION_PROBABILITY
 
@@ -100,6 +101,28 @@ class ExtractionOrderConditionalModelTests(unittest.TestCase):
         }
         self.assertEqual(batch_observation_rounds(batch), {1, 3})
         self.assertEqual(batch_observation_rounds({"rounds": [5, 4]}), {4, 5})
+
+    def test_performance_spectrum_returns_two_worst_median_and_two_best(self):
+        records = make_records(200)
+        report = run_performance_spectrum(
+            records,
+            development_rounds=range(1, 101),
+            holdout_rounds=range(101, 201),
+            candidate_samples=100,
+        )
+        variants = report["variants"]
+        self.assertEqual(len(variants), 5)
+        self.assertEqual(
+            [variant["category"] for variant in variants],
+            ["worst", "worst", "median", "best", "best"],
+        )
+        self.assertEqual(len({tuple(variant["numbers"]) for variant in variants}), 5)
+        self.assertTrue(all(len(variant["numbers"]) == 6 for variant in variants))
+        scores = [variant["holdout_mean_log_loss_improvement_vs_uniform"] for variant in variants]
+        self.assertEqual(scores, sorted(scores))
+        self.assertTrue(report["experimental_only"])
+        self.assertFalse(report["accepted_for_live_predictions"])
+        self.assertEqual(report["target_round"], 201)
 
 
 if __name__ == "__main__":

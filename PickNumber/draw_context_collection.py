@@ -62,6 +62,15 @@ def fetch_text(url: str) -> str:
         return response.read().decode("utf-8")
 
 
+def parse_initial_data(page_html: str) -> Any:
+    for marker in ("var ytInitialData = ", "ytInitialData = "):
+        start = page_html.find(marker)
+        if start >= 0:
+            payload_start = start + len(marker)
+            return json.JSONDecoder().raw_decode(page_html[payload_start:])[0]
+    raise ValueError("YouTube search page does not contain ytInitialData")
+
+
 def video_id_from_url(url: str) -> str:
     query = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
     values = query.get("v", [])
@@ -125,7 +134,10 @@ def source_record_from_search_result(
     title = unicodedata.normalize("NFC", title)
     strict = source_record_from_title(source_url, title, discovery_url, retrieved_at_utc)
     if strict is not None:
-        return strict if strict["round"] == expected_round else None
+        if strict["round"] != expected_round:
+            return None
+        strict["draw_video_url"] = source_url
+        return strict
     korean_context = "로또" in title and any(token in title for token in ("추첨", "당첨"))
     english_context = "lotto" in title.lower() and "draw" in title.lower()
     if not korean_context and not english_context:
@@ -142,7 +154,7 @@ def source_record_from_search_result(
         "round": expected_round,
         "draw_date": None,
         "source_url": source_url,
-        "draw_video_url": f"{source_url}&t=240s",
+        "draw_video_url": source_url,
         "video_id": video_id,
         "source_title": title,
         "source_channel": None,
@@ -224,9 +236,7 @@ def discover_official_channel(search_query: str, max_pages: int, retrieved_at_ut
         {"query": search_query}
     )
     raw = fetch_text(search_url)
-    marker = "var ytInitialData = "
-    start = raw.index(marker) + len(marker)
-    initial, _ = json.JSONDecoder().raw_decode(raw[start:])
+    initial = parse_initial_data(raw)
     api_key = re.search(r'INNERTUBE_API_KEY\\?"?:\\?"([^"\\]+)', raw)
     client_version = re.search(r'INNERTUBE_CONTEXT_CLIENT_VERSION\\?"?:\\?"([^"\\]+)', raw)
     visitor_data = re.search(r'VISITOR_DATA\\?"?:\\?"([^"\\]+)', raw)
@@ -286,9 +296,7 @@ def discover_exact_round(round_number: int, retrieved_at_utc: str) -> list[dict[
             {"search_query": query}
         )
         raw = fetch_text(search_url)
-        marker = "var ytInitialData = "
-        start = raw.index(marker) + len(marker)
-        initial, _ = json.JSONDecoder().raw_decode(raw[start:])
+        initial = parse_initial_data(raw)
         videos, _ = _extract_search_page(initial)
         for video_id, title in videos:
             if video_id in seen_video_ids:

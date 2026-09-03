@@ -1,6 +1,7 @@
 import unittest
 
 from PickNumber.draw_context_collection import (
+    parse_initial_data,
     _extract_search_page,
     audit_records,
     build_observation,
@@ -14,6 +15,9 @@ from PickNumber.order_model import Draw
 
 
 class DrawContextCollectionTests(unittest.TestCase):
+    def test_parse_initial_data_accepts_current_youtube_assignment(self):
+        self.assertEqual(parse_initial_data('prefix ytInitialData = {"ok": true} suffix'), {"ok": True})
+
     def test_discovers_round_date_and_video_source(self):
         page = """
         <a href="https://www.youtube.com/watch?v=abc_123-XYZ" target="_blank">
@@ -79,6 +83,7 @@ class DrawContextCollectionTests(unittest.TestCase):
         self.assertIsNotNone(record)
         self.assertEqual(record["round"], 987)
         self.assertIsNone(record["draw_date"])
+        self.assertEqual(record["draw_video_url"], record["source_url"])
         self.assertIsNone(
             source_record_from_search_result(
                 "https://www.youtube.com/watch?v=zbttQE7N3p0",

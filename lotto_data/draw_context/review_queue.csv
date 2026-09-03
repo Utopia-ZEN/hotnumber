@@ -140,15 +140,29 @@ round,draw_date,source_verified,source_type,source_channel,review_status,review_
 1086,2023-09-23,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=BzIJHUk2QfU&t=325s,로또6/45 제1086회 당첨번호 2023년 9월 23일
 1085,2023-09-16,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=wBSj8BlLQ30&t=325s,로또6/45 제1085회 당첨번호 2023년 9월 16일
 1084,2023-09-09,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=z4MMhd9K8os&t=325s,로또6/45 제1084회 당첨번호 2023년 9월 9일
-1082,2023-08-26,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=gJ0uj-Pb7Ds&t=325s,로또6/45 제1082회 당첨번호 2023년 8월 26일
-1074,2023-07-01,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=dCwNltToE6k&t=325s,로또6/45 제 1074회 당첨번호 2023년 7월 1일
-1064,2023-04-22,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=i6MP-XZxBFU&t=325s,로또6/45 제1064회 당첨번호 2023년 4월 22일 추첨
-1063,2023-04-15,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=8WCxbRp_rds&t=325s,로또6/45 제1063회 당첨번호 2023년 4월 15일 추첨
-1062,2023-04-08,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=2Pkx0_R8U94&t=325s,로또6/45 제1062회 당첨번호 2023년 4월 8일 추첨
-1061,2023-04-01,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=Gq_L6HaDiuU&t=325s,로또6/45 제1061회 당첨번호 2023년 4월 1일 추첨
-1060,2023-03-25,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=kIdqQ8B_ZyE&t=325s,로또6/45 제1060회 당첨번호 2023년 3월 25일 추첨
-1059,2023-03-18,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=nvNgCKFETNE&t=325s,로또6/45 제1059회 당첨번호 2023년 3월 18일 추첨
-1058,2023-03-11,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=UKUL31gZ7k4&t=325s,로또6/45 제1058회 당첨번호 2023년 3월 11일 추첨
+1083,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=ae72PchDvvQ,로또 1083 1등 당첨번호 추첨방송 로또랩 황금손 forecast Week35 2023
+1082,2023-08-26,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=gJ0uj-Pb7Ds,로또6/45 제1082회 당첨번호 2023년 8월 26일
+1080,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=-2M0FosdS58,로또랩 로또 1080 1등 당첨번호 추첨방송 동행복권 황금손 forecast Week32 2023
+1079,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=JG_hLdqtqRc,동행복권 로또 1079 당첨번호 추첨방송 forecast Week31 2023
+1078,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=yOKEtjPXTxg,로또 1078 1등 당첨번호 로또 추첨 방송 로또랩 황금손 MBC Forecast Week30 2023
+1077,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=UqQTefj7ib4,로또 1077 1등 당첨번호 추첨방송 로또랩 황금손 forecast Week29 2023
+1075,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=Npe-0tbHzBE,로또랩 로또 1075 1등 당첨번호 추첨방송 동행복권 황금손 forecast Week27 2023
+1074,2023-07-01,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=dCwNltToE6k,로또6/45 제 1074회 당첨번호 2023년 7월 1일
+1073,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=ajQTrRIW398,로또 1073 1등 당첨번호 로또 추첨 방송 로또랩 황금손 MBC Forecast Week25 2023
+1072,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=EMlQNwiR4SQ,로또 1072 1등 당첨번호 추첨방송 로또랩 황금손 forecast Week24 2023
+1071,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=lvY5obiH2Fs,2023 Week23 로또 1071 1등 당첨번호 추첨방송 로또랩 황금손 forecast
+1070,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=B8wPmUDH5UI,로또랩 로또 1070 1등 당첨번호 추첨방송 동행복권 황금손 forecast Week22 2023
+1069,,False,third_party_reupload,로또랩,pending,https://www.youtube.com/watch?v=NQ3nRHsm-vQ,동행복권 로또 1069 당첨번호 추첨방송 forecast Week21 2023
+1068,,False,third_party_reupload,로또랩,verified,https://www.youtube.com/watch?v=4OJjuxgCkz0,로또 1068 1등 당첨번호 로또 추첨 방송 로또랩 황금손 MBC Forecast Week20 2023
+1065,,False,third_party_reupload,로또랩,verified,https://www.youtube.com/watch?v=M_M_hqFyjmc,로또 1065 1등 당첨번호 추첨방송 로또랩 황금손 forecast Week19 2023
+1064,2023-04-22,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=i6MP-XZxBFU,로또6/45 제1064회 당첨번호 2023년 4월 22일 추첨
+1063,2023-04-15,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=8WCxbRp_rds,로또6/45 제1063회 당첨번호 2023년 4월 15일 추첨
+1062,2023-04-08,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=2Pkx0_R8U94,로또6/45 제1062회 당첨번호 2023년 4월 8일 추첨
+1061,2023-04-01,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=Gq_L6HaDiuU,로또6/45 제1061회 당첨번호 2023년 4월 1일 추첨
+1060,2023-03-25,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=kIdqQ8B_ZyE,로또6/45 제1060회 당첨번호 2023년 3월 25일 추첨
+1059,2023-03-18,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=nvNgCKFETNE,로또6/45 제1059회 당첨번호 2023년 3월 18일 추첨
+1058,2023-03-11,True,official_channel,동행복권,verified,https://www.youtube.com/watch?v=UKUL31gZ7k4,로또6/45 제1058회 당첨번호 2023년 3월 11일 추첨
+1057,2023-03-04,True,official_channel,동행복권,pending,https://www.youtube.com/watch?v=uPNn3OJd9nM,로또6/45 제1057회 당첨번호 2023년 3월 4일 추첨
 1056,2023-02-25,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=s2Qyar5Xr5s&t=325s,로또6/45 제1056회 당첨번호 2023년 2월 25일 추첨
 1055,2023-02-18,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=7W-uGkr4B6g&t=325s,로또6/45 제1055회 당첨번호 2023년 2월 18일 추첨
 1054,2023-02-11,True,unverified,동행복권,verified,https://www.youtube.com/watch?v=0OpotZuvAs0&t=325s,로또 제1054회 당첨번호 2023년 2월 11일 추첨
