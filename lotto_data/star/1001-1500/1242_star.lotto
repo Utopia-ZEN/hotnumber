@@ -1,0 +1,212 @@
+[
+  {
+    "rank": 1,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 1,
+    "numbers": [
+      12,
+      13,
+      18,
+      27,
+      34,
+      45
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 149,
+    "odd_even": "3:3",
+    "high_low": "3:3",
+    "probability": 2.083992907838747e-07,
+    "relative_to_uniform": 1.6974247273921066,
+    "final_score": 1.6974247273921066
+  },
+  {
+    "rank": 2,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 2,
+    "numbers": [
+      14,
+      20,
+      33,
+      37,
+      38,
+      40
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 182,
+    "odd_even": "2:4",
+    "high_low": "4:2",
+    "probability": 1.6158435225534624e-07,
+    "relative_to_uniform": 1.3161142441809306,
+    "final_score": 1.3161142441809306
+  },
+  {
+    "rank": 3,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 3,
+    "numbers": [
+      1,
+      17,
+      24,
+      31,
+      36,
+      39
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 148,
+    "odd_even": "4:2",
+    "high_low": "4:2",
+    "probability": 1.3676255013857223e-07,
+    "relative_to_uniform": 1.1139391766316793,
+    "final_score": 1.1139391766316793
+  },
+  {
+    "rank": 4,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 4,
+    "numbers": [
+      4,
+      7,
+      15,
+      19,
+      21,
+      43
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 109,
+    "odd_even": "5:1",
+    "high_low": "1:5",
+    "probability": 1.3344283399109521e-07,
+    "relative_to_uniform": 1.08689988942751,
+    "final_score": 1.08689988942751
+  },
+  {
+    "rank": 5,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 5,
+    "numbers": [
+      2,
+      5,
+      16,
+      35,
+      42,
+      44
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 144,
+    "odd_even": "2:4",
+    "high_low": "3:3",
+    "probability": 1.0236940836067892e-07,
+    "relative_to_uniform": 0.8338049732622315,
+    "final_score": 0.8338049732622315
+  },
+  {
+    "rank": 6,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 1,
+    "numbers": [
+      1,
+      4,
+      5,
+      8,
+      25,
+      45
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 88,
+    "odd_even": "4:2",
+    "high_low": "2:4",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  },
+  {
+    "rank": 7,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 2,
+    "numbers": [
+      1,
+      5,
+      8,
+      10,
+      28,
+      38
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 90,
+    "odd_even": "2:4",
+    "high_low": "2:4",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  },
+  {
+    "rank": 8,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 3,
+    "numbers": [
+      2,
+      5,
+      13,
+      28,
+      30,
+      35
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 113,
+    "odd_even": "3:3",
+    "high_low": "3:3",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  },
+  {
+    "rank": 9,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 4,
+    "numbers": [
+      5,
+      14,
+      21,
+      32,
+      33,
+      38
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 143,
+    "odd_even": "3:3",
+    "high_low": "3:3",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  },
+  {
+    "rank": 10,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 5,
+    "numbers": [
+      8,
+      13,
+      24,
+      28,
+      36,
+      41
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 150,
+    "odd_even": "2:4",
+    "high_low": "4:2",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  }
+]
