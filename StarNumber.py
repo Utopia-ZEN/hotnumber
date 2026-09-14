@@ -393,7 +393,7 @@ class StarNumberGenerator:
             f"- Range: {self.start_round}-{self.end_round}",
             f"- Games: {len(payload)}",
             f"- Engine: {engine}",
-            "- Mix: statistical base rates, recency decay, gap pressure, pair/triple lift, pattern likelihood, stability penalty, PickNumber links, and StarNumber genetic candidates",
+            "- Mix: statistical base rates, recency decay, sample-gated gap return rates, shrunk pair/triple lift, pattern likelihood, stability penalty, PickNumber links, and StarNumber genetic candidates",
             f"- Portfolio: {len(number_load)} unique numbers, max number reuse {max(number_load.values(), default=0)}, overlap and repeated-pair penalties enabled",
             "- Note: lottery draws are independent random events; this is data-based combination design, not a guarantee.",
             "",

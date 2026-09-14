@@ -14,6 +14,10 @@ from PickNumber.picknumber_analysis import (
 )
 
 
+MIN_CONDITION_SAMPLES = 100
+GAP_BUCKETS = ((0, 0), (1, 1), (2, 2), (3, 4), (5, 7), (8, 12), (13, None))
+
+
 class FutureInferenceEngine:
     """Statistical ensemble generator for future lottery combinations.
 
@@ -49,6 +53,7 @@ class FutureInferenceEngine:
             pair_iterations=pair_iterations,
             triple_iterations=triple_iterations,
         )
+        self._balance_candidate_scores(candidates)
         picks = select_diverse(candidates, limit=game_count)
         if len(picks) < game_count:
             raise RuntimeError(f"Could not produce {game_count} future inference picks")
@@ -146,9 +151,30 @@ class FutureInferenceEngine:
         scored["final_score"] = round(scored["final_score"] + future["future_score"], 2)
         candidates.append(scored)
 
+    def _balance_candidate_scores(self, candidates):
+        if not candidates:
+            return
+
+        legacy_scores = [item["final_score"] - item["future_score"] for item in candidates]
+        future_scores = [item["future_score"] for item in candidates]
+        legacy_mean = sum(legacy_scores) / len(legacy_scores)
+        future_mean = sum(future_scores) / len(future_scores)
+        legacy_scale = self._stddev(legacy_scores) or 1.0
+        future_scale = self._stddev(future_scores) or 1.0
+
+        for item, legacy_score in zip(candidates, legacy_scores):
+            legacy_z = (legacy_score - legacy_mean) / legacy_scale
+            future_z = (item["future_score"] - future_mean) / future_scale
+            item["legacy_score"] = round(legacy_score, 2)
+            item["score_calibration"] = "legacy_z_plus_future_z"
+            item["final_score"] = round(
+                legacy_mean + legacy_scale * (legacy_z + future_z), 2
+            )
+
     def _number_model(self):
         windows = [30, 80, 180, len(self.draws)]
         expected_rate = 6 / 45
+        gap_hazard = self._gap_hazard_model()
         model = {}
 
         for n in range(1, 46):
@@ -168,8 +194,8 @@ class FutureInferenceEngine:
 
             last_seen = self.stats["last_seen"].get(n, self.start_round - 1)
             gap = self.end_round - last_seen
-            median_gap = 45 / 6
-            gap_score = math.log1p(max(0, gap - median_gap)) * 5.5
+            hazard = gap_hazard[self._gap_bucket(gap)]
+            gap_score = hazard["score"]
 
             z_values = [z for z, _ in window_scores]
             stability_penalty = self._stddev(z_values) * 3.5
@@ -184,39 +210,107 @@ class FutureInferenceEngine:
                 "stability_score": stability_score,
                 "stability_penalty": stability_penalty,
                 "last_gap": gap,
+                "gap_hazard_rate": hazard["rate"],
+                "gap_hazard_samples": hazard["samples"],
             }
 
         return model
 
-    def _top_lift_pairs(self, number_model, limit):
+    @staticmethod
+    def _gap_bucket(gap):
+        for lower, upper in GAP_BUCKETS:
+            if upper is None or lower <= gap <= upper:
+                return f"{lower}+" if upper is None else f"{lower}-{upper}"
+        raise ValueError(f"invalid gap: {gap}")
+
+    def _gap_hazard_model(self):
+        base_rate = 6 / 45
+        samples = Counter()
+        hits = Counter()
+        last_seen = {}
+
+        for index, draw in enumerate(self.draws):
+            if index:
+                previous_round = self.draws[index - 1]["round"]
+                actual = set(draw["numbers"])
+                for number in range(1, 46):
+                    if number not in last_seen:
+                        continue
+                    bucket = self._gap_bucket(previous_round - last_seen[number])
+                    samples[bucket] += 1
+                    hits[bucket] += number in actual
+            for number in draw["numbers"]:
+                last_seen[number] = draw["round"]
+
+        model = {}
+        prior_strength = 45
+        for lower, upper in GAP_BUCKETS:
+            bucket = f"{lower}+" if upper is None else f"{lower}-{upper}"
+            sample_count = samples[bucket]
+            if sample_count < MIN_CONDITION_SAMPLES:
+                rate = base_rate
+            else:
+                rate = (hits[bucket] + base_rate * prior_strength) / (
+                    sample_count + prior_strength
+                )
+            score = max(-4.0, min(4.0, math.log(rate / base_rate) * 12.0))
+            model[bucket] = {
+                "samples": sample_count,
+                "hits": hits[bucket],
+                "rate": rate,
+                "score": score,
+            }
+        return model
+
+    def _pair_lift(self, pair):
         total = len(self.draws)
+        count = self.stats["pair"][pair]
+        a, b = pair
+        pa = (self.stats["freq"][a] + 1) / (total + 2)
+        pb = (self.stats["freq"][b] + 1) / (total + 2)
+        raw_lift = ((count + 0.5) / (total + 1)) / max(1e-9, pa * pb)
+        confidence = count / (count + 12)
+        return max(1e-9, 1.0 + (raw_lift - 1.0) * confidence), count
+
+    def _triple_lift(self, triple):
+        total = len(self.draws)
+        count = self.stats["triple"][triple]
+        probabilities = [(self.stats["freq"][n] + 1) / (total + 2) for n in triple]
+        raw_lift = ((count + 0.25) / (total + 1)) / max(
+            1e-9, math.prod(probabilities)
+        )
+        confidence = count / (count + 8)
+        return max(1e-9, 1.0 + (raw_lift - 1.0) * confidence), count
+
+    def _top_lift_pairs(self, number_model, limit):
         pair_counts = self.stats["pair"]
-        freq = self.stats["freq"]
         scored = []
 
         for pair, count in pair_counts.items():
             a, b = pair
-            pa = (freq[a] + 1) / (total + 2)
-            pb = (freq[b] + 1) / (total + 2)
-            pab = (count + 0.5) / (total + 1)
-            lift = pab / max(1e-9, pa * pb)
+            lift, _ = self._pair_lift(pair)
             posterior = number_model[a]["weight"] + number_model[b]["weight"]
-            scored.append((lift * 10 + posterior * 0.1 + count, pair))
+            scored.append(
+                (math.log(lift) * 14 + math.log1p(count) * 4 + posterior * 0.08, pair)
+            )
 
         return [pair for _, pair in sorted(scored, reverse=True)[:limit]]
 
     def _top_lift_triples(self, number_model, limit):
-        total = len(self.draws)
         triple_counts = self.stats["triple"]
-        freq = self.stats["freq"]
         scored = []
 
         for triple, count in triple_counts.items():
-            probs = [(freq[n] + 1) / (total + 2) for n in triple]
-            pabc = (count + 0.25) / (total + 1)
-            lift = pabc / max(1e-9, probs[0] * probs[1] * probs[2])
+            lift, _ = self._triple_lift(triple)
             posterior = sum(number_model[n]["weight"] for n in triple)
-            scored.append((math.log1p(lift) * 12 + posterior * 0.05 + count, triple))
+            scored.append(
+                (
+                    math.log(lift) * 16
+                    + math.log1p(count) * 4
+                    + posterior * 0.05,
+                    triple,
+                )
+            )
 
         return [triple for _, triple in sorted(scored, reverse=True)[:limit]]
 
@@ -224,6 +318,8 @@ class FutureInferenceEngine:
         number_part = sum(number_model[n]["posterior_score"] for n in nums)
         momentum_part = sum(number_model[n]["momentum_score"] for n in nums)
         gap_part = sum(number_model[n]["gap_score"] for n in nums)
+        gap_hazard_min_samples = min(number_model[n]["gap_hazard_samples"] for n in nums)
+        gap_hazard_mean_rate = sum(number_model[n]["gap_hazard_rate"] for n in nums) / 6
         stability_part = sum(number_model[n]["stability_score"] for n in nums)
         uncertainty_penalty = sum(number_model[n]["stability_penalty"] for n in nums) * 0.6
         lift_part = self._combo_lift_score(nums)
@@ -244,6 +340,8 @@ class FutureInferenceEngine:
             "posterior_score": round(number_part, 2),
             "momentum_score": round(momentum_part, 2),
             "gap_pressure_score": round(gap_part, 2),
+            "gap_hazard_min_samples": gap_hazard_min_samples,
+            "gap_hazard_mean_rate": round(gap_hazard_mean_rate, 6),
             "lift_score": round(lift_part, 2),
             "pattern_probability_score": round(pattern_part, 2),
             "stability_score": round(stability_part, 2),
@@ -251,11 +349,19 @@ class FutureInferenceEngine:
         }
 
     def _combo_lift_score(self, nums):
-        pair_counts = self.stats["pair"]
-        triple_counts = self.stats["triple"]
-        pair_score = sum(math.log1p(pair_counts[p]) for p in itertools.combinations(nums, 2))
-        triple_score = sum(math.log1p(triple_counts[t]) for t in itertools.combinations(nums, 3))
-        return pair_score * 0.75 + triple_score * 0.35
+        pair_score = sum(
+            math.log1p(count) * 0.55 + math.log(lift) * 4
+            for lift, count in (
+                self._pair_lift(pair) for pair in itertools.combinations(nums, 2)
+            )
+        )
+        triple_score = sum(
+            math.log1p(count) * 0.35 + math.log(lift) * 3
+            for lift, count in (
+                self._triple_lift(triple) for triple in itertools.combinations(nums, 3)
+            )
+        )
+        return pair_score + triple_score
 
     def _pattern_probability_score(self, nums):
         total = len(self.draws)
