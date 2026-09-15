@@ -23,6 +23,14 @@ python PickNumber\generate_future_numbers.py 6
 
 `StarNumber.py`의 기본 엔진은 `future`입니다. `future`는 PickNumber, 기존 StarNumber, FutureInference 후보를 모두 섞어 최종 점수로 재랭킹합니다.
 
+## 워크포워드 검증
+
+```powershell
+python StarNumber.py 5 --engine future --verify --verify-start-round 1100
+```
+
+검증은 각 목표 회차보다 이전 데이터만 사용하고, 같은 회차·같은 게임 수의 고정 균등 무작위 포트폴리오와 비교합니다. `paired_average_match_delta_95_interval`은 회차별 평균 차이의 정규근사 구간이며, 하한이 0보다 큰 경우에만 `average_match_superiority_supported=true`가 됩니다. 게임당 균등 이론 기대 적중 수 `0.8`과 최고 적중 수 비교도 함께 기록합니다.
+
 ## 출력 필드
 
 - `future_score`: 미래 추론 앙상블에서 추가된 점수입니다.

@@ -1,6 +1,7 @@
 import argparse
 import itertools
 import json
+import math
 import random
 from collections import Counter
 from datetime import datetime
@@ -23,6 +24,7 @@ ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "lotto_data"
 STAR_DIR = DATA_DIR / "star"
 STAR_BUCKET_SIZE = 500
+UNIFORM_BASELINE_SEED = 20260605
 
 
 def get_star_round_dir(round_no):
@@ -484,6 +486,11 @@ class StarNumberGenerator:
         match_distribution = Counter()
         best_match_distribution = Counter()
         prize_distribution = Counter()
+        uniform_match_distribution = Counter()
+        uniform_best_match_distribution = Counter()
+        average_match_deltas = []
+        theoretical_match_deltas = []
+        best_match_deltas = []
         failed_rounds = []
 
         for target_round in range(first, last + 1):
@@ -536,6 +543,24 @@ class StarNumberGenerator:
 
             best_game = max(games_result, key=lambda item: (item["match_count"], item["bonus_matched"]))
             best_match_distribution[best_game["match_count"]] += 1
+            uniform_results = []
+            for predicted in self._uniform_baseline_games(len(games_result), target_round):
+                matched = sorted(set(predicted) & set(actual_numbers))
+                uniform_match_distribution[len(matched)] += 1
+                uniform_results.append(
+                    {
+                        "predicted_numbers": predicted,
+                        "match_count": len(matched),
+                        "matched_numbers": matched,
+                    }
+                )
+            uniform_best = max(uniform_results, key=lambda item: item["match_count"])
+            uniform_best_match_distribution[uniform_best["match_count"]] += 1
+            model_round_average = sum(item["match_count"] for item in games_result) / len(games_result)
+            uniform_round_average = sum(item["match_count"] for item in uniform_results) / len(uniform_results)
+            average_match_deltas.append(model_round_average - uniform_round_average)
+            theoretical_match_deltas.append(model_round_average - (6 / 45 * 6))
+            best_match_deltas.append(best_game["match_count"] - uniform_best["match_count"])
             rounds.append(
                 {
                     "round": target_round,
@@ -544,14 +569,41 @@ class StarNumberGenerator:
                     "bonus": actual_bonus,
                     "best_match_count": best_game["match_count"],
                     "best_rank": best_game["rank"],
+                    "uniform_best_match_count": uniform_best["match_count"],
+                    "uniform_games": uniform_results,
                     "games": games_result,
                 }
             )
 
         checked_rounds = len(rounds)
         total_games = sum(len(item["games"]) for item in rounds)
+        average_match = (
+            sum(k * v for k, v in match_distribution.items()) / total_games
+            if total_games
+            else 0
+        )
+        average_best_match = (
+            sum(k * v for k, v in best_match_distribution.items()) / checked_rounds
+            if checked_rounds
+            else 0
+        )
+        uniform_average_match = (
+            sum(k * v for k, v in uniform_match_distribution.items()) / total_games
+            if total_games
+            else 0
+        )
+        uniform_average_best_match = (
+            sum(k * v for k, v in uniform_best_match_distribution.items()) / checked_rounds
+            if checked_rounds
+            else 0
+        )
+        paired_match_interval = self._mean_95_interval(average_match_deltas)
+        theoretical_match_interval = self._mean_95_interval(theoretical_match_deltas)
+        best_match_interval = self._mean_95_interval(best_match_deltas)
         summary = {
             "created_at": datetime.now().isoformat(timespec="seconds"),
+            "protocol": "strict_walk_forward_with_fixed_uniform_baseline",
+            "confidence_interval_method": "normal_approximation_over_round_means",
             "engine": engine or self.engine,
             "start_round": first,
             "end_round": last,
@@ -567,18 +619,41 @@ class StarNumberGenerator:
             "future_triple_iterations": future_triple_iterations,
             "star_generations": star_generations,
             "star_attempts_multiplier": star_attempts_multiplier,
-            "average_match_per_game": round(
-                sum(k * v for k, v in match_distribution.items()) / total_games, 4
+            "average_match_per_game": round(average_match, 4),
+            "average_best_match_per_round": round(average_best_match, 4),
+            "theoretical_uniform_average_match_per_game": round(6 / 45 * 6, 4),
+            "uniform_baseline_seed_rule": f"{UNIFORM_BASELINE_SEED} + round",
+            "uniform_average_match_per_game": round(uniform_average_match, 4),
+            "uniform_average_best_match_per_round": round(uniform_average_best_match, 4),
+            "paired_average_match_delta_vs_uniform": round(
+                sum(average_match_deltas) / len(average_match_deltas), 4
             )
-            if total_games
+            if average_match_deltas
             else 0,
-            "average_best_match_per_round": round(
-                sum(k * v for k, v in best_match_distribution.items()) / checked_rounds, 4
+            "paired_average_match_delta_95_interval": paired_match_interval,
+            "average_match_superiority_supported": paired_match_interval[0] > 0,
+            "average_match_delta_vs_theoretical_uniform": round(
+                sum(theoretical_match_deltas) / len(theoretical_match_deltas), 4
             )
-            if checked_rounds
+            if theoretical_match_deltas
             else 0,
+            "average_match_delta_vs_theoretical_uniform_95_interval": theoretical_match_interval,
+            "theoretical_uniform_superiority_supported": theoretical_match_interval[0] > 0,
+            "paired_average_best_match_delta_vs_uniform": round(
+                sum(best_match_deltas) / len(best_match_deltas), 4
+            )
+            if best_match_deltas
+            else 0,
+            "paired_average_best_match_delta_95_interval": best_match_interval,
+            "best_match_superiority_supported": best_match_interval[0] > 0,
             "match_distribution": {str(k): match_distribution.get(k, 0) for k in range(7)},
             "best_match_distribution": {str(k): best_match_distribution.get(k, 0) for k in range(7)},
+            "uniform_match_distribution": {
+                str(k): uniform_match_distribution.get(k, 0) for k in range(7)
+            },
+            "uniform_best_match_distribution": {
+                str(k): uniform_best_match_distribution.get(k, 0) for k in range(7)
+            },
             "prize_distribution": dict(sorted(prize_distribution.items())),
             "rounds_with_best_3plus": sum(v for k, v in best_match_distribution.items() if k >= 3),
             "rounds_with_best_4plus": sum(v for k, v in best_match_distribution.items() if k >= 4),
@@ -597,6 +672,25 @@ class StarNumberGenerator:
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         return report, output_path
+
+    @staticmethod
+    def _uniform_baseline_games(game_count, target_round):
+        rng = random.Random(UNIFORM_BASELINE_SEED + target_round)
+        games = set()
+        while len(games) < game_count:
+            games.add(tuple(sorted(rng.sample(range(1, 46), 6))))
+        return [list(numbers) for numbers in sorted(games)]
+
+    @staticmethod
+    def _mean_95_interval(values):
+        if not values:
+            return [0, 0]
+        mean = sum(values) / len(values)
+        if len(values) == 1:
+            return [round(mean, 4), round(mean, 4)]
+        variance = sum((value - mean) ** 2 for value in values) / (len(values) - 1)
+        margin = 1.96 * math.sqrt(variance / len(values))
+        return [round(mean - margin, 4), round(mean + margin, 4)]
 
     def run_seed_search(
         self,
@@ -840,6 +934,9 @@ def main():
             f"avg_best={summary['average_best_match_per_round']}, "
             f"best_3plus={summary['rounds_with_best_3plus']}, "
             f"best_4plus={summary['rounds_with_best_4plus']}, "
+            f"uniform_delta={summary['paired_average_match_delta_vs_uniform']}, "
+            f"uniform_delta_95={summary['paired_average_match_delta_95_interval']}, "
+            f"supported={summary['average_match_superiority_supported']}, "
             f"failed={summary['failed_rounds']}"
         )
         return
