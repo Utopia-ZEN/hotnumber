@@ -18,6 +18,13 @@ class StarNumberVerificationTests(unittest.TestCase):
         self.assertLess(interval[0], 0)
         self.assertGreater(interval[1], 0)
 
+    def test_theoretical_uniform_best_distribution_is_exact(self):
+        distribution = StarNumberGenerator._theoretical_uniform_best_distribution(5)
+        expected_best = sum(matches * probability for matches, probability in distribution.items())
+
+        self.assertAlmostEqual(sum(distribution.values()), 1.0)
+        self.assertAlmostEqual(expected_best, 1.7289354902)
+
 
 if __name__ == "__main__":
     unittest.main()

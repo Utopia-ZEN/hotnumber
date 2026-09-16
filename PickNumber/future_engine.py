@@ -26,6 +26,8 @@ class FutureInferenceEngine:
     candidate sets while penalizing instability and overfit patterns.
     """
 
+    FUTURE_SCORE_WEIGHT = 1.0
+
     def __init__(self, start_round=START_ROUND, end_round=None, seed=SEED):
         self.start_round = start_round
         self.end_round = end_round or self._latest_round()
@@ -166,9 +168,15 @@ class FutureInferenceEngine:
             legacy_z = (legacy_score - legacy_mean) / legacy_scale
             future_z = (item["future_score"] - future_mean) / future_scale
             item["legacy_score"] = round(legacy_score, 2)
-            item["score_calibration"] = "legacy_z_plus_future_z"
+            item["score_calibration"] = (
+                "legacy_z_plus_future_z"
+                if self.FUTURE_SCORE_WEIGHT == 1.0
+                else f"legacy_z_plus_{self.FUTURE_SCORE_WEIGHT:g}_future_z"
+            )
             item["final_score"] = round(
-                legacy_mean + legacy_scale * (legacy_z + future_z), 2
+                legacy_mean
+                + legacy_scale * (legacy_z + future_z * self.FUTURE_SCORE_WEIGHT),
+                2,
             )
 
     def _number_model(self):

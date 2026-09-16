@@ -45,6 +45,22 @@ class FutureInferenceEngineTests(unittest.TestCase):
         )
         self.assertGreater(candidates[1]["final_score"], candidates[0]["final_score"])
 
+    def test_future_score_weight_can_disable_experimental_signal(self):
+        engine = object.__new__(FutureInferenceEngine)
+        engine.FUTURE_SCORE_WEIGHT = 0.0
+        candidates = [
+            {"final_score": 1000.0, "future_score": 0.0},
+            {"final_score": 1050.0, "future_score": 100.0},
+            {"final_score": 900.0, "future_score": 0.0},
+        ]
+
+        engine._balance_candidate_scores(candidates)
+
+        self.assertEqual([item["final_score"] for item in candidates], [1000.0, 950.0, 900.0])
+        self.assertTrue(
+            all(item["score_calibration"] == "legacy_z_plus_0_future_z" for item in candidates)
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

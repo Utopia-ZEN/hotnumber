@@ -491,6 +491,12 @@ class StarNumberGenerator:
         average_match_deltas = []
         theoretical_match_deltas = []
         best_match_deltas = []
+        theoretical_best_distribution = self._theoretical_uniform_best_distribution(games)
+        theoretical_best_average = sum(
+            matches * probability
+            for matches, probability in theoretical_best_distribution.items()
+        )
+        theoretical_best_deltas = []
         failed_rounds = []
 
         for target_round in range(first, last + 1):
@@ -561,6 +567,7 @@ class StarNumberGenerator:
             average_match_deltas.append(model_round_average - uniform_round_average)
             theoretical_match_deltas.append(model_round_average - (6 / 45 * 6))
             best_match_deltas.append(best_game["match_count"] - uniform_best["match_count"])
+            theoretical_best_deltas.append(best_game["match_count"] - theoretical_best_average)
             rounds.append(
                 {
                     "round": target_round,
@@ -600,6 +607,7 @@ class StarNumberGenerator:
         paired_match_interval = self._mean_95_interval(average_match_deltas)
         theoretical_match_interval = self._mean_95_interval(theoretical_match_deltas)
         best_match_interval = self._mean_95_interval(best_match_deltas)
+        theoretical_best_interval = self._mean_95_interval(theoretical_best_deltas)
         summary = {
             "created_at": datetime.now().isoformat(timespec="seconds"),
             "protocol": "strict_walk_forward_with_fixed_uniform_baseline",
@@ -625,6 +633,13 @@ class StarNumberGenerator:
             "uniform_baseline_seed_rule": f"{UNIFORM_BASELINE_SEED} + round",
             "uniform_average_match_per_game": round(uniform_average_match, 4),
             "uniform_average_best_match_per_round": round(uniform_average_best_match, 4),
+            "theoretical_uniform_average_best_match_per_round": round(
+                theoretical_best_average, 4
+            ),
+            "theoretical_uniform_best_match_distribution": {
+                str(matches): round(probability, 10)
+                for matches, probability in theoretical_best_distribution.items()
+            },
             "paired_average_match_delta_vs_uniform": round(
                 sum(average_match_deltas) / len(average_match_deltas), 4
             )
@@ -646,6 +661,17 @@ class StarNumberGenerator:
             else 0,
             "paired_average_best_match_delta_95_interval": best_match_interval,
             "best_match_superiority_supported": best_match_interval[0] > 0,
+            "average_best_match_delta_vs_theoretical_uniform": round(
+                sum(theoretical_best_deltas) / len(theoretical_best_deltas), 4
+            )
+            if theoretical_best_deltas
+            else 0,
+            "average_best_match_delta_vs_theoretical_uniform_95_interval": (
+                theoretical_best_interval
+            ),
+            "theoretical_best_match_superiority_supported": (
+                theoretical_best_interval[0] > 0
+            ),
             "match_distribution": {str(k): match_distribution.get(k, 0) for k in range(7)},
             "best_match_distribution": {str(k): best_match_distribution.get(k, 0) for k in range(7)},
             "uniform_match_distribution": {
@@ -680,6 +706,29 @@ class StarNumberGenerator:
         while len(games) < game_count:
             games.add(tuple(sorted(rng.sample(range(1, 46), 6))))
         return [list(numbers) for numbers in sorted(games)]
+
+    @staticmethod
+    def _theoretical_uniform_best_distribution(game_count):
+        if game_count < 1:
+            raise ValueError("game_count must be at least 1")
+        total_combinations = math.comb(45, 6)
+        single_probabilities = {
+            matches: (
+                math.comb(6, matches)
+                * math.comb(39, 6 - matches)
+                / total_combinations
+            )
+            for matches in range(7)
+        }
+        distribution = {}
+        cumulative = 0.0
+        previous_max_cdf = 0.0
+        for matches, probability in single_probabilities.items():
+            cumulative += probability
+            max_cdf = cumulative**game_count
+            distribution[matches] = max_cdf - previous_max_cdf
+            previous_max_cdf = max_cdf
+        return distribution
 
     @staticmethod
     def _mean_95_interval(values):
@@ -937,6 +986,8 @@ def main():
             f"uniform_delta={summary['paired_average_match_delta_vs_uniform']}, "
             f"uniform_delta_95={summary['paired_average_match_delta_95_interval']}, "
             f"supported={summary['average_match_superiority_supported']}, "
+            f"theoretical_best_delta={summary['average_best_match_delta_vs_theoretical_uniform']}, "
+            f"theoretical_best_supported={summary['theoretical_best_match_superiority_supported']}, "
             f"failed={summary['failed_rounds']}"
         )
         return

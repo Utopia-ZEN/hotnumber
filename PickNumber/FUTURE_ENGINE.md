@@ -29,7 +29,7 @@ python PickNumber\generate_future_numbers.py 6
 python StarNumber.py 5 --engine future --verify --verify-start-round 1100
 ```
 
-검증은 각 목표 회차보다 이전 데이터만 사용하고, 같은 회차·같은 게임 수의 고정 균등 무작위 포트폴리오와 비교합니다. `paired_average_match_delta_95_interval`은 회차별 평균 차이의 정규근사 구간이며, 하한이 0보다 큰 경우에만 `average_match_superiority_supported=true`가 됩니다. 게임당 균등 이론 기대 적중 수 `0.8`과 최고 적중 수 비교도 함께 기록합니다.
+검증은 각 목표 회차보다 이전 데이터만 사용하고, 같은 회차·같은 게임 수의 고정 균등 무작위 포트폴리오와 비교합니다. `paired_average_match_delta_95_interval`은 회차별 평균 차이의 정규근사 구간이며, 하한이 0보다 큰 경우에만 `average_match_superiority_supported=true`가 됩니다. 게임당 균등 이론 기대 적중 수 `0.8`과 조합론으로 계산한 독립 균등 5게임의 정확한 최고 적중 분포·기대값도 함께 기록합니다.
 
 ## 출력 필드
 
@@ -44,7 +44,7 @@ python StarNumber.py 5 --engine future --verify --verify-start-round 1100
 - `stability_score`: 여러 기간에서 신호가 안정적인 정도입니다.
 - `uncertainty_penalty`: 기간별 신호 변동성에 대한 감점입니다.
 - `legacy_score`: 정규화 전 기존 PickNumber 점수입니다.
-- `score_calibration`: 기존 점수와 추론 점수를 후보 집합 안에서 동등한 표준편차로 혼합한 방식입니다.
+- `score_calibration`: 기존 점수와 추론 점수를 후보 집합 안에서 혼합한 방식과 현재 미래 점수 가중치입니다.
 
 ## 해석 원칙
 
