@@ -1,0 +1,19 @@
+# Owner Picks round 1247
+
+- Games: 10 (order model 5 + sealed uniform random 5)
+- Owner-pick ledger hash: 28ae397accd1b7ccfab835da335832eead383f81179586055fa727aad00abbdc
+- Prediction ledger hash: b0f92ce5cb172e637b9db0f21b8d6f19032860ecdd326e705418eb1c2da6a375
+- Uniform random seed: 1265033888
+- Evaluation: compare both groups after the draw; no game may be replaced.
+
+## Picks
+1. [질서 모델 1] 12 13 18 27 34 45 | relative_to_uniform=1.703929
+2. [질서 모델 2] 14 20 33 37 38 40 | relative_to_uniform=1.299590
+3. [질서 모델 3] 01 17 24 31 36 39 | relative_to_uniform=1.113519
+4. [질서 모델 4] 04 07 15 19 21 43 | relative_to_uniform=1.080462
+5. [질서 모델 5] 02 05 16 35 42 44 | relative_to_uniform=0.844641
+6. [무작위 기준 1] 01 10 13 23 35 38 | relative_to_uniform=1.000000
+7. [무작위 기준 2] 03 06 18 22 36 43 | relative_to_uniform=1.000000
+8. [무작위 기준 3] 03 17 27 28 35 36 | relative_to_uniform=1.000000
+9. [무작위 기준 4] 11 14 32 34 41 45 | relative_to_uniform=1.000000
+10. [무작위 기준 5] 11 15 23 35 41 43 | relative_to_uniform=1.000000
