@@ -1,0 +1,212 @@
+[
+  {
+    "rank": 1,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 1,
+    "numbers": [
+      12,
+      13,
+      18,
+      27,
+      34,
+      45
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 149,
+    "odd_even": "3:3",
+    "high_low": "3:3",
+    "probability": 2.0939214963900794e-07,
+    "relative_to_uniform": 1.7055116223386981,
+    "final_score": 1.7055116223386981
+  },
+  {
+    "rank": 2,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 2,
+    "numbers": [
+      14,
+      20,
+      33,
+      37,
+      38,
+      40
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 182,
+    "odd_even": "2:4",
+    "high_low": "4:2",
+    "probability": 1.5972071308335082e-07,
+    "relative_to_uniform": 1.3009347913066776,
+    "final_score": 1.3009347913066776
+  },
+  {
+    "rank": 3,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 3,
+    "numbers": [
+      1,
+      17,
+      24,
+      31,
+      36,
+      39
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 148,
+    "odd_even": "4:2",
+    "high_low": "4:2",
+    "probability": 1.360494423798743e-07,
+    "relative_to_uniform": 1.108130871150619,
+    "final_score": 1.108130871150619
+  },
+  {
+    "rank": 4,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 4,
+    "numbers": [
+      4,
+      7,
+      15,
+      19,
+      21,
+      43
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 109,
+    "odd_even": "5:1",
+    "high_low": "1:5",
+    "probability": 1.3280965437190945e-07,
+    "relative_to_uniform": 1.081742603438465,
+    "final_score": 1.081742603438465
+  },
+  {
+    "rank": 5,
+    "group": "order_model",
+    "group_label": "질서 모델",
+    "group_rank": 5,
+    "numbers": [
+      2,
+      5,
+      16,
+      35,
+      42,
+      44
+    ],
+    "strategy": "bayesian-order-v1",
+    "sum": 144,
+    "odd_even": "2:4",
+    "high_low": "3:3",
+    "probability": 1.0384844374706846e-07,
+    "relative_to_uniform": 0.8458518052264974,
+    "final_score": 0.8458518052264974
+  },
+  {
+    "rank": 6,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 1,
+    "numbers": [
+      1,
+      15,
+      30,
+      37,
+      44,
+      45
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 172,
+    "odd_even": "4:2",
+    "high_low": "4:2",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  },
+  {
+    "rank": 7,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 2,
+    "numbers": [
+      2,
+      12,
+      22,
+      29,
+      42,
+      43
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 150,
+    "odd_even": "2:4",
+    "high_low": "3:3",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  },
+  {
+    "rank": 8,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 3,
+    "numbers": [
+      5,
+      17,
+      20,
+      32,
+      36,
+      38
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 148,
+    "odd_even": "2:4",
+    "high_low": "3:3",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  },
+  {
+    "rank": 9,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 4,
+    "numbers": [
+      9,
+      12,
+      20,
+      21,
+      35,
+      43
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 140,
+    "odd_even": "4:2",
+    "high_low": "2:4",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  },
+  {
+    "rank": 10,
+    "group": "uniform_random",
+    "group_label": "무작위 기준",
+    "group_rank": 5,
+    "numbers": [
+      15,
+      17,
+      26,
+      30,
+      41,
+      44
+    ],
+    "strategy": "uniform-random-v1",
+    "sum": 173,
+    "odd_even": "3:3",
+    "high_low": "4:2",
+    "probability": 1.2277380399898834e-07,
+    "relative_to_uniform": 1.0,
+    "final_score": 1.0
+  }
+]

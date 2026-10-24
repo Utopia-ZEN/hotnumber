@@ -36,9 +36,9 @@
             "total": 203
         },
         "8": {
-            "main": 158,
+            "main": 159,
             "bonus": 25,
-            "total": 183
+            "total": 184
         },
         "9": {
             "main": 137,
@@ -66,9 +66,9 @@
             "total": 212
         },
         "14": {
-            "main": 172,
+            "main": 173,
             "bonus": 23,
-            "total": 195
+            "total": 196
         },
         "15": {
             "main": 170,
@@ -101,14 +101,14 @@
             "total": 202
         },
         "21": {
-            "main": 167,
+            "main": 168,
             "bonus": 25,
-            "total": 192
+            "total": 193
         },
         "22": {
-            "main": 147,
+            "main": 148,
             "bonus": 21,
-            "total": 168
+            "total": 169
         },
         "23": {
             "main": 150,
@@ -117,8 +117,8 @@
         },
         "24": {
             "main": 169,
-            "bonus": 33,
-            "total": 202
+            "bonus": 34,
+            "total": 203
         },
         "25": {
             "main": 154,
@@ -206,9 +206,9 @@
             "total": 170
         },
         "42": {
-            "main": 159,
+            "main": 160,
             "bonus": 25,
-            "total": 184
+            "total": 185
         },
         "43": {
             "main": 167,
@@ -221,9 +221,9 @@
             "total": 190
         },
         "45": {
-            "main": 175,
+            "main": 176,
             "bonus": 22,
-            "total": 197
+            "total": 198
         }
     },
     "ranking": [
@@ -308,6 +308,14 @@
             }
         },
         {
+            "number": 24,
+            "counts": {
+                "main": 169,
+                "bonus": 34,
+                "total": 203
+            }
+        },
+        {
             "number": 31,
             "counts": {
                 "main": 171,
@@ -320,14 +328,6 @@
             "counts": {
                 "main": 172,
                 "bonus": 30,
-                "total": 202
-            }
-        },
-        {
-            "number": 24,
-            "counts": {
-                "main": 169,
-                "bonus": 33,
                 "total": 202
             }
         },
@@ -390,9 +390,17 @@
         {
             "number": 45,
             "counts": {
-                "main": 175,
+                "main": 176,
                 "bonus": 22,
-                "total": 197
+                "total": 198
+            }
+        },
+        {
+            "number": 14,
+            "counts": {
+                "main": 173,
+                "bonus": 23,
+                "total": 196
             }
         },
         {
@@ -409,14 +417,6 @@
                 "main": 174,
                 "bonus": 22,
                 "total": 196
-            }
-        },
-        {
-            "number": 14,
-            "counts": {
-                "main": 172,
-                "bonus": 23,
-                "total": 195
             }
         },
         {
@@ -452,6 +452,14 @@
             }
         },
         {
+            "number": 21,
+            "counts": {
+                "main": 168,
+                "bonus": 25,
+                "total": 193
+            }
+        },
+        {
             "number": 39,
             "counts": {
                 "main": 168,
@@ -464,14 +472,6 @@
             "counts": {
                 "main": 163,
                 "bonus": 29,
-                "total": 192
-            }
-        },
-        {
-            "number": 21,
-            "counts": {
-                "main": 167,
-                "bonus": 25,
                 "total": 192
             }
         },
@@ -510,17 +510,17 @@
         {
             "number": 42,
             "counts": {
-                "main": 159,
+                "main": 160,
                 "bonus": 25,
-                "total": 184
+                "total": 185
             }
         },
         {
             "number": 8,
             "counts": {
-                "main": 158,
+                "main": 159,
                 "bonus": 25,
-                "total": 183
+                "total": 184
             }
         },
         {
@@ -574,9 +574,9 @@
         {
             "number": 22,
             "counts": {
-                "main": 147,
+                "main": 148,
                 "bonus": 21,
-                "total": 168
+                "total": 169
             }
         },
         {
@@ -588,5 +588,5 @@
             }
         }
     ],
-    "total_rounds": 1246
+    "total_rounds": 1247
 }
