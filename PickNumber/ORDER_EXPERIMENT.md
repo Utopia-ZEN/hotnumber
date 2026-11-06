@@ -156,6 +156,13 @@ Machine and ball-set fields therefore remain `null`.
 - Diversified five-game portfolio
 - Append-only prediction and evaluation ledger
 
+The latest 1,048-round strict walk-forward keeps combination probability and
+five-game portfolio coverage separate. Combination log loss remains worse than
+uniform, but the diversified five-game portfolio improved the per-round best
+match by 0.095420 on average; its 95% interval was [0.038406, 0.152434]. The
+owner-pick cycle may therefore report portfolio lift, but must not describe any
+single combination as more likely to win.
+
 Gate: tests pass, draw history is contiguous, and the ledger verifies.
 
 ### Phase 2: Context Collection

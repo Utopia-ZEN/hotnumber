@@ -78,10 +78,18 @@ class LedgerTests(unittest.TestCase):
         random_games = generate_uniform_portfolio(game_count=5, seed=77)
         with tempfile.TemporaryDirectory() as temp_dir:
             ledger = PredictionLedger(Path(temp_dir) / "ledger.jsonl")
-            ledger.append_prediction(40, draws, model, model_games, seed=7)
+            ledger.append_prediction(
+                40,
+                draws,
+                model,
+                model_games,
+                seed=7,
+                evaluation_summary={"portfolio_better_than_uniform": True},
+            )
             owner_set = ledger.append_owner_pick_set(40, 77, random_games)
             self.assertEqual(len(owner_set["games"]), 10)
             self.assertEqual({game["group"] for game in owner_set["games"]}, {"order_model", "uniform_random"})
+            self.assertTrue(owner_set["evaluation"]["portfolio_better_than_uniform"])
             evaluation = ledger.append_evaluation(make_draw(40))
             self.assertEqual(set(evaluation["group_summary"]), {"order_model", "uniform_random"})
             self.assertEqual(len(evaluation["games"]), 10)
@@ -101,6 +109,8 @@ class WalkForwardTests(unittest.TestCase):
         self.assertEqual(report["evaluated_rounds"], 3)
         self.assertTrue(math.isfinite(report["average_log_loss"]))
         self.assertEqual(len(report["log_loss_improvement_95pct_interval"]), 2)
+        self.assertEqual(len(report["best_match_improvement_95pct_interval"]), 2)
+        self.assertIsInstance(report["portfolio_better_than_uniform"], bool)
 
 
 if __name__ == "__main__":

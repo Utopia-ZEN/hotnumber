@@ -238,16 +238,17 @@ class PredictionLedger:
                         "final_score": game["relative_to_uniform"],
                     }
                 )
-        return self.append(
-            {
-                "event": "owner_pick_set",
-                "created_at_utc": datetime.now(timezone.utc).isoformat(),
-                "target_round": target_round,
-                "prediction_record_hash": prediction["record_hash"],
-                "random_seed": random_seed,
-                "games": games,
-            }
-        )
+        payload = {
+            "event": "owner_pick_set",
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
+            "target_round": target_round,
+            "prediction_record_hash": prediction["record_hash"],
+            "random_seed": random_seed,
+            "games": games,
+        }
+        if "evaluation" in prediction:
+            payload["evaluation"] = prediction["evaluation"]
+        return self.append(payload)
 
 
 def run_walk_forward(
@@ -268,6 +269,7 @@ def run_walk_forward(
     model_log_loss = 0.0
     uniform_log_loss = 0.0
     log_loss_improvements: list[float] = []
+    best_match_improvements: list[float] = []
     model_matches = Counter()
     uniform_matches = Counter()
     evaluated = 0
@@ -292,8 +294,11 @@ def run_walk_forward(
             game_count=games_per_round,
             seed=seed + target.round * 97,
         )
-        model_matches[best_match(model_games, target.numbers)] += 1
-        uniform_matches[best_match(uniform_games, target.numbers)] += 1
+        model_best = best_match(model_games, target.numbers)
+        uniform_best = best_match(uniform_games, target.numbers)
+        model_matches[model_best] += 1
+        uniform_matches[uniform_best] += 1
+        best_match_improvements.append(model_best - uniform_best)
         evaluated += 1
 
     average_model_loss = model_log_loss / evaluated
@@ -302,6 +307,14 @@ def run_walk_forward(
     improvement_standard_error = (
         statistics.stdev(log_loss_improvements) / math.sqrt(evaluated) if evaluated > 1 else 0.0
     )
+    best_match_improvement = statistics.fmean(best_match_improvements)
+    best_match_standard_error = (
+        statistics.stdev(best_match_improvements) / math.sqrt(evaluated) if evaluated > 1 else 0.0
+    )
+    best_match_interval = [
+        best_match_improvement - 1.96 * best_match_standard_error,
+        best_match_improvement + 1.96 * best_match_standard_error,
+    ]
     return {
         "protocol": "strict_walk_forward",
         "first_evaluated_round": draws[min_train_rounds].round,
@@ -318,6 +331,10 @@ def run_walk_forward(
             improvement + 1.96 * improvement_standard_error,
         ],
         "model_better_than_uniform": average_model_loss < average_uniform_loss,
+        "average_best_match_improvement": best_match_improvement,
+        "best_match_improvement_standard_error": best_match_standard_error,
+        "best_match_improvement_95pct_interval": best_match_interval,
+        "portfolio_better_than_uniform": best_match_interval[0] > 0.0,
         "model_best_match_distribution": dict(sorted(model_matches.items())),
         "uniform_best_match_distribution": dict(sorted(uniform_matches.items())),
         "data_sha256": draw_data_digest(draws),
@@ -344,9 +361,20 @@ def write_owner_pick_files(record: dict[str, Any]) -> tuple[Path, Path]:
         f"- Prediction ledger hash: {record['prediction_record_hash']}",
         f"- Uniform random seed: {record['random_seed']}",
         "- Evaluation: compare both groups after the draw; no game may be replaced.",
-        "",
-        "## Picks",
     ]
+    evaluation = record.get("evaluation") or {}
+    if evaluation:
+        interval = evaluation.get("best_match_improvement_95pct_interval", [])
+        lines.extend(
+            [
+                f"- Strict walk-forward rounds: {evaluation.get('evaluated_rounds', 0)}",
+                f"- Five-game best-match lift: {evaluation.get('average_best_match_improvement', 0):.6f}",
+                f"- Lift 95% interval: {interval}",
+                f"- Portfolio lift supported: {evaluation.get('portfolio_better_than_uniform', False)}",
+                "- Combination probabilities remain unproven unless log-loss also beats uniform.",
+            ]
+        )
+    lines.extend(["", "## Picks"])
     for game in record["games"]:
         numbers = " ".join(f"{number:02d}" for number in game["numbers"])
         lines.append(
@@ -463,6 +491,11 @@ def command_owner_cycle(args: argparse.Namespace) -> None:
                 "log_loss_improvement": evaluation["log_loss_improvement"],
                 "log_loss_improvement_95pct_interval": evaluation["log_loss_improvement_95pct_interval"],
                 "model_better_than_uniform": evaluation["model_better_than_uniform"],
+                "average_best_match_improvement": evaluation["average_best_match_improvement"],
+                "best_match_improvement_95pct_interval": evaluation[
+                    "best_match_improvement_95pct_interval"
+                ],
+                "portfolio_better_than_uniform": evaluation["portfolio_better_than_uniform"],
                 "data_sha256": evaluation["data_sha256"],
             },
         )
