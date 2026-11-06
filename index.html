@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>앱테크로또 v2.0.0 & 로또 분석 데이터</title>
+    <title>앱테크로또 v2.4.3 & 로또 분석 데이터</title>
     <!-- 구글 에드센스 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1811846730532540"
         crossorigin="anonymous"></script>
@@ -789,7 +789,7 @@
     <header>
         <h1>앱테크로또</h1>
         <p>로또 추첨에 앱테크를 더하다! 행운도 포인트도 매일매일</p>
-        <span class="release-version">v2.0.0 · Build 22 · 2026.09.03</span>
+        <span class="release-version">v2.4.3 · Build 52 · 2026.11.06</span>
     </header>
 
     <div class="container">
@@ -801,13 +801,18 @@
             <ul class="feature-list">
                 <li><strong>상금형 티켓로또</strong>와 회차별 당첨금 집계</li>
                 <li>활력·바구니·친밀도를 관리하는 <strong>로또 요정 키우기</strong></li>
+                <li>24시간 자동 수확과 광고 스킵을 지원하는 <strong>스마트 집사 요정 패스</strong></li>
+                <li>친구 초대 시 <strong>티켓 +60장 무제한 적립</strong> (링크 설치 시 자동 인식)</li>
+                <li>쇼핑 수수료를 보너스 티켓으로 환원하는 <strong>제휴 쇼핑 감사 티켓 센터</strong></li>
+                <li>모바일 쿠폰으로 즉시 교환하는 <strong>기프티콘 상점</strong> (스타벅스·편의점 등)</li>
+                <li>실시간 접속자와 함께 즐기는 <strong>LIVE 추첨 라운지</strong></li>
+                <li>오늘의 운세와 띠별/별자리별 <strong>행운의 번호 추천</strong></li>
                 <li>고정 번호와 지난 번호를 보존하는 <strong>스마트 번호 보관함</strong></li>
                 <li><strong>물리 엔진</strong>을 이용한 재밌는 추첨</li>
                 <li>빠르게 내 입맛에 맞는 숫자들을 고를수 있는 <strong>커스텀모드</strong></li>
                 <li>AI가 추첨해 확률을 끌어올린 <strong>AI추천모드</strong></li>
                 <li>다른 사람은 선택하지 않을것 같은 나만의 <strong>희귀모드</strong></li>
                 <li>토요일 10시 30분. 당첨 확인까지 <strong>자동알림모드</strong></li>
-                <li>추첨한 번호를 지인들과 공유하세요.</li>
                 <li>구입한 용지를 <strong>QR 코드</strong> 저장하고 당첨 확인까지</li>
                 <li>매주 원하는 요일/시간에 <strong>행운 예약</strong>으로 받는 행운번호 조합</li>
             </ul>
@@ -816,7 +821,77 @@
                 <h3>🚀 업데이트 상세 내역</h3>
 
                 <details open>
-                    <summary>v2.0.0 (Build 22) 업데이트</summary>
+                    <summary>v2.4.3 (Build 52) 업데이트 · 2026.11.06</summary>
+                    <ul>
+                        <li>[신규] Google Play Install Referrer 기반 친구 초대 자동 연동: 초대 링크로 앱 설치 시 코드 입력 없이 양방향 +60장 즉시 적립 (인원수 무제한)</li>
+                        <li>[신규] 제휴 쇼핑 감사 티켓 센터 오픈: 쿠팡 쇼핑 시 수수료를 행운 티켓으로 보너스 환원 및 7일 반품/취소 방어 시스템(PENDING ➔ CONFIRMED) 탑재</li>
+                        <li>[신규] 스마트 집사 계약 감사 웰컴 선물: 패스 계약 체결 즉시 최대 700장 행운 티켓 선물 증정 및 실시간 지갑 잔액 동기화</li>
+                        <li>[개선] 친구 초대 완료 후에도 내 초대 코드 상시 확인 및 무제한 공유 지원</li>
+                        <li>[수정] 무료충전소 대기시간 종료 후 버튼이 멈추던 카운트다운 타이머 오류 수정 및 광고 로딩 최적화</li>
+                        <li>[관리자] 쿠팡 제휴 쇼핑 실적 분석 센터 및 친구 초대·추천인 네트워크 분석 센터 신설</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.4.2 업데이트 · 2026.11.05</summary>
+                    <ul>
+                        <li>[안정화] AdMob 리워드 광고 8초 워치독(Watchdog) 안전 타이머 도입 및 인벤토리 부족 안내 연동</li>
+                        <li>[신규] 요정 키우기 다마고치 밸런스 정립: 굶주림 수면 후 8시간 유예 경과 시 EXP 감퇴 및 도둑 고블린 침입/도주·회수 인터랙티브 애니메이션 탑재</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.4.1 업데이트 · 2026.11.04</summary>
+                    <ul>
+                        <li>[개편] 24시간 스마트 집사 요정 패스 듀얼 혜택 체계 설계 ([계약 즉시 웰컴 선물] + [30일 매일 자동 수확])</li>
+                        <li>[개선] 오늘의 운세 행운수 로또 번호 100% 필수 포함 및 골드 하이라이트 연동</li>
+                        <li>[개선] 동영상 광고 백그라운드 프리로드 및 FullScreenContentCallback 최적화로 대기 시간 제로화</li>
+                        <li>[동기화] 기프티콘 상점 교환 내역 '사용 완료' 실시간 동기화</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.3.2 업데이트 · 2026.11.01</summary>
+                    <ul>
+                        <li>[경제모델] 티켓로또 상금 정산 로직 전면 개편: 4·5등 보너스 티켓 실비 차감제(장당 5원) 도입으로 1~3등 현금 상금 규모 극대화 (1등 최대 70만원 확보) 및 미당첨 이월금 100% 보존</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.3.0 (Build 48) 업데이트 · 2026.10.29</summary>
+                    <ul>
+                        <li>[결제] Google Play 결제 라이브러리(PBL v8.0.0) 승격 및 미처리 구매 자동 복구(결제 유실 방지 시스템) 구축</li>
+                        <li>[혜택] 스텔라 로열 VIP 스마트 집사 앱 내 전면/오프닝/배너 광고 100% 제거 (Ad-Free) 시스템 구축</li>
+                        <li>[안정화] LIVE 추첨 라운지 화면 회전 시 튕김 및 재진입 불가 결함 완벽 해결</li>
+                        <li>[관리자] 안드로이드 네이티브 관리자 콘솔 대시보드 4대 카테고리(회차·상금, 수익·상점, 회원·운영, 시스템·보안) 전면 개편</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.2.7 (Build 43) 업데이트 · 2026.10.28</summary>
+                    <ul>
+                        <li>[시너지] 스마트 집사 & 요정 부티크 착용 아이템 수확 시너지 공식 설계 (최대 +15% 하드캡)</li>
+                        <li>[개편] 부티크 아이템 전 품목 '티켓 전용 소장' 전면 전환</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.2.3 업데이트 · 2026.10.24</summary>
+                    <ul>
+                        <li>[투명화] 티켓 이용 내역 발생처 및 사용처 20여 종 전면 세분화 및 과거 내역 소급 보정</li>
+                        <li>[신규] 요정 대박 행운 5게임 티켓로또 원클릭 응모 및 SNS 공유 기능 탑재</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.2.1 업데이트 · 2026.10.04</summary>
+                    <ul>
+                        <li>[신규] 기프티콘 교환 내역 및 관리자 신청 내역 '사용 완료' 관리 & KT alpha 실시간 상태조회(0201) 연동</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.1.0 (Build 30) 업데이트 · 2026.09.20</summary>
+                    <ul>
+                        <li>[신규] 모바일 기프티콘 교환 상점(스타벅스, 편의점, 치킨 등) 오픈</li>
+                        <li>[신규] 실시간 접속자와 함께하는 LIVE 추첨 라운지 및 게이지 자동 응모 시스템 도입</li>
+                        <li>[신규] 오늘의 운세 및 띠별/별자리별 행운의 번호 추천 서비스 추가</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>v2.0.0 (Build 22) 업데이트 · 2026.09.03</summary>
                     <ul>
                         <li>[신규] 1등~3등 상금 균등 분배와 4등~5등 보너스 티켓 충전 체계 도입</li>
                         <li>[신규] 회차별 당첨자 수, 총 당첨금, 1인당 상금과 티켓 자동 집계</li>
