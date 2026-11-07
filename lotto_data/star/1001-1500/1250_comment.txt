@@ -1,0 +1,24 @@
+# Owner Picks round 1250
+
+- Games: 10 (order model 5 + sealed uniform random 5)
+- Owner-pick ledger hash: ba15e4cc920e5e3e6f0383a37d56f353b5fb2a1f7b368d772d89fdf630cd8cc8
+- Prediction ledger hash: 4bbec5c791dbb8226f63f28fd40eedf3f78ce9eea7848b457a30d3b8dff9d6e4
+- Uniform random seed: 1270132187
+- Evaluation: compare both groups after the draw; no game may be replaced.
+- Strict walk-forward rounds: 1049
+- Five-game best-match lift: 0.095329
+- Lift 95% interval: [0.03836875774337697, 0.15228901156072217]
+- Portfolio lift supported: True
+- Combination probabilities remain unproven unless log-loss also beats uniform.
+
+## Picks
+1. [질서 모델 1] 12 13 18 27 34 45 | relative_to_uniform=1.717619
+2. [질서 모델 2] 14 16 33 37 38 40 | relative_to_uniform=1.303501
+3. [질서 모델 3] 07 15 20 24 31 35 | relative_to_uniform=1.110406
+4. [질서 모델 4] 06 10 19 21 39 44 | relative_to_uniform=1.014746
+5. [질서 모델 5] 01 03 04 08 29 42 | relative_to_uniform=0.901744
+6. [무작위 기준 1] 03 07 12 18 25 44 | relative_to_uniform=1.000000
+7. [무작위 기준 2] 04 14 24 25 30 37 | relative_to_uniform=1.000000
+8. [무작위 기준 3] 05 09 10 33 38 42 | relative_to_uniform=1.000000
+9. [무작위 기준 4] 12 18 24 25 26 38 | relative_to_uniform=1.000000
+10. [무작위 기준 5] 24 29 30 31 42 43 | relative_to_uniform=1.000000
