@@ -1,43 +1,43 @@
 {
   "protocol": "strict_walk_forward",
   "first_evaluated_round": 201,
-  "last_evaluated_round": 1250,
-  "evaluated_rounds": 1050,
+  "last_evaluated_round": 1251,
+  "evaluated_rounds": 1051,
   "games_per_round": 5,
   "model": {
     "model_id": "bayesian-order-v1",
     "prior_strength": 180.0
   },
-  "average_log_loss": 15.93559095637212,
+  "average_log_loss": 15.935393704841337,
   "uniform_average_log_loss": 15.912922166473464,
-  "log_loss_improvement": -0.022668789898656172,
-  "log_loss_improvement_standard_error": 0.0058807909525857415,
+  "log_loss_improvement": -0.022471538367872412,
+  "log_loss_improvement_standard_error": 0.005878503155826661,
   "log_loss_improvement_95pct_interval": [
-    -0.034195140165724225,
-    -0.011142439631588119
+    -0.033993404553292667,
+    -0.010949672182452158
   ],
   "model_better_than_uniform": false,
-  "average_best_match_improvement": 0.09523809523809523,
-  "best_match_improvement_standard_error": 0.02903374057951971,
+  "average_best_match_improvement": 0.0960989533777355,
+  "best_match_improvement_standard_error": 0.029018874237900977,
   "best_match_improvement_95pct_interval": [
-    0.038331963702236606,
-    0.15214422677395387
+    0.03922195987144958,
+    0.1529759468840214
   ],
   "portfolio_better_than_uniform": true,
   "model_best_match_distribution": {
     "0": 1,
     "1": 334,
-    "2": 601,
+    "2": 602,
     "3": 106,
     "4": 8
   },
   "uniform_best_match_distribution": {
     "0": 13,
-    "1": 405,
+    "1": 406,
     "2": 524,
     "3": 100,
     "4": 7,
     "5": 1
   },
-  "data_sha256": "6e5ccc79e1a0f4adcb37ced89088cbabbcf89f7577253b77f6c62f1c449c5a06"
+  "data_sha256": "0abafab9d7f1cc49a33bc16e0523b356f7565b32b605a8031ac288fb525df5c5"
 }
